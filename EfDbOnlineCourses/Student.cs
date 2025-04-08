@@ -8,10 +8,11 @@ namespace EfDbPolyclinic
 {
 	public class Student
 	{
-		public int id { get; set; }
-		public string name { get; set; }
-		public string email { get; set; }
-		public DateTime? birthdate { get; set; }
+		public int Id { get; set; }
+		public string Name { get; set; }
+		public string Email { get; set; }
+		public DateTime? Birthdate { get; set; }
+
 		public List<Course> Courses { get; set; } = new();
 	}
 }

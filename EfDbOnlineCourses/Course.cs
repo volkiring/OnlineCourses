@@ -9,11 +9,12 @@ namespace EfDbPolyclinic
 {
 	public class Course
 	{
-		public int id { get; set; }
-		public string title { get; set; }
-		public string? description { get; set; }
-		public DateTime? start_date { get; set; }
-		public DateTime? end_date { get; set; }
+		public int Id { get; set; }
+		public string Title { get; set; }
+		public string? Description { get; set; }
+		public DateTime? StartDate { get; set; }
+		public DateTime? EndDate { get; set; }
+
 		public List<Student> Students { get; set; } = new();
 		public List<Teacher> Teachers { get; set; } = new();
 	}

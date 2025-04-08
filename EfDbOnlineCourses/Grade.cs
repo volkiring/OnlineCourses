@@ -10,12 +10,16 @@ namespace EfDbPolyclinic
 {
 	public class Grade
 	{
-		public int id { get; set; }
-		public Student student { get; set; }
-		public Course course { get; set; }
+		public int Id { get; set; }
+
+		public int StudentId { get; set; }
+		public Student Student { get; set; }
+
+		public int CourseId { get; set; }
+		public Course Course { get; set; }
 
 		[Precision(3, 1)]
 		[Range(0, 10)]
-		public decimal numeric_value { get; set; }
+		public decimal NumericValue { get; set; }
 	}
 }
