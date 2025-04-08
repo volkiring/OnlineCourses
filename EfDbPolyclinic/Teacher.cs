@@ -11,7 +11,7 @@ namespace EfDbPolyclinic
 		public int id { get; set; }
 		public string name { get; set; }
 		public string email { get; set; }
-		public string? speciality { get; set; }
+		public string? specialty { get; set; }
 		public List<Course> courses { get; set; } = new();
 	}
 }
