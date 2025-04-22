@@ -1,13 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EfDbPolyclinic
+namespace EfDbOnlineCourses
 {
-	public class Course
+	public class CourseViewModel
 	{
 		public int Id { get; set; }
 		public string Title { get; set; }

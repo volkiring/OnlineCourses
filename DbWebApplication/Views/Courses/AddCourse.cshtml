@@ -1,0 +1,24 @@
+﻿<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+<h3 class="text-center">Создание товара</h3>
+<form method="post">
+    <div class="row text-center">
+        <div class="col">
+            <label>
+                Цена
+            </label>
+            <div>
+                <input type="text" name="Title" required>
+            </div>
+            <label>
+                Описание
+            </label>
+            <div>
+                <input type="text" name="Description" required>
+            </div>
+
+            <br />
+
+            <button class="btn btn-modern" type="submit" asp-controller="Courses" asp-action="ConfirmAddCourse">Подтвердить</button>
+        </div>
+    </div>
+</form>

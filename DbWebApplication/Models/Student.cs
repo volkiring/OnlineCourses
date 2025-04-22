@@ -4,15 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EfDbPolyclinic
+namespace EfDbOnlineCourses
 {
 	public class Student
 	{
 		public int Id { get; set; }
 		public string Name { get; set; }
-		public string Email { get; set; }
+		public string? Email { get; set; }
 		public DateTime? Birthdate { get; set; }
-
-		public List<Course> Courses { get; set; } = new();
+		public List<CourseViewModel> Courses { get; set; } = new();
 	}
 }

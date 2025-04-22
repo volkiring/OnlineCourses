@@ -1,0 +1,110 @@
+﻿@using EfDbOnlineCourses.Models
+@model List<Course>
+
+@{
+    ViewData["Title"] = "Список курсов";
+}
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0"><i class="bi bi-book me-2"></i>Список курсов</h3>
+            <a asp-action="AddCourse" asp-controller= "Courses" class="btn btn-light btn-sm">
+                <i class="bi bi-plus-lg" ></i> Добавить курс
+            </a>
+        </div>
+        
+        <div class="card-body">
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Название</th>
+                                <th>Описание</th>
+                                <th>Даты</th>
+                                <th>Преподаватели</th>
+                                <th>Студенты</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var course in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong>@course.Title</strong>
+                                    </td>
+                                    <td>@(course.Description ?? "Описание отсутствует")</td>
+                                    <td>
+                                        @if (course.StartDate.HasValue && course.EndDate.HasValue)
+                                        {
+                                            <div>@course.StartDate.Value.ToString("dd.MM.yyyy") - @course.EndDate.Value.ToString("dd.MM.yyyy")</div>
+                                            <small class="text-muted">(@((course.EndDate - course.StartDate)?.Days) дней</small>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Даты не указаны</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (course.Teachers.Any())
+                                        {
+                                            <div class="d-flex flex-wrap gap-1">
+                                                @foreach (var teacher in course.Teachers)
+                                                {
+                                                    <span class="badge bg-info">@teacher.Name</span>
+                                                }
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Нет преподавателей</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (course.Students.Any())
+                                        {
+                                            <div>@course.Students.Count студ.</div>
+                                            <small class="text-muted">
+                                                @string.Join(", ", course.Students.Take(2).Select(s => s.Name))
+                                                @if (course.Students.Count > 2)
+                                                {
+                                                    <span> и ещё @(course.Students.Count - 2)</span>
+                                                }
+                                            </small>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Нет студентов</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a asp-action="EditCourse" asp-route-courseId="@course.Id" class="btn btn-outline-primary">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a asp-action="Details" asp-route-courseId="@course" class="btn btn-outline-info">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            <a asp-action="DeleteCourse" asp-route-courseId="@course" class="btn btn-outline-danger">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle me-2"></i>Нет доступных курсов. Хотите <a asp-action="AddCourse" asp-controller = "Courses" class="alert-link">добавить курс</a>?
+                </div>
+            }
+        </div>
+    </div>
+</div>
