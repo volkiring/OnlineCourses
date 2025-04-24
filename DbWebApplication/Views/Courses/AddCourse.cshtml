@@ -16,9 +16,44 @@
                 <input type="text" name="Description" required>
             </div>
 
+            <label>
+                Дата начала курса
+            </label>
+            <div>
+                <input type="date" name="StartDate" required id="StartDate" />
+            </div>
+
+            <label>
+                Дата окончания курса
+            </label>
+            <div>
+                <input type="date" name="EndDate" required id="EndDate" />
+            </div>
+
             <br />
 
             <button class="btn btn-modern" type="submit" asp-controller="Courses" asp-action="ConfirmAddCourse">Подтвердить</button>
         </div>
     </div>
 </form>
+
+
+<script>
+    const startDateInput = document.getElementById('StartDate');
+    const endDateInput = document.getElementById('EndDate');
+
+    const today = new Date().toISOString().split('T')[0];
+    startDateInput.setAttribute('min', today);
+
+    startDateInput.addEventListener('change', function() {
+        if (startDateInput.value) {
+            endDateInput.setAttribute('min', startDateInput.value);
+        } else {
+            endDateInput.removeAttribute('min');
+        }
+    });
+
+    if (startDateInput.value && endDateInput.value < startDateInput.value) {
+        endDateInput.value = startDateInput.value;
+    }
+</script>

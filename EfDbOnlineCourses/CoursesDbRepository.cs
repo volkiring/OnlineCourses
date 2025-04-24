@@ -24,7 +24,10 @@ namespace EfDbOnlineCourses
 			var newCourse = new Course()
 			{
 				Title = course!.Title,
-				Description = course!.Description
+				Description = course!.Description,
+				StartDate = course!.StartDate,
+				EndDate = course!.EndDate
+				
 			};
 			dbcontext.Courses.Add(newCourse);
 			dbcontext.SaveChanges();

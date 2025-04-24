@@ -13,7 +13,7 @@
                 <i class="bi bi-plus-lg" ></i> Добавить курс
             </a>
         </div>
-        
+
         <div class="card-body">
             @if (Model.Any())
             {
@@ -41,7 +41,14 @@
                                         @if (course.StartDate.HasValue && course.EndDate.HasValue)
                                         {
                                             <div>@course.StartDate.Value.ToString("dd.MM.yyyy") - @course.EndDate.Value.ToString("dd.MM.yyyy")</div>
-                                            <small class="text-muted">(@((course.EndDate - course.StartDate)?.Days) дней</small>
+                                            if ((course.StartDate.Value.Subtract(course.EndDate.Value)).Days == 0)
+                                            {
+                                                <small class="text-muted">Курс доступен только сегодня</small>
+                                            }
+                                            else
+                                            {
+                                            <small class="text-muted">@((course.EndDate - course.StartDate)?.Days) дней</small>
+                                            }
                                         }
                                         else
                                         {
