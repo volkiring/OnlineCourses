@@ -42,10 +42,10 @@ namespace DbWebApplication.Controllers
 			return View(course);
 		}
 
-		public IActionResult ConfirmEditCourse(int courseId, string title, string description)
+		public IActionResult ConfirmEditCourse(int courseId, string title, string description, DateTime startDate, DateTime endDate)
 		{
 			var course = coursesDbRepository.TryGetById(courseId);
-			coursesDbRepository.Update(course, title, description);
+			coursesDbRepository.Update(course, title, description, startDate, endDate);
 			return View();
 		}
 	}

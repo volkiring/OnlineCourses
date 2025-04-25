@@ -8,6 +8,6 @@ namespace EfDbOnlineCourses
 		void Delete(Course course);
 		List<Course> GetAll();
 		Course TryGetById(int id);
-		public void Update(Course course, string title, string description);
+		public void Update(Course course, string title, string description, DateTime startDate, DateTime endDate);
 	}
 }

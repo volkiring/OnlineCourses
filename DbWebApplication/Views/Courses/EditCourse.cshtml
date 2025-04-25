@@ -20,9 +20,43 @@
                 <input type="text" name="Description" required value="@Model.Description">
             </div>
 
+            <label>
+                Дата начала курса
+            </label>
+            <div>
+                <input type="date" name="StartDate" required id="StartDate" value="@Model.StartDate.ToString()" />
+            </div>
+
+            <label>
+                Дата окончания курса
+            </label>
+            <div>
+                <input type="date" name="EndDate" required id="EndDate" value="@Model.EndDate.Value.ToString("dd.MM.yyyy")" />
+            </div>
+
             <br />
 
             <button class="btn btn-modern" type="submit" asp-controller="Courses" asp-action="ConfirmEditCourse" asp-route-courseId="@Model.Id">Подтвердить</button>
         </div>
     </div>
 </form>
+
+<script>
+    const startDateInput = document.getElementById('StartDate');
+    const endDateInput = document.getElementById('EndDate');
+
+    const today = new Date().toISOString().split('T')[0];
+    startDateInput.setAttribute('min', today);
+
+    startDateInput.addEventListener('change', function() {
+        if (startDateInput.value) {
+            endDateInput.setAttribute('min', startDateInput.value);
+        } else {
+            endDateInput.removeAttribute('min');
+        }
+    });
+
+    if (startDateInput.value && endDateInput.value < startDateInput.value) {
+        endDateInput.value = startDateInput.value;
+    }
+</script>

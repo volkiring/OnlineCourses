@@ -32,10 +32,12 @@ namespace EfDbOnlineCourses
 			dbcontext.Courses.Add(newCourse);
 			dbcontext.SaveChanges();
 		}
-		public void Update(Course course, string title, string description)
+		public void Update(Course course, string title, string description, DateTime startDate, DateTime endDate)
 		{
 			course.Title = title;
 			course.Description = description;
+			course.StartDate = startDate;
+			course.EndDate = endDate;
 			dbcontext.SaveChanges();
 		}
 		public void Delete(Course course)
