@@ -8,6 +8,7 @@ string connection = builder.Configuration.GetConnectionString("DefaultConnection
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseMySql(connection, ServerVersion.AutoDetect(connection)));
 builder.Services.AddScoped<ICoursesRepository, CoursesDbRepository>();
+builder.Services.AddScoped<IStudentsRepository, StudentsDbRepository>();
 
 var app = builder.Build();
 

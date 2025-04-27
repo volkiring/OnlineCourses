@@ -21,23 +21,15 @@ namespace EfDbOnlineCourses
 		}
 		public void Add(Course course)
 		{
-			var newCourse = new Course()
-			{
-				Title = course!.Title,
-				Description = course!.Description,
-				StartDate = course!.StartDate,
-				EndDate = course!.EndDate
-				
-			};
-			dbcontext.Courses.Add(newCourse);
+			dbcontext.Courses.Add(course);
 			dbcontext.SaveChanges();
 		}
-		public void Update(Course course, string title, string description, DateTime startDate, DateTime endDate)
+		public void Update(Course course, Course updatedCourse)
 		{
-			course.Title = title;
-			course.Description = description;
-			course.StartDate = startDate;
-			course.EndDate = endDate;
+			course.Title = updatedCourse.Title;
+			course.Description = updatedCourse.Description;
+			course.StartDate = updatedCourse.StartDate;
+			course.EndDate = updatedCourse.EndDate;
 			dbcontext.SaveChanges();
 		}
 		public void Delete(Course course)

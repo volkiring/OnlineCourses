@@ -1,0 +1,43 @@
+﻿@using EfDbOnlineCourses.Models
+@model Student
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+<h3 class="text-center">Изменение студента</h3>
+
+<form method="post">
+    <div class="row text-center">
+        <div class="col">
+            <label>Имя</label>
+            <div>
+                <input type="text" name="Name" required value="@Model.Name" />
+            </div>
+
+            <label>Email</label>
+            <div>
+                <input type="email" name="Email" value="@Model.Email" required/>
+            </div>
+
+            <label>Дата рождения</label>
+            <div>
+                <input type="date" name="Birthdate" id="Birthdate"
+                       value="@Model.Birthdate.Value.ToString("yyyy-MM-dd")" required/>
+            </div>
+
+            <br />
+
+            <button class="btn btn-modern" type="submit"
+                    asp-controller="Students" asp-action="ConfirmEditStudent"
+                    asp-route-studentId="@Model.Id">
+                Подтвердить
+            </button>
+        </div>
+    </div>
+</form>
+
+<script>
+    const birthdate = document.getElementById('Birthdate');
+
+    const today = new Date().toISOString().split('T')[0];
+    birthdate.setAttribute('max', today);
+</script>

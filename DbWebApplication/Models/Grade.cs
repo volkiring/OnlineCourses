@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EfDbOnlineCourses.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,7 +14,7 @@ namespace EfDbOnlineCourses
 		public int Id { get; set; }
 
 		public Student Student { get; set; }
-		public CourseViewModel Course { get; set; }
+		public Course Course { get; set; }
 
 		[Precision(3, 1)]
 		[Range(0, 10)]

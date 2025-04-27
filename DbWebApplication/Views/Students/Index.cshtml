@@ -1,0 +1,88 @@
+﻿@using EfDbOnlineCourses.Models
+@model List<Student>
+
+@{
+    ViewData["Title"] = "Список студентов";
+}
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0"><i class="bi bi-people-fill me-2"></i>Список студентов</h3>
+            <a asp-action="AddStudent" asp-controller="Students" class="btn btn-light btn-sm">
+                <i class="bi bi-plus-lg"></i> Добавить студента
+            </a>
+        </div>
+
+        <div class="card-body">
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Имя</th>
+                                <th>Email</th>
+                                <th>Дата рождения</th>
+                                <th>Курсы</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var student in Model)
+                            {
+                                <tr>
+                                    <td><strong>@student.Name</strong></td>
+                                    <td>@(student.Email ?? "Не указан")</td>
+                                    <td>
+                                        @if (student.Birthdate.HasValue)
+                                        {
+                                            @student.Birthdate.Value.ToString("dd.MM.yyyy")
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Не указана</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (student.Courses.Any())
+                                        {
+                                            <div class="d-flex flex-wrap gap-1">
+                                                @foreach (var course in student.Courses)
+                                                {
+                                                    <span class="badge bg-info">@course.Title</span>
+                                                }
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Нет курсов</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a asp-action="EditStudent" asp-route-studentId="@student.Id" class="btn btn-outline-primary">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a asp-action="DeleteStudent" asp-route-studentId="@student.Id" class="btn btn-outline-danger">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle me-2"></i>Нет студентов. Хотите <a asp-action="AddStudent" asp-controller="Students" class="alert-link">добавить студента</a>?
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+

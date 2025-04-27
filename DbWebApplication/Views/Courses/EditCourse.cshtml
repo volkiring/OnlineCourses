@@ -24,14 +24,14 @@
                 Дата начала курса
             </label>
             <div>
-                <input type="date" name="StartDate" required id="StartDate" value="@Model.StartDate.ToString()" />
+                <input type="date" name="StartDate" required id="StartDate" value="@Model.StartDate.Value.ToString("yyyy-MM-dd")"  />
             </div>
 
             <label>
                 Дата окончания курса
             </label>
             <div>
-                <input type="date" name="EndDate" required id="EndDate" value="@Model.EndDate.Value.ToString("dd.MM.yyyy")" />
+                <input type="date" name="EndDate" required id="EndDate" value="@Model.EndDate.Value.ToString("yyyy-MM-dd")" />
             </div>
 
             <br />
