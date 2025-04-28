@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EfDbOnlineCourses
 {
-	public class TeachersDbRepository
+	public class TeachersDbRepository : ITeachersRepository
 	{
 		private readonly DatabaseContext dbcontext;
 		public TeachersDbRepository(DatabaseContext dbContext)
@@ -32,15 +32,15 @@ namespace EfDbOnlineCourses
 			teacher.Specialty = updatedTeacher.Specialty;
 			dbcontext.SaveChanges();
 		}
-		public void Delete(Student student)
+		public void Delete(Teacher teacher)
 		{
-			dbcontext.Students.Remove(student);
+			dbcontext.Teachers.Remove(teacher);
 			dbcontext.SaveChanges();
 		}
 
-		public Student TryGetById(int id)
+		public Teacher TryGetById(int id)
 		{
-			return dbcontext.Students.FirstOrDefault(c => c.Id == id);
+			return dbcontext.Teachers.FirstOrDefault(c => c.Id == id);
 		}
 	}
 }

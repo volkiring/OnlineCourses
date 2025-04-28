@@ -1,4 +1,5 @@
 ﻿using EfDbOnlineCourses.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace EfDbOnlineCourses
 		}
 		public List<Course> GetAll()
 		{
-			return dbcontext.Courses.ToList();
+			return dbcontext.Courses.Include(c => c.Students).Include(c => c.Teachers).ToList();
 		}
 		public void Add(Course course)
 		{
@@ -40,7 +41,32 @@ namespace EfDbOnlineCourses
 
 		public Course TryGetById(int id)
 		{
-			return dbcontext.Courses.FirstOrDefault(c => c.Id == id);
+			return dbcontext.Courses.Include(c => c.Teachers).Include(c => c.Students).FirstOrDefault(c => c.Id == id);
 		}
+
+		public void AddTeacherToCourse(Course course, Teacher teacher)
+		{
+			course.Teachers.AddRange(teacher);
+			dbcontext.SaveChanges();
+		}
+
+		public void AddStudentToCourse(Course course, Student student)
+		{
+			course.Students.AddRange(student);
+			dbcontext.SaveChanges();
+		}
+
+		public void DeleteTeacherToCourse(Course course, Teacher teacher)
+		{
+			course.Teachers.Remove(teacher);
+			dbcontext.SaveChanges();
+		}
+
+		public void DeleteStudentToCourse(Course course, Student student)
+		{
+			course.Students.Remove(student);
+			dbcontext.SaveChanges();
+		}
+
 	}
 }

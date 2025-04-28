@@ -61,13 +61,22 @@
                                             <div class="d-flex flex-wrap gap-1">
                                                 @foreach (var teacher in course.Teachers)
                                                 {
-                                                    <span class="badge bg-info">@teacher.Name</span>
+                                                    <span class="badge bg-info">
+                                                        <a asp-action="Index" asp-controller="CourseTeachers" asp-route-courseId="@course.Id" class="text-decoration-none text-black">
+                                                            @teacher.Name
+                                                        </a>
+                                                    </span>
+
                                                 }
                                             </div>
                                         }
                                         else
                                         {
-                                            <span class="text-muted">Нет преподавателей</span>
+                                            <span class="text-muted text-dark">
+                                                <a asp-action="Index" asp-controller="CourseTeachers" asp-route-courseId="@course.Id" class="text-decoration-none text-black">
+                                                    Нет преподавателей
+                                                </a>
+                                            </span>
                                         }
                                     </td>
                                     <td>
@@ -75,16 +84,18 @@
                                         {
                                             <div>@course.Students.Count студ.</div>
                                             <small class="text-muted">
+                                                <a asp-action="Index" asp-controller="CourseStudents" text-decoration-none text-black asp-route-courseId="@course.Id">
                                                 @string.Join(", ", course.Students.Take(2).Select(s => s.Name))
                                                 @if (course.Students.Count > 2)
                                                 {
                                                     <span> и ещё @(course.Students.Count - 2)</span>
                                                 }
+                                                </a>
                                             </small>
                                         }
                                         else
                                         {
-                                            <span class="text-muted">Нет студентов</span>
+                                            <span class="text-muted"><a asp-action="Index" asp-controller="CourseStudents" class="text-decoration-none text-black" asp-route-courseId="@course.Id">Нет студентов</a></span>
                                         }
                                     </td>
                                     <td>

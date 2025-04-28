@@ -48,5 +48,19 @@ namespace DbWebApplication.Controllers
 			coursesDbRepository.Update(course, updatedCourse);
 			return View();
 		}
+
+		public IActionResult StudentsByCourse(int courseId)
+		{
+			var course = coursesDbRepository.TryGetById(courseId);
+			var students = course.Students;
+			return View(students);
+		}
+
+		public IActionResult TeachersByCourse(int courseId)
+		{
+			var course = coursesDbRepository.TryGetById(courseId);
+			var teachers = course.Teachers;
+			return View(teachers);
+		}
 	}
 }

@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace EfDbOnlineCourses.Models
 {
-	public class Teacher
+	public class Teacher : Student
 	{
-		public int Id { get; set; }
-		public string Name { get; set; }
-		public string? Email { get; set; }
 		public string? Specialty { get; set; }
-		public List<Course> Courses { get; set; } = new();
 	}
 }

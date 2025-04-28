@@ -9,6 +9,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseMySql(connection, ServerVersion.AutoDetect(connection)));
 builder.Services.AddScoped<ICoursesRepository, CoursesDbRepository>();
 builder.Services.AddScoped<IStudentsRepository, StudentsDbRepository>();
+builder.Services.AddScoped<ITeachersRepository, TeachersDbRepository>();
 
 var app = builder.Build();
 
