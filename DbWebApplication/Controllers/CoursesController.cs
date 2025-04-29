@@ -7,10 +7,12 @@ namespace DbWebApplication.Controllers
 	public class CoursesController : Controller
 	{
 		private readonly ICoursesRepository coursesDbRepository;
+		private readonly IWebHostEnvironment webHostEnvironment;
 
-		public CoursesController(ICoursesRepository coursesDbRepository)
+		public CoursesController(ICoursesRepository coursesDbRepository, IWebHostEnvironment webHostEnvironment)
 		{
 			this.coursesDbRepository = coursesDbRepository;
+			this.webHostEnvironment = webHostEnvironment;
 		}
 		public IActionResult Index()
 		{
@@ -23,8 +25,21 @@ namespace DbWebApplication.Controllers
 			return View();
 		}
 
-		public IActionResult ConfirmAddCourse(Course course)
+		public IActionResult ConfirmAddCourse(Course course, IFormFile ImageFile)
 		{
+			var uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images/courses");
+			Directory.CreateDirectory(uploadsFolder);
+
+			var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(ImageFile.FileName);
+			var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+			using (var stream = new FileStream(filePath, FileMode.Create))
+			{
+				ImageFile.CopyTo(stream);
+			}
+
+			course.ImagePath = "/images/courses/" + uniqueFileName;
+
 			coursesDbRepository.Add(course);
 			return View();
 		}
@@ -36,16 +51,29 @@ namespace DbWebApplication.Controllers
 			return RedirectToAction("Index");
 		}
 
-		public IActionResult EditCourse(int courseId)
+		public IActionResult EditCourse(int courseId, IFormFile ImageFile)
 		{
 			var course = coursesDbRepository.TryGetById(courseId);
 			return View(course);
 		}
 
-		public IActionResult ConfirmEditCourse(int courseId, Course updatedCourse)
+		public IActionResult ConfirmEditCourse(int courseId, Course updatedCourse, IFormFile ImageFile)
 		{
 			var course = coursesDbRepository.TryGetById(courseId);
-			coursesDbRepository.Update(course, updatedCourse);
+
+			var uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images/courses");
+			Directory.CreateDirectory(uploadsFolder);
+			var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(ImageFile.FileName);
+			var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+			using (var stream = new FileStream(filePath, FileMode.Create))
+			{
+				ImageFile.CopyTo(stream);
+			}
+
+			var imagePath = "/images/courses/" + uniqueFileName;
+			coursesDbRepository.Update(course, updatedCourse, imagePath);
+
 			return View();
 		}
 

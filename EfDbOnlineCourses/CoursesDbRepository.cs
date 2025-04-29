@@ -25,12 +25,13 @@ namespace EfDbOnlineCourses
 			dbcontext.Courses.Add(course);
 			dbcontext.SaveChanges();
 		}
-		public void Update(Course course, Course updatedCourse)
+		public void Update(Course course, Course updatedCourse, string imagePath)
 		{
 			course.Title = updatedCourse.Title;
 			course.Description = updatedCourse.Description;
 			course.StartDate = updatedCourse.StartDate;
 			course.EndDate = updatedCourse.EndDate;
+			course.ImagePath = imagePath;
 			dbcontext.SaveChanges();
 		}
 		public void Delete(Course course)

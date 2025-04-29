@@ -1,5 +1,6 @@
 ﻿using EfDbOnlineCourses;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace DbWebApplication.Controllers
 {
@@ -22,8 +23,8 @@ namespace DbWebApplication.Controllers
 
 		public IActionResult AddStudentToCourse(int courseId)
 		{
-			var students = studentsRepository.GetAll();
 			var course = coursesRepository.TryGetById(courseId);
+			var students = studentsRepository.GetAll().Where(s => !s.Courses.Contains(course)).ToList();
 			return View((course, students));
 		}
 
@@ -32,6 +33,14 @@ namespace DbWebApplication.Controllers
 			var course = coursesRepository.TryGetById(courseId);
 			var student = studentsRepository.TryGetById(studentId);
 			coursesRepository.AddStudentToCourse(course, student);
+			return RedirectToAction("Index", new { courseId });
+		}
+
+		public IActionResult DeleteStudentToCourse(int courseId, int studentId)
+		{
+			var course = coursesRepository.TryGetById(courseId);
+			var student = studentsRepository.TryGetById(studentId);
+			coursesRepository.DeleteStudentToCourse(course, student);
 			return RedirectToAction("Index", new { courseId });
 		}
 

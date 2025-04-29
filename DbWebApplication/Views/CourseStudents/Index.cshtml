@@ -15,6 +15,7 @@
                         <th>Имя студента</th>
                         <th>Email</th>
                         <th>Дата рождения</th>
+                        <th>Действия</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,6 +34,12 @@
                                     <span class="text-muted">Не указана</span>
                                 }
                             </td>
+                            <td>
+                                <div class="btn-group btn-group-sm">
+                                    <a asp-action="DeleteStudentToCourse" asp-route-courseId="@Model.Id" asp-route-studentId ="@student.Id" class="btn btn-outline-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
                         </tr>
                     }
                 </tbody>

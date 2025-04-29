@@ -82,16 +82,8 @@
                                     <td>
                                         @if (course.Students.Any())
                                         {
-                                            <div>@course.Students.Count студ.</div>
-                                            <small class="text-muted">
-                                                <a asp-action="Index" asp-controller="CourseStudents" text-decoration-none text-black asp-route-courseId="@course.Id">
-                                                @string.Join(", ", course.Students.Take(2).Select(s => s.Name))
-                                                @if (course.Students.Count > 2)
-                                                {
-                                                    <span> и ещё @(course.Students.Count - 2)</span>
-                                                }
-                                                </a>
-                                            </small>
+                                            <div><a asp-action="Index" asp-controller="CourseStudents" class="text-decoration-none text-black" asp-route-courseId="@course.Id">@course.Students.Count студ.</a></div>
+
                                         }
                                         else
                                         {

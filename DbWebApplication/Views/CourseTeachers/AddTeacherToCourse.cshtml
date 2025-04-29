@@ -1,0 +1,32 @@
+﻿@using EfDbOnlineCourses.Models
+@model (Course course, List<Teacher> teachers)
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+<h3 class="text-center">Добавить преподавателя на курс</h3>
+
+<form method="post" asp-action="ConfirmAddTeacherToCourse" asp-controller="CourseTeachers">
+    <input type="hidden" name="courseId" value="@Model.course.Id" />
+
+    <div class="row text-center">
+        <div class="col">
+            <label>Выберите преподавателя</label>
+            <div>
+                <select name="teacherId" class="form-select" required>
+                    <option value="">-- Выберите преподавателя --</option>
+                    @foreach (var teacher in Model.teachers)
+                    {
+                        <option value="@teacher.Id">@teacher.Name (@teacher.Email)</option>
+                    }
+                </select>
+            </div>
+
+            <br />
+
+            <button class="btn btn-success" type="submit">
+                <i class="fas fa-plus"></i> Добавить преподавателя
+            </button>
+        </div>
+    </div>
+</form>

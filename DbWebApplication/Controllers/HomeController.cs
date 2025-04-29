@@ -7,20 +7,22 @@ namespace DbWebApplication.Controllers
 {
 	public class HomeController : Controller
 	{
+		private readonly ICoursesRepository coursesRepository;
+
+		public HomeController(ICoursesRepository coursesRepository)
+		{
+			this.coursesRepository = coursesRepository;
+		}
 		public IActionResult Index()
 		{
-			return View();
+			var courses = coursesRepository.GetAll();	
+			return View(courses);
 		}
 
-		public IActionResult Privacy()
+		public IActionResult Details(int courseId)
 		{
-			return View();
-		}
-
-		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-		public IActionResult Error()
-		{
-			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+			var course = coursesRepository.TryGetById(courseId);
+			return View(course);
 		}
 	}
 }

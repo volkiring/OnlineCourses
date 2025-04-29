@@ -1,41 +1,46 @@
-﻿<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-<h3 class="text-center">Создание курса</h3>
-<form method="post">
+﻿<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+
+<h3 class="text-center mb-4">Создание курса</h3>
+
+<form method="post" enctype="multipart/form-data" asp-action="ConfirmAddCourse" asp-controller="Courses">
     <div class="row text-center">
         <div class="col">
-            <label>
-                Название
-            </label>
+            <label>Название</label>
             <div>
-                <input type="text" name="Title" required>
-            </div>
-            <label>
-                Описание
-            </label>
-            <div>
-                <input type="text" name="Description" required>
+                <input type="text" name="Title" class="form-control" required />
             </div>
 
-            <label>
-                Дата начала курса
-            </label>
+            <label>Описание</label>
             <div>
-                <input type="date" name="StartDate" required id="StartDate" />
+                <input type="text" name="Description" class="form-control" required />
             </div>
 
-            <label>
-                Дата окончания курса
-            </label>
+            <label>Дата начала курса</label>
             <div>
-                <input type="date" name="EndDate" required id="EndDate" />
+                <input type="date" name="StartDate" class="form-control" id="StartDate" required  />
+            </div>
+
+            <label>Дата окончания курса</label>
+            <div>
+                <input type="date" name="EndDate" class="form-control" id="EndDate" required />
+            </div>
+
+            <label>Изображение курса</label>
+            <div class="d-flex justify-content-center my-4">
+                <input type="file"
+                       name="ImageFile"
+                       class="form-control file-input-tall w-auto"
+                       accept="image/*" required/>
             </div>
 
             <br />
-
-            <button class="btn btn-modern" type="submit" asp-controller="Courses" asp-action="ConfirmAddCourse">Подтвердить</button>
+            <button class="btn btn-success" type="submit">
+                <i class="fas fa-check"></i> Подтвердить
+            </button>
         </div>
     </div>
 </form>
+
 
 
 <script>
