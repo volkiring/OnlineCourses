@@ -12,6 +12,6 @@ namespace EfDbOnlineCourses
 		void DeleteTeacherToCourse(Course course, Teacher teacher);
 		List<Course> GetAll();
 		Course TryGetById(int id);
-		void Update(Course course, Course updatedCourse, string imagePath);
+		void Update(Course course, Course updatedCourse, string? imagePath);
 	}
 }

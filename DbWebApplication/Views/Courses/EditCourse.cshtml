@@ -2,6 +2,16 @@
 @model Course
 
 
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <p>@error.ErrorMessage</p>
+        }
+    </div>
+}
+
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 <h3 class="text-center">Изменение курса</h3>
 <form method="post" enctype="multipart/form-data">
@@ -40,7 +50,7 @@
                 <input type="file"
                        name="ImageFile"
                        class="form-control file-input-tall w-auto"
-                       accept="image/*" required />
+                       accept="image/*"/>
             </div>
             <br />
 

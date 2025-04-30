@@ -27,6 +27,13 @@ namespace DbWebApplication.Controllers
 
 		public IActionResult ConfirmAddCourse(Course course, IFormFile ImageFile)
 		{
+
+			if (course.EndDate < course.StartDate)
+			{
+				ModelState.AddModelError("", "Дата окончания не может быть раньше даты начала.");
+				return View("AddCourse");
+			}
+
 			var uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images/courses");
 			Directory.CreateDirectory(uploadsFolder);
 
@@ -57,21 +64,34 @@ namespace DbWebApplication.Controllers
 			return View(course);
 		}
 
-		public IActionResult ConfirmEditCourse(int courseId, Course updatedCourse, IFormFile ImageFile)
+		public IActionResult ConfirmEditCourse(int courseId, Course updatedCourse, IFormFile? ImageFile)
 		{
-			var course = coursesDbRepository.TryGetById(courseId);
 
-			var uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images/courses");
-			Directory.CreateDirectory(uploadsFolder);
-			var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(ImageFile.FileName);
-			var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-			using (var stream = new FileStream(filePath, FileMode.Create))
+			if (updatedCourse.EndDate < updatedCourse.StartDate)
 			{
-				ImageFile.CopyTo(stream);
+				ModelState.AddModelError("", "Дата окончания не может быть раньше даты начала.");
+				var originalCourse = coursesDbRepository.TryGetById(courseId);
+				return View("EditCourse", originalCourse); 
 			}
 
-			var imagePath = "/images/courses/" + uniqueFileName;
+			var course = coursesDbRepository.TryGetById(courseId);
+
+			string? imagePath = null;
+			if (ImageFile is not null)
+			{
+				var uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images/courses");
+				Directory.CreateDirectory(uploadsFolder);
+				var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(ImageFile.FileName);
+				var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+				using (var stream = new FileStream(filePath, FileMode.Create))
+				{
+					ImageFile.CopyTo(stream);
+				}
+
+				imagePath = "/images/courses/" + uniqueFileName;
+			}
+
 			coursesDbRepository.Update(course, updatedCourse, imagePath);
 
 			return View();
