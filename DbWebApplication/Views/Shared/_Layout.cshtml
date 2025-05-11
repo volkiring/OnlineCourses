@@ -36,6 +36,23 @@
                                 <i class="bi bi-person-badge me-1"></i>Преподаватели
                             </a>
                         </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li>@User.Identity.Name</li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-custom" asp-action ="Logout" asp-controller="Account">Выйти</a>
+                            </li>
+
+                        }
+
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class ="nav-link nav-link-custom" asp-action="Login" asp-controller="Account">Авторизироваться</a>
+                            </li>
+                        }
+
+
                     </ul>
                 </div>
             </div>
