@@ -10,7 +10,7 @@ public class DatabaseContext : DbContext
 	public DbSet<Grade> Grades { get; set; }
 
 	public DatabaseContext(DbContextOptions<DatabaseContext> options) : base (options)
-	{
+	{ 
 		Database.EnsureCreated();
 		Database.Migrate();
 	}

@@ -1,6 +1,8 @@
-﻿namespace EfDbOnlineCourses.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace EfDbOnlineCourses.Models
 {
-	public class Lesson
+	public class Lesson : IdentityUser
 	{
 		public int Id { get; set; }
 		public Course Course { get; set; }

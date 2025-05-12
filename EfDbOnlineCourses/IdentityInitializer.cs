@@ -7,7 +7,7 @@ public class IdentityInitializer
 	public static void Initialize(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
 	{
 		var adminEmail = "admin@gmail.com";
-		var password = "123456";
+		var password = "z!PZ\"^4GuYecP5B";
 
 		if (roleManager.FindByNameAsync(Constants.AdminRoleName).Result == null)
 		{
@@ -26,7 +26,7 @@ public class IdentityInitializer
 				Email = adminEmail,
 				UserName = adminEmail
 			};
-			var result = userManager.CreateAsync(admin).Result;
+			var result = userManager.CreateAsync(admin, password).Result;
 			if (result.Succeeded)
 			{
 				userManager.AddToRoleAsync(admin, Constants.AdminRoleName).Wait();

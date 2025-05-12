@@ -33,6 +33,14 @@ builder.Services.AddScoped<ITeachersRepository, TeachersDbRepository>();
 
 var app = builder.Build();
 
+using (var serviceScope = app.Services.CreateScope())
+{
+	var services = serviceScope.ServiceProvider;
+	var userManager = services.GetRequiredService<UserManager<User>>();
+	var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+	IdentityInitializer.Initialize(userManager, rolesManager);
+}
+
 if (!app.Environment.IsDevelopment())
 {
 	app.UseExceptionHandler("/Home/Error");
@@ -53,12 +61,5 @@ app.MapControllerRoute(
 	pattern: "{controller=Home}/{action=Index}/{id?}")
 	.WithStaticAssets();
 
-using (var serviceScope = app.Services.CreateScope())
-{
-	var services = serviceScope.ServiceProvider;
-	var userManager = services.GetRequiredService<UserManager<User>>();
-	var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-	IdentityInitializer.Initialize(userManager, rolesManager);
-}
 
 app.Run();

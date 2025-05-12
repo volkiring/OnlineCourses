@@ -1,12 +1,14 @@
 ﻿using EfDbOnlineCourses.Models;
 using EfDbOnlineCourses;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 
 namespace DbWebApplication.Controllers
 {
 	public class TeachersController : Controller
 	{
 		private readonly ITeachersRepository teachersRepository;
+		private readonly UserManager<Teacher> userManager;
 
 		public TeachersController(ITeachersRepository teachersRepository)
 		{
@@ -26,8 +28,21 @@ namespace DbWebApplication.Controllers
 
 		public IActionResult ConfirmAddTeacher(Teacher teacher)
 		{
-			teachersRepository.Add(teacher);
-			return View("ConfirmAddTeacher");
+			if (!ModelState.IsValid)
+				return View();
+
+			var result = userManager.CreateAsync(teacher, teacher.Password).Result;
+
+			if (result.Succeeded)
+			{
+				return RedirectToAction("Index", "Home");
+			}
+
+			foreach (var error in result.Errors)
+			{
+				ModelState.AddModelError("", error.Description);
+			}
+			return View(teacher);
 		}
 
 		public IActionResult DeleteTeacher(int teacherId)

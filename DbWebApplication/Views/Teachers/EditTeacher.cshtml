@@ -1,4 +1,4 @@
-﻿@model EfDbOnlineCourses.Models.Teacher
+﻿@model Teacher
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
@@ -14,7 +14,7 @@
 
             <label>Email</label>
             <div>
-                <input type="email" name="Email" value="@Model.Email" />
+                <input type="email" name="Email" value="@Model.User.Email" />
             </div>
 
             <label>Специальность</label>

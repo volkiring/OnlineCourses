@@ -28,7 +28,7 @@ namespace EfDbOnlineCourses
 		public void Update(Teacher teacher, Teacher updatedTeacher)
 		{
 			teacher.Name = updatedTeacher.Name;
-			teacher.Email = updatedTeacher.Email;
+			teacher.User.Email = updatedTeacher.User.Email;
 			teacher.Specialty = updatedTeacher.Specialty;
 			dbcontext.SaveChanges();
 		}

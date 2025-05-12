@@ -17,7 +17,7 @@
                     <option value="">-- Выберите преподавателя --</option>
                     @foreach (var teacher in Model.teachers)
                     {
-                        <option value="@teacher.Id">@teacher.Name (@teacher.Email)</option>
+                        <option value="@teacher.Id">@teacher.Name (@teacher.User.Email)</option>
                     }
                 </select>
             </div>
