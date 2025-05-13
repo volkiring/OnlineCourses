@@ -22,7 +22,7 @@ namespace EfDbOnlineCourses
 
 		public List<Student> GetAll()
 		{
-			return dbcontext.Students.Include(u => u.User).ToList();
+			return dbcontext.Students.Include(u => u.User).Include(c => c.Courses).ToList();
 		}
 		public void Add(Student student, User user)
 		{
@@ -32,7 +32,7 @@ namespace EfDbOnlineCourses
 			dbcontext.SaveChanges();
 		}
 
-		public void Update(Student student, Student updatedStudent, User userModel, string userName)
+		public void Update(Student student, Student updatedStudent, User userModel)
 		{
 			student.User.UserName = userModel.UserName;
 			student.User.PasswordHash = userManager.PasswordHasher.HashPassword(userModel, updatedStudent.Password);
@@ -53,7 +53,7 @@ namespace EfDbOnlineCourses
 
 		public Student TryGetById(int id)
 		{
-			return dbcontext.Students.Include(u => u.User).FirstOrDefault(c => c.Id == id);
+			return dbcontext.Students.Include(u => u.User).Include(c => c.Courses).FirstOrDefault(c => c.Id == id);
 		}
 	}
 }

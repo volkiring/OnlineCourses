@@ -19,6 +19,6 @@ namespace EfDbOnlineCourses.Models
 		[MinLength(6, ErrorMessage = "Password must be at least 6 characters.")]
 		public string Password { get; set; }
 
-		public List<Course> Courses = new();
+		public List<Course> Courses { get; set; } = new();
 	}
 }

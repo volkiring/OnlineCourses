@@ -42,8 +42,14 @@ namespace EfDbOnlineCourses
 
 		public Course TryGetById(int id)
 		{
-			return dbcontext.Courses.Include(c => c.Teachers).Include(c => c.Students).FirstOrDefault(c => c.Id == id);
+			return dbcontext.Courses
+				.Include(c => c.Teachers)
+					.ThenInclude(t => t.User)
+				.Include(c => c.Students)
+					.ThenInclude(s => s.User)
+				.FirstOrDefault(c => c.Id == id);
 		}
+
 
 		public void AddTeacherToCourse(Course course, Teacher teacher)
 		{
