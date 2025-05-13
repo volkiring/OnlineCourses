@@ -8,7 +8,6 @@ namespace DbWebApplication.Controllers
 	public class TeachersController : Controller
 	{
 		private readonly ITeachersRepository teachersRepository;
-		private readonly UserManager<Teacher> userManager;
 
 		public TeachersController(ITeachersRepository teachersRepository)
 		{
@@ -28,20 +27,7 @@ namespace DbWebApplication.Controllers
 
 		public IActionResult ConfirmAddTeacher(Teacher teacher)
 		{
-			if (!ModelState.IsValid)
-				return View();
-
-			var result = userManager.CreateAsync(teacher, teacher.Password).Result;
-
-			if (result.Succeeded)
-			{
-				return RedirectToAction("Index", "Home");
-			}
-
-			foreach (var error in result.Errors)
-			{
-				ModelState.AddModelError("", error.Description);
-			}
+			teachersRepository.Add(teacher);
 			return View(teacher);
 		}
 

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EfDbOnlineCourses.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20250513101144_InitialContext")]
-    partial class InitialContext
+    [Migration("20250513160640_AddStudentTable")]
+    partial class AddStudentTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -124,6 +124,10 @@ namespace EfDbOnlineCourses.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("longtext");
 

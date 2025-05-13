@@ -2,7 +2,6 @@
 using EfDbOnlineCourses.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace DbWebApplication.Controllers
 {
@@ -43,7 +42,7 @@ namespace DbWebApplication.Controllers
 		[HttpGet]
 		public IActionResult Register(string? returnUrl)
 		{
-			return View();	
+			return View();
 		}
 
 		public IActionResult Register(Register register)
@@ -55,7 +54,7 @@ namespace DbWebApplication.Controllers
 			if (result.Succeeded)
 			{
 				signInManager.SignInAsync(user, false).Wait();
-				return RedirectToAction("Index", "Home");	
+				return RedirectToAction("Index", "Home");
 			}
 
 			else

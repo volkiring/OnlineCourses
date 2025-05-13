@@ -49,7 +49,7 @@
                         <ul class="list-group">
                             @foreach (var student in Model.Students)
                             {
-                                <li class="list-group-item">@student.Name (@student.Email)</li>
+                                <li class="list-group-item">@student.Name (@student.User.Email)</li>
                             }
                         </ul>
                     }

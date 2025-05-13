@@ -33,7 +33,7 @@
                             {
                                 <tr>
                                     <td><strong>@student.Name</strong></td>
-                                    <td>@(student.Email ?? "Не указан")</td>
+                                    <td>@(student.User.Email ?? "Не указан")</td>
                                     <td>
                                         @if (student.Birthdate.HasValue)
                                         {

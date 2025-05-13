@@ -24,9 +24,9 @@ namespace DbWebApplication.Controllers
 			return View();
 		}
 
-		public IActionResult ConfirmAddStudent(Student student)
+		public IActionResult ConfirmAddStudent(Student student, User user)
 		{
-			studentsRepository.Add(student);
+			studentsRepository.Add(student, user);
 			return View();
 		}
 
@@ -43,10 +43,10 @@ namespace DbWebApplication.Controllers
 			return View(student);
 		}
 
-		public IActionResult ConfirmEditStudent(int studentId, Student updatedStudent)
+		public IActionResult ConfirmEditStudent(int studentId, Student updatedStudent, User user)
 		{
 			var student = studentsRepository.TryGetById(studentId);
-			studentsRepository.Update(student, updatedStudent);
+			studentsRepository.Update(student, updatedStudent, user);
 			return View();
 		}
 	}

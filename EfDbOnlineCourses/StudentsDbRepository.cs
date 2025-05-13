@@ -1,4 +1,6 @@
 ﻿using EfDbOnlineCourses.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,37 +12,48 @@ namespace EfDbOnlineCourses
 	public class StudentsDbRepository : IStudentsRepository
 	{
 		private readonly DatabaseContext dbcontext;
+		private readonly UserManager<User> userManager;
 
-		public StudentsDbRepository(DatabaseContext dbcontext)
+		public StudentsDbRepository(DatabaseContext dbcontext, UserManager<User> userManager)
 		{
 			this.dbcontext = dbcontext;
+			this.userManager = userManager;
 		}
 
 		public List<Student> GetAll()
 		{
-			return dbcontext.Students.ToList();
+			return dbcontext.Students.Include(u => u.User).ToList();
 		}
-		public void Add(Student student)
+		public void Add(Student student, User user)
 		{
+			userManager.CreateAsync(user, student.Password).Wait();
+			student.User = user;	
 			dbcontext.Students.Add(student);
 			dbcontext.SaveChanges();
 		}
-		public void Update(Student student, Student updatedStudent)
+
+		public void Update(Student student, Student updatedStudent, User userModel, string userName)
 		{
+			student.User.UserName = userModel.UserName;
+			student.User.PasswordHash = userManager.PasswordHasher.HashPassword(userModel, updatedStudent.Password);
+			student.User.Email = userModel.Email;
 			student.Name = updatedStudent.Name;
-			student.Email = updatedStudent.Email;
 			student.Birthdate = updatedStudent.Birthdate;
+			userManager.UpdateAsync(student.User).Wait();
 			dbcontext.SaveChanges();
 		}
+
 		public void Delete(Student student)
 		{
+			var user = student.User;
+			userManager.DeleteAsync(user).Wait();
 			dbcontext.Students.Remove(student);
 			dbcontext.SaveChanges();
 		}
 
 		public Student TryGetById(int id)
 		{
-			return dbcontext.Students.FirstOrDefault(c => c.Id == id);
+			return dbcontext.Students.Include(u => u.User).FirstOrDefault(c => c.Id == id);
 		}
 	}
 }

@@ -1,19 +1,16 @@
 ﻿using EfDbOnlineCourses.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace EfDbOnlineCourses
 {
 	public class TeachersDbRepository : ITeachersRepository
 	{
 		private readonly DatabaseContext dbcontext;
-		public TeachersDbRepository(DatabaseContext dbContext)
+		private readonly UserManager<User> userManager;
+		public TeachersDbRepository(DatabaseContext dbContext, UserManager<User> userManager)
 		{
 			this.dbcontext = dbContext;
+			this.userManager = userManager;
 		}
 
 		public List<Teacher> GetAll()
@@ -22,18 +19,30 @@ namespace EfDbOnlineCourses
 		}
 		public void Add(Teacher teacher)
 		{
+			var user = teacher.User;
+			userManager.CreateAsync(user).Wait();
+
 			dbcontext.Teachers.Add(teacher);
 			dbcontext.SaveChanges();
 		}
+
 		public void Update(Teacher teacher, Teacher updatedTeacher)
 		{
-			teacher.Name = updatedTeacher.Name;
+			var user = teacher.User;
+			user.PasswordHash = userManager.PasswordHasher.HashPassword(user, updatedTeacher.Password);
+			user.UserName = updatedTeacher.User.UserName;
 			teacher.User.Email = updatedTeacher.User.Email;
+			userManager.UpdateAsync(user).Wait();
+
+			teacher.Name = updatedTeacher.Name;
 			teacher.Specialty = updatedTeacher.Specialty;
 			dbcontext.SaveChanges();
 		}
 		public void Delete(Teacher teacher)
 		{
+			var user = teacher.User;
+			userManager.DeleteAsync(user).Wait();
+
 			dbcontext.Teachers.Remove(teacher);
 			dbcontext.SaveChanges();
 		}
