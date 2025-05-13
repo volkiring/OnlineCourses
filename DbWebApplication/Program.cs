@@ -10,10 +10,9 @@ string connection = builder.Configuration.GetConnectionString("DefaultConnection
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseMySql(connection, ServerVersion.AutoDetect(connection)));
-builder.Services.AddDbContext<IdentityContext>(options => options.UseMySql(connection, ServerVersion.AutoDetect(connection)));
 
 builder.Services.AddIdentity<User, IdentityRole>()
-	.AddEntityFrameworkStores<IdentityContext>();
+	.AddEntityFrameworkStores<DatabaseContext>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -32,6 +31,7 @@ builder.Services.AddScoped<IStudentsRepository, StudentsDbRepository>();
 builder.Services.AddScoped<ITeachersRepository, TeachersDbRepository>();
 
 var app = builder.Build();
+
 
 using (var serviceScope = app.Services.CreateScope())
 {
@@ -52,6 +52,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapStaticAssets();
 

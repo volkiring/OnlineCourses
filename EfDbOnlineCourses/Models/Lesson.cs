@@ -2,7 +2,7 @@
 
 namespace EfDbOnlineCourses.Models
 {
-	public class Lesson : IdentityUser
+	public class Lesson 
 	{
 		public int Id { get; set; }
 		public Course Course { get; set; }
