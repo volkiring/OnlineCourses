@@ -1,4 +1,5 @@
 ﻿using DbWebApplication.Models;
+using EfDbOnlineCourses;
 using EfDbOnlineCourses.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,11 +10,13 @@ namespace DbWebApplication.Controllers
 	{
 		private readonly UserManager<User> userManager;
 		private readonly SignInManager<User> signInManager;
-
-		public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+		private readonly DatabaseContext databaseContext;
+		public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, DatabaseContext databaseContext)
 		{
 			this.userManager = userManager;
 			this.signInManager = signInManager;
+			this.databaseContext = databaseContext;
+
 		}
 
 		[HttpGet]
@@ -50,6 +53,15 @@ namespace DbWebApplication.Controllers
 			var user = new User { UserName = register.UserName, Email = register.Email };
 
 			var result = userManager.CreateAsync(user, register.Password).Result;
+			var student = new Student()
+			{
+				Name = register.Name,
+				Birthdate = register.Birthdate,
+				Password = register.Password,
+				User = user
+			};
+
+			databaseContext.Students.Add(student);
 
 			if (result.Succeeded)
 			{

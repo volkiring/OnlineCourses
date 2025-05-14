@@ -4,23 +4,34 @@
 
 	public class Register
 	{
-		[Required(ErrorMessage = "Имя пользователя обязательно")]
-		[StringLength(50, MinimumLength = 3, ErrorMessage = "Имя пользователя должно быть от 3 до 50 символов")]
+		[Required]
+		[Display(Name = "Имя пользователя")]
 		public string UserName { get; set; }
 
-		[Required(ErrorMessage = "Email обязателен")]
-		[EmailAddress(ErrorMessage = "Некорректный email")]
+		[Required]
+		[EmailAddress]
+		[Display(Name = "Электронная почта")]
 		public string Email { get; set; }
 
-		[Required(ErrorMessage = "Пароль обязателен")]
-		[StringLength(100, MinimumLength = 6, ErrorMessage = "Пароль должен содержать не менее 6 символов")]
+		[Required]
 		[DataType(DataType.Password)]
+		[MinLength(6)]
 		public string Password { get; set; }
 
-		[Required(ErrorMessage = "Подтверждение пароля обязательно")]
-		[Compare("Password", ErrorMessage = "Пароли не совпадают")]
+		[Required]
 		[DataType(DataType.Password)]
+		[Compare("Password", ErrorMessage = "Пароли не совпадают")]
+		[Display(Name = "Подтверждение пароля")]
 		public string ConfirmPassword { get; set; }
+
+		[Required]
+		[Display(Name = "Имя студента")]
+		public string Name { get; set; }
+
+		[Required]
+		[Display(Name = "Дата рождения")]
+		[DataType(DataType.Date)]
+		public DateTime? Birthdate { get; set; }
 	}
 
 }

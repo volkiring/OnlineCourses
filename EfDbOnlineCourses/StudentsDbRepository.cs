@@ -39,6 +39,7 @@ namespace EfDbOnlineCourses
 			student.User.Email = userModel.Email;
 			student.Name = updatedStudent.Name;
 			student.Birthdate = updatedStudent.Birthdate;
+
 			userManager.UpdateAsync(student.User).Wait();
 			dbcontext.SaveChanges();
 		}
