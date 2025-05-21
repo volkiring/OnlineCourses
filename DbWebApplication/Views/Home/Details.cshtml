@@ -7,69 +7,74 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
 
 
-<div class="container py-4">
-    <div class="card shadow rounded-4 border-0">
-        <div class="row g-0">
+<div class="container py-5">
+    <div class="card detail-card">
+        <!-- Контейнер для изображения -->
+        <div class="detail-image-container">
             @if (!string.IsNullOrEmpty(Model.ImagePath))
             {
-                <div class="col-md-5">
-                    <img src="@Url.Content(Model.ImagePath)" class="img-fluid rounded-start" alt="Изображение курса" style="object-fit: cover; height: 100%; width: 100%;" />
-                </div>
+                <img src="@Url.Content(Model.ImagePath)"
+                     alt="Изображение курса @Model.Title" />
             }
-            <div class="col-md-7 d-flex flex-column">
-                <div class="card-body">
-                    <h3 class="card-title fw-bold mb-3">@Model.Title</h3>
-                    <p class="card-text mb-3"><strong>Описание:</strong> @Model.Description</p>
+            else
+            {
+                <i class="bi bi-image fs-1 text-muted"></i>
+            }
+        </div>
 
-                    <p class="mb-2">
-                        <strong>Дата начала:</strong> @Model.StartDate?.ToString("dd.MM.yyyy")<br />
-                        <strong>Дата окончания:</strong> @Model.EndDate?.ToString("dd.MM.yyyy")
-                    </p>
+        <div class="detail-body">
+ 
+            <h2 class="fw-bold">@Model.Title</h2>
 
-                    <hr />
+            <h3>Описание</h3>
+            <p>@Model.Description</p>
 
-                    <h5 class="mb-3">Преподаватели</h5>
-                    @if (Model.Teachers?.Any() == true)
+            <h3>Информация</h3>
+            <ul class="list-unstyled detail-list mb-3">
+                <li><strong>Дата начала:</strong> @Model.StartDate?.ToString("dd.MM.yyyy")</li>
+                <li><strong>Дата окончания:</strong> @Model.EndDate?.ToString("dd.MM.yyyy")</li>
+            </ul>
+
+            <h3>Преподаватели</h3>
+            @if (Model.Teachers?.Any() == true)
+            {
+                <ul class="list-unstyled detail-list mb-3">
+                    @foreach (var teacher in Model.Teachers)
                     {
-                        <ul class="list-group mb-3 rounded-3 shadow-sm">
-                            @foreach (var teacher in Model.Teachers)
-                            {
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <span>@teacher.Name</span>
-                                    <small class="text-muted fst-italic">@teacher.Specialty</small>
-                                </li>
-                            }
-                        </ul>
+                        <li class="d-flex justify-content-between">
+                            <span>@teacher.Name</span>
+                            <small class="text-muted">@teacher.Specialty</small>
+                        </li>
                     }
-                    else
-                    {
-                        <p class="text-muted fst-italic">Нет преподавателей.</p>
-                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-muted fst-italic">Нет преподавателей.</p>
+            }
 
-                    <h5 class="mb-3">Студенты</h5>
-                    @if (Model.Students?.Any() == true)
+            <h3>Студенты</h3>
+            @if (Model.Students?.Any() == true)
+            {
+                <ul class="list-unstyled detail-list mb-3">
+                    @foreach (var student in Model.Students)
                     {
-                        <ul class="list-group rounded-3 shadow-sm">
-                            @foreach (var student in Model.Students)
-                            {
-                                <li class="list-group-item">@student.Name (@student.User.Email)</li>
-                            }
-                        </ul>
+                        <li>@student.Name (@student.User.Email)</li>
                     }
-                    else
-                    {
-                        <p class="text-muted fst-italic">Нет студентов.</p>
-                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-muted fst-italic">Нет студентов.</p>
+            }
 
-                    <div class="mt-4 d-flex gap-2">
-                        <a asp-action="Index" class="btn btn-outline-primary">
-                            <i class="bi bi-arrow-left me-1"></i> Назад к списку курсов
-                        </a>
-                        <a asp-controller="Buy" asp-action="Enter" asp-route-courseId="@Model.Id" class="btn btn-primary">
-                            <i class="bi bi-check-lg me-1"></i> Записаться на курс
-                        </a>
-                    </div>
-                </div>
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-action="Index" asp-controller="Home" asp-area ="" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-1"></i> Назад к курсам
+                </a>
+                <a asp-controller="Courses" asp-action="AddStudentToCourse" asp-route-courseId="@Model.Id" asp-area="" class="btn btn-primary">
+                    <i class="bi bi-cart-plus me-1"></i> Записаться на курс
+                </a>
             </div>
         </div>
     </div>

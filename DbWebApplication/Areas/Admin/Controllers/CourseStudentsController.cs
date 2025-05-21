@@ -43,7 +43,7 @@ namespace DbWebApplication.Areas.Admin.Controllers
 			var student = studentsRepository.TryGetById(studentId);
 			coursesRepository.DeleteStudentToCourse(course, student);
 			return RedirectToAction("Index", new { courseId });
+		
 		}
-
 	}
 }

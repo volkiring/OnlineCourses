@@ -1,0 +1,55 @@
+﻿@model List<Course>
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Мои курсы";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center fw-bold">Мои курсы</h2>
+
+    @if (Model != null && Model.Any())
+    {
+        <ul class="list-group list-group-flush shadow-sm rounded">
+            @foreach (var course in Model)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center py-3 px-4">
+                    <div class="d-flex align-items-center gap-3 w-100">
+                        @if (!string.IsNullOrEmpty(course.ImagePath))
+                        {
+                            <img src="@Url.Content(course.ImagePath)" alt="Курс" style="width: 60px; height: 60px; object-fit: cover;" class="rounded" />
+                        }
+                        else
+                        {
+                            <div style="width: 60px; height: 60px;" class="bg-secondary text-white d-flex justify-content-center align-items-center rounded">
+                                <i class="bi bi-image" style="font-size: 1.5rem;"></i>
+                            </div>
+                        }
+
+                        <div class="flex-grow-1">
+                            <a asp-action="Details" asp-route-courseId="@course.Id" asp-area ="" asp-controller ="Home" class="text-decoration-none text-dark">
+                                <h5 class="mb-1 fw-semibold">@course.Title</h5>
+                            </a>
+                            <small class="text-muted">
+                                @course.StartDate?.ToString("dd.MM.yyyy") – @course.EndDate?.ToString("dd.MM.yyyy")
+                            </small>
+                        </div>
+
+                        <form asp-action="RemoveStudentFromCourse" asp-route-courseId="@course.Id" method="post" onsubmit="return confirm('Вы уверены, что хотите удалить курс?');">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <div class="alert alert-info text-center">
+            Вы ещё не записаны ни на один курс.
+        </div>
+    }
+</div>

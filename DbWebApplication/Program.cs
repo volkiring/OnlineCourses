@@ -1,4 +1,5 @@
 
+using DbWebApplication;
 using EfDbOnlineCourses;
 using EfDbOnlineCourses.Models;
 using Microsoft.AspNetCore.Identity;
@@ -29,6 +30,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddScoped<ICoursesRepository, CoursesDbRepository>();
 builder.Services.AddScoped<IStudentsRepository, StudentsDbRepository>();
 builder.Services.AddScoped<ITeachersRepository, TeachersDbRepository>();
+builder.Services.AddScoped<IUsersService, UsersService>();
 
 var app = builder.Build();
 

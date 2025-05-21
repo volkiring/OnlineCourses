@@ -1,44 +1,55 @@
-﻿@{
-    ViewData["Title"] = "Главная страница";
+﻿@model IEnumerable<Course>
+
+@{
+    ViewData["Title"] = "Каталог курсов";
 }
-@using EfDbOnlineCourses.Models
-@model List<Course>
 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
-
-<div class="container py-4">
-    <h2 class="text-center mb-5 fw-bold" style="color: #4a90e2;">Каталог курсов</h2>
+<div class="container py-5">
+    <h2 class="text-center mb-5 fw-bold text-primary">@ViewData["Title"]</h2>
 
     @if (Model.Any())
     {
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
             @foreach (var course in Model)
             {
-                <div class="col">
-                    <div class="card h-100 shadow-sm border-0 rounded-3">
-                        @if (!string.IsNullOrEmpty(course.ImagePath))
-                        {
-                            <img src="@course.ImagePath" class="card-img-top rounded-top" style="height: 200px; object-fit: cover;" alt="Изображение курса">
-                        }
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title fw-semibold">@course.Title</h5>
-                            <p class="card-text text-muted flex-grow-1">
-                                @(!string.IsNullOrWhiteSpace(course.Description) ? course.Description : "Описание отсутствует")
-                            </p>
+                <div class="col d-flex">
+                    <div class="course-card">
+                        <div class="img-container">
+                            @if (!string.IsNullOrEmpty(course.ImagePath))
+                            {
+                                <img src="@course.ImagePath" alt="@course.Title">
+                            }
+                            else
+                            {
+                                <div class="d-flex align-items-center justify-content-center bg-secondary bg-opacity-10"
+                                     style="position:absolute;top:0;bottom:0;left:0;right:0;">
+                                    <i class="bi bi-image fs-1 text-muted"></i>
+                                </div>
+                            }
+                        </div>
 
-                            <p class="mb-2">
-                                <small class="text-secondary">
+                        <div class="card-body">
+                            <div class="title" title="@course.Title">@course.Title</div>
+                            <div class="meta">
+                                @(!string.IsNullOrWhiteSpace(course.Description)
+                                    ? (course.Description.Length > 80
+                                    ? course.Description.Substring(0, 80) + "…"
+                                    : course.Description)
+                                    : "<em>Описание отсутствует</em>")
+                            </div>
+                            <div class="meta">
+                                <small>
                                     <strong>Старт:</strong> @course.StartDate?.ToString("dd.MM.yyyy")<br />
                                     <strong>Финиш:</strong> @course.EndDate?.ToString("dd.MM.yyyy")
                                 </small>
-                            </p>
-
-                            <a asp-action="Details" asp-route-courseId="@course.Id" class="btn btn-primary w-100 mt-auto">
-                                <i class="bi bi-info-circle me-1"></i> Подробнее
-                            </a>
+                            </div>
                         </div>
+
+                        <a asp-action="Details"
+                           asp-route-courseId="@course.Id"
+                           class="stretched-link course-card-link"></a>
                     </div>
                 </div>
             }
@@ -46,7 +57,7 @@
     }
     else
     {
-        <div class="alert alert-info text-center mt-4">
+        <div class="alert alert-info text-center">
             Курсы отсутствуют.
         </div>
     }

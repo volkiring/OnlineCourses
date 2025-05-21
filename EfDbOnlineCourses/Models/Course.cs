@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EfDbOnlineCourses.Models
 {
-	public class Course
+	public class Course : IEquatable<Course>
 	{
 		public int Id { get; set; }
 		public string Title { get; set; }
@@ -18,5 +18,24 @@ namespace EfDbOnlineCourses.Models
 	
 		public List<Student> Students { get; set; } = new();
 		public List<Teacher> Teachers { get; set; } = new();
+
+		public bool Equals(Course? other)
+		{
+			if (other is null)
+				return false;
+
+			return Id == other.Id;
+		}
+		public override bool Equals(object? obj)
+		{
+			return Equals(obj as Course);
+		}
+
+		public override int GetHashCode()
+		{
+			return Id.GetHashCode();
+		}
 	}
+
+	
 }
