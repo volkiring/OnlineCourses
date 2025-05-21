@@ -1,5 +1,4 @@
-﻿@using EfDbOnlineCourses.Models
-@model Course
+﻿@model Course
 
 @{
     ViewData["Title"] = "Детали курса";
@@ -7,46 +6,50 @@
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
 
-<div class="container mt-5">
-    <div class="card shadow">
+
+<div class="container py-4">
+    <div class="card shadow rounded-4 border-0">
         <div class="row g-0">
             @if (!string.IsNullOrEmpty(Model.ImagePath))
             {
-                <div class="col-md-4">
-                    <img src="@Url.Content(Model.ImagePath)" class="img-fluid rounded-start" alt="Course Image">
+                <div class="col-md-5">
+                    <img src="@Url.Content(Model.ImagePath)" class="img-fluid rounded-start" alt="Изображение курса" style="object-fit: cover; height: 100%; width: 100%;" />
                 </div>
             }
-            <div class="col-md-8">
+            <div class="col-md-7 d-flex flex-column">
                 <div class="card-body">
-                    <h3 class="card-title">@Model.Title</h3>
-                    <p class="card-text"><strong>Описание:</strong> @Model.Description</p>
-                    <p class="card-text"><strong>Дата начала:</strong> @Model.StartDate?.ToString("dd.MM.yyyy")</p>
-                    <p class="card-text"><strong>Дата окончания:</strong> @Model.EndDate?.ToString("dd.MM.yyyy")</p>
+                    <h3 class="card-title fw-bold mb-3">@Model.Title</h3>
+                    <p class="card-text mb-3"><strong>Описание:</strong> @Model.Description</p>
+
+                    <p class="mb-2">
+                        <strong>Дата начала:</strong> @Model.StartDate?.ToString("dd.MM.yyyy")<br />
+                        <strong>Дата окончания:</strong> @Model.EndDate?.ToString("dd.MM.yyyy")
+                    </p>
 
                     <hr />
 
-                    <h5>Преподаватели</h5>
+                    <h5 class="mb-3">Преподаватели</h5>
                     @if (Model.Teachers?.Any() == true)
                     {
-                        <ul class="list-group mb-3">
+                        <ul class="list-group mb-3 rounded-3 shadow-sm">
                             @foreach (var teacher in Model.Teachers)
                             {
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    @teacher.Name
-                                    <span class="text-muted">@teacher.Specialty</span>
+                                    <span>@teacher.Name</span>
+                                    <small class="text-muted fst-italic">@teacher.Specialty</small>
                                 </li>
                             }
                         </ul>
                     }
                     else
                     {
-                        <p class="text-muted">Нет преподавателей.</p>
+                        <p class="text-muted fst-italic">Нет преподавателей.</p>
                     }
 
-                    <h5>Студенты</h5>
+                    <h5 class="mb-3">Студенты</h5>
                     @if (Model.Students?.Any() == true)
                     {
-                        <ul class="list-group">
+                        <ul class="list-group rounded-3 shadow-sm">
                             @foreach (var student in Model.Students)
                             {
                                 <li class="list-group-item">@student.Name (@student.User.Email)</li>
@@ -55,11 +58,16 @@
                     }
                     else
                     {
-                        <p class="text-muted">Нет студентов.</p>
+                        <p class="text-muted fst-italic">Нет студентов.</p>
                     }
 
-                    <div class="mt-4">
-                        <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Назад к списку курсов</a>
+                    <div class="mt-4 d-flex gap-2">
+                        <a asp-action="Index" class="btn btn-outline-primary">
+                            <i class="bi bi-arrow-left me-1"></i> Назад к списку курсов
+                        </a>
+                        <a asp-controller="Buy" asp-action="Enter" asp-route-courseId="@Model.Id" class="btn btn-primary">
+                            <i class="bi bi-check-lg me-1"></i> Записаться на курс
+                        </a>
                     </div>
                 </div>
             </div>

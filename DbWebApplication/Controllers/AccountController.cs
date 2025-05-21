@@ -62,6 +62,7 @@ namespace DbWebApplication.Controllers
 			};
 
 			databaseContext.Students.Add(student);
+			databaseContext.SaveChanges();
 
 			if (result.Succeeded)
 			{

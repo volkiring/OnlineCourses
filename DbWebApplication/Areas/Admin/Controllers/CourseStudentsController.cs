@@ -2,8 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
-namespace DbWebApplication.Controllers
+namespace DbWebApplication.Areas.Admin.Controllers
 {
+	[Area("Admin")]
 	public class CourseStudentsController : Controller
 	{
 		private readonly ICoursesRepository coursesRepository;

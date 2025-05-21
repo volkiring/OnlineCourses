@@ -1,8 +1,9 @@
 ﻿using EfDbOnlineCourses;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DbWebApplication.Controllers
+namespace DbWebApplication.Areas.Admin.Controllers
 {
+	[Area("Admin")]
 	public class CourseTeachersController : Controller
 	{
 		private readonly ICoursesRepository coursesRepository;
