@@ -55,10 +55,9 @@ namespace DbWebApplication.Controllers
 			var result = userManager.CreateAsync(user, register.Password).Result;
 			var student = new Student()
 			{
-				Name = register.Name,
+				UserName = register.Name,
 				Birthdate = register.Birthdate,
-				Password = register.Password,
-				User = user
+				PasswordHash = register.Password
 			};
 
 			databaseContext.Students.Add(student);

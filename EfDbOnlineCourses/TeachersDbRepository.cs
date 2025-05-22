@@ -16,39 +16,43 @@ namespace EfDbOnlineCourses
 
 		public List<Teacher> GetAll()
 		{
-			return dbcontext.Teachers.Include(u => u.User).Include(c => c.Courses).ToList();
+			return dbcontext.Teachers.Include(c => c.Courses).ToList();
 		}
-		public void Add(Teacher teacher, User user)
+		public void Add(Teacher teacherViewModel)
 		{
-			userManager.CreateAsync(user, teacher.Password).Wait();
-			teacher.User = user;
-			dbcontext.Teachers.Add(teacher);
+			var teacher = new Teacher()
+			{
+               UserName = teacherViewModel.UserName,
+               Email = teacherViewModel.Email,
+               Birthdate = teacherViewModel.Birthdate,
+               Specialty = teacherViewModel.Specialty
+            };
+			userManager.CreateAsync(teacher, teacherViewModel.Password).Wait();
+			dbcontext.Teachers.Add(teacherViewModel);
 			dbcontext.SaveChanges();
 		}
 
-		public void Update(Teacher teacher, User userModel, Teacher updatedTeacher)
+		public void Update(Teacher teacher, Teacher updatedTeacher)
 		{
-			teacher.User.UserName = userModel.UserName;
-			teacher.User.PasswordHash = userManager.PasswordHasher.HashPassword(userModel, updatedTeacher.Password);
-			teacher.User.Email = userModel.Email;
-			teacher.Name = updatedTeacher.Name;
+			teacher.UserName = updatedTeacher.UserName;
+			teacher.PasswordHash = userManager.PasswordHasher.HashPassword(updatedTeacher, updatedTeacher.Password);
+			teacher.Email = updatedTeacher.Email;
 			teacher.Birthdate = updatedTeacher.Birthdate;
 			teacher.Specialty = updatedTeacher.Specialty;
 
-			userManager.UpdateAsync(teacher.User).Wait();
+			userManager.UpdateAsync(teacher).Wait();
 			dbcontext.SaveChanges();
 		}
 		public void Delete(Teacher teacher)
 		{
-			var user = teacher.User;
-			userManager.DeleteAsync(user).Wait();
+			userManager.DeleteAsync(teacher).Wait();
 			dbcontext.Teachers.Remove(teacher);
 			dbcontext.SaveChanges();
 		}
 
-		public Teacher TryGetById(int id)
+		public Teacher TryGetById(string id)
 		{
-			return dbcontext.Teachers.Include(u => u.User).Include(c => c.Courses).FirstOrDefault(c => c.Id == id);
+			return dbcontext.Teachers.Include(c => c.Courses).FirstOrDefault(t => t.Id == id);
 		}
 	}
 }

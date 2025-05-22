@@ -22,39 +22,36 @@ namespace EfDbOnlineCourses
 
 		public List<Student> GetAll()
 		{
-			return dbcontext.Students.Include(u => u.User).Include(c => c.Courses).ToList();
+			return dbcontext.Students.Include(c => c.Courses).ToList();
 		}
-		public void Add(Student student, User user)
+		public void Add(Student studentViewModel, User user)
 		{
-			userManager.CreateAsync(user, student.Password).Wait();
-			student.User = user;	
-			dbcontext.Students.Add(student);
+			userManager.CreateAsync(user, studentViewModel.Password).Wait();
+			dbcontext.Students.Add(studentViewModel);
 			dbcontext.SaveChanges();
 		}
 
 		public void Update(Student student, Student updatedStudent, User userModel)
 		{
-			student.User.UserName = userModel.UserName;
-			student.User.PasswordHash = userManager.PasswordHasher.HashPassword(userModel, updatedStudent.Password);
-			student.User.Email = userModel.Email;
-			student.Name = updatedStudent.Name;
+			student.UserName = userModel.UserName;
+			student.PasswordHash = userManager.PasswordHasher.HashPassword(userModel, updatedStudent.Password);
+			student.Email = userModel.Email;
 			student.Birthdate = updatedStudent.Birthdate;
 
-			userManager.UpdateAsync(student.User).Wait();
+			userManager.UpdateAsync(student).Wait();
 			dbcontext.SaveChanges();
 		}
 
 		public void Delete(Student student)
 		{
-			var user = student.User;
-			userManager.DeleteAsync(user).Wait();
+			userManager.DeleteAsync(student).Wait();
 			dbcontext.Students.Remove(student);
 			dbcontext.SaveChanges();
 		}
 
-		public Student TryGetById(int id)
+		public Student TryGetById(string id)
 		{
-			return dbcontext.Students.Include(u => u.User).Include(c => c.Courses).FirstOrDefault(c => c.Id == id);
+			return dbcontext.Students.Include(c => c.Courses).FirstOrDefault(s => s.Id == id);
 		}
 	}
 }

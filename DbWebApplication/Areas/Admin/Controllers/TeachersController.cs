@@ -45,10 +45,10 @@ namespace DbWebApplication.Areas.Admin.Controllers
 			return View(teacher);
 		}
 
-		public IActionResult ConfirmEditTeacher(int teacherId, User userModel, Teacher updatedTeacher)
+		public IActionResult ConfirmEditTeacher(int teacherId, Teacher updatedTeacher)
 		{
 			var teacher = teachersRepository.TryGetById(teacherId);
-			teachersRepository.Update(teacher, userModel, updatedTeacher);
+			teachersRepository.Update(teacher, updatedTeacher);
 			return View();
 		}
 

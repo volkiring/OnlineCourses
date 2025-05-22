@@ -17,14 +17,14 @@ namespace DbWebApplication
 
 		public List<Course> GetUserCoursesById(string userId)
 		{
-			var student = GetStudentById(userId);
+			var user = GetUserById(userId);
 
-			return student?.Courses ?? new List<Course>();
+			return user?.Courses ?? new List<Course>();
 		}
 
-		public Student GetStudentById(string userId)
+		public Student GetUserById(string userId)
 		{
-			return databaseContext.Students.Include(s => s.Courses).FirstOrDefault(s => s.User.Id == userId);
+			return databaseContext.Students.Include(s => s.Courses).FirstOrDefault(s => s.Id == userId);
 		}
 	}
 }

@@ -7,7 +7,7 @@ namespace EfDbOnlineCourses
 		void Add(Teacher teacher, User user);
 		void Delete(Teacher teacher);
 		List<Teacher> GetAll();
-		Teacher TryGetById(int id);
+		Teacher TryGetById(string id);
 		void Update(Teacher teacher, User userModel, Teacher updatedTeacher);
 	}
 }
