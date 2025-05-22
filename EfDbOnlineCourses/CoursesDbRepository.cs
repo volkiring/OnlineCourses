@@ -18,7 +18,7 @@ namespace EfDbOnlineCourses
 		}
 		public List<Course> GetAll()
 		{
-			return dbcontext.Courses.Include(c => c.Students).Include(c => c.Teachers).ToList();
+			return dbcontext.Courses.Include(s => s.Students).Include(t => t.Teachers).ThenInclude(t => t.Specialty).ToList();
 		}
 		public void Add(Course course)
 		{
@@ -44,6 +44,7 @@ namespace EfDbOnlineCourses
 		{
 			return dbcontext.Courses
 				.Include(c => c.Teachers)
+				.ThenInclude(t => t.Specialty)
 				.Include(c => c.Students)
 				.FirstOrDefault(c => c.Id == id);
 		}
