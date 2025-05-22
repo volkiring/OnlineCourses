@@ -10,6 +10,6 @@ namespace EfDbOnlineCourses.Models
 {
 	public class Student : User
 	{
-
+		public List<Course> Courses { get; set; } = new();
 	}
 }

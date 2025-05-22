@@ -27,7 +27,7 @@ namespace DbWebApplication.Areas.Admin.Controllers
 			return View((course, teachers));
 		}
 
-		public IActionResult ConfirmAddTeacherToCourse(int courseId, int teacherId)
+		public IActionResult ConfirmAddTeacherToCourse(int courseId, string teacherId)
 		{
 			var teacher = coursesRepository.TryGetById(courseId);
 			var student = teachersRepository.TryGetById(teacherId);
@@ -35,7 +35,7 @@ namespace DbWebApplication.Areas.Admin.Controllers
 			return RedirectToAction("Index", new { courseId });
 		}
 
-		public IActionResult DeleteTeacherToCourse(int courseId, int teacherId)
+		public IActionResult DeleteTeacherToCourse(int courseId, string teacherId)
 		{
 			var course = coursesRepository.TryGetById(courseId);
 			var teacher = teachersRepository.TryGetById(teacherId);

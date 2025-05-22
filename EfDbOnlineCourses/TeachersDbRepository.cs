@@ -16,26 +16,16 @@ namespace EfDbOnlineCourses
 
 		public List<Teacher> GetAll()
 		{
-			return dbcontext.Teachers.Include(c => c.Courses).ToList();
+			return dbcontext.Teachers.Include(t => t.Courses).Include(t => t.Specialty).ToList();
 		}
-		public void Add(Teacher teacherViewModel)
+		public void Add(Teacher teacher, string password)
 		{
-			var teacher = new Teacher()
-			{
-               UserName = teacherViewModel.UserName,
-               Email = teacherViewModel.Email,
-               Birthdate = teacherViewModel.Birthdate,
-               Specialty = teacherViewModel.Specialty
-            };
-			userManager.CreateAsync(teacher, teacherViewModel.Password).Wait();
-			dbcontext.Teachers.Add(teacherViewModel);
-			dbcontext.SaveChanges();
+			userManager.CreateAsync(teacher, password).Wait();
 		}
 
 		public void Update(Teacher teacher, Teacher updatedTeacher)
 		{
 			teacher.UserName = updatedTeacher.UserName;
-			teacher.PasswordHash = userManager.PasswordHasher.HashPassword(updatedTeacher, updatedTeacher.Password);
 			teacher.Email = updatedTeacher.Email;
 			teacher.Birthdate = updatedTeacher.Birthdate;
 			teacher.Specialty = updatedTeacher.Specialty;
@@ -46,13 +36,11 @@ namespace EfDbOnlineCourses
 		public void Delete(Teacher teacher)
 		{
 			userManager.DeleteAsync(teacher).Wait();
-			dbcontext.Teachers.Remove(teacher);
-			dbcontext.SaveChanges();
 		}
 
 		public Teacher TryGetById(string id)
 		{
-			return dbcontext.Teachers.Include(c => c.Courses).FirstOrDefault(t => t.Id == id);
+			return dbcontext.Teachers.Include(c => c.Courses).Include(t => t.Specialty).FirstOrDefault(t => t.Id == id);
 		}
 	}
 }

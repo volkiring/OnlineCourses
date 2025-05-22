@@ -1,0 +1,22 @@
+﻿@model Specialty
+
+@{
+    ViewBag.Title = "Редактировать специальность";
+}
+
+<div class="container mt-4">
+    <h2>Редактировать специальность</h2>
+
+    <form asp-action="ConfirmUpdateSpecialty" method="post" asp-route-specialtyId="@Model.Id">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="mb-3">
+            <label class="form-label">Название</label>
+            <input asp-for="Name" class="form-control" value="@Model.Name"/>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success">Сохранить</button>
+        <a asp-action="Index" class="btn btn-secondary">Назад</a>
+    </form>
+</div>

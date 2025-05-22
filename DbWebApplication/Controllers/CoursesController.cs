@@ -47,8 +47,6 @@ namespace DbWebApplication.Controllers
 
 			if (student.Courses.Any(c => c.Id == course.Id))
 			{
-				TempData["Error"] = "Вы уже записаны на этот курс.";
-
 				return RedirectToAction("Error");
 			}
 
@@ -63,7 +61,6 @@ namespace DbWebApplication.Controllers
 			{
 				return View();
 			}
-
 		}
 
 		public IActionResult RemoveStudentFromCourse(int courseId)

@@ -25,11 +25,11 @@ namespace DbWebApplication.Areas.Admin.Controllers
 		public IActionResult AddStudentToCourse(int courseId)
 		{
 			var course = coursesRepository.TryGetById(courseId);
-			var students = studentsRepository.GetAll().Where(s => !s.Courses.Contains(course)).ToList();
+			var students = studentsRepository.GetAll().Where(s => !(s.Courses.Contains(course))).ToList();
 			return View((course, students));
 		}
 
-		public IActionResult ConfirmAddStudentToCourse(int courseId,  int studentId)
+		public IActionResult ConfirmAddStudentToCourse(int courseId,  string studentId)
 		{
 			var course = coursesRepository.TryGetById(courseId);
 			var student = studentsRepository.TryGetById(studentId);
@@ -37,7 +37,7 @@ namespace DbWebApplication.Areas.Admin.Controllers
 			return RedirectToAction("Index", new { courseId });
 		}
 
-		public IActionResult DeleteStudentToCourse(int courseId, int studentId)
+		public IActionResult DeleteStudentToCourse(int courseId, string studentId)
 		{
 			var course = coursesRepository.TryGetById(courseId);
 			var student = studentsRepository.TryGetById(studentId);

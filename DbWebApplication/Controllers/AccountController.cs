@@ -50,22 +50,19 @@ namespace DbWebApplication.Controllers
 
 		public IActionResult Register(Register register)
 		{
-			var user = new User { UserName = register.UserName, Email = register.Email };
-
-			var result = userManager.CreateAsync(user, register.Password).Result;
 			var student = new Student()
 			{
 				UserName = register.Name,
 				Birthdate = register.Birthdate,
-				PasswordHash = register.Password
+				PasswordHash = register.Password,
+				Email = register.Email
 			};
 
-			databaseContext.Students.Add(student);
-			databaseContext.SaveChanges();
+			var result = userManager.CreateAsync(student, register.Password).Result;
 
 			if (result.Succeeded)
 			{
-				signInManager.SignInAsync(user, false).Wait();
+				signInManager.SignInAsync(student, false).Wait();
 				return RedirectToAction("Index", "Home");
 			}
 

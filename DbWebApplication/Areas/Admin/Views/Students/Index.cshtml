@@ -32,8 +32,8 @@
                             @foreach (var student in Model)
                             {
                                 <tr>
-                                    <td><strong>@student.Name</strong></td>
-                                    <td>@(student.User.Email ?? "Не указан")</td>
+                                    <td><strong>@student.UserName</strong></td>
+                                    <td>@(student.Email ?? "Не указан")</td>
                                     <td>
                                         @if (student.Birthdate.HasValue)
                                         {

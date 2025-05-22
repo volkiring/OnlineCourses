@@ -18,5 +18,18 @@ namespace EfDbOnlineCourses
 		{
 			Database.Migrate();
 		}
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			base.OnModelCreating(modelBuilder);
+
+			modelBuilder.Entity<Course>()
+				.HasMany(c => c.Students)
+				.WithMany(s => s.Courses);
+
+			modelBuilder.Entity<Course>()
+				.HasMany(c => c.Teachers)
+				.WithMany(t => t.Courses);
+		}
 	}
 }

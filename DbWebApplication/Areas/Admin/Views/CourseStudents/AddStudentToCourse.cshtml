@@ -16,7 +16,7 @@
                     <option value="">-- Выберите студента --</option>
                     @foreach (var student in Model.Students)
                     {
-                        <option value="@student.Id">@student.Name (@student.User.Email)</option>
+                        <option value="@student.Id">@student.UserName (@student.Email)</option>
                     }
                 </select>
             </div>

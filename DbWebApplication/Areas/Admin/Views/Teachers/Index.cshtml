@@ -33,9 +33,9 @@
                             @foreach (var teacher in Model)
                             {
                                 <tr>
-                                    <td><strong>@teacher.Name</strong></td>
-                                    <td>@(teacher.User.Email ?? "Не указан")</td>
-                                    <td>@(teacher.Specialty ?? "Не указана")</td>
+                                    <td><strong>@teacher.UserName</strong></td>
+                                    <td>@(teacher.Email ?? "Не указан")</td>
+                                    <td>@(teacher.Specialty.Name ?? "Не указана")</td>
                                     <td>
                                         @if (teacher.Birthdate.HasValue)
                                         {

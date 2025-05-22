@@ -42,7 +42,7 @@
                     @foreach (var teacher in Model.Teachers)
                     {
                         <li class="d-flex justify-content-between">
-                            <span>@teacher.Name</span>
+                            <span>@teacher.UserName</span>
                             <small class="text-muted">@teacher.Specialty</small>
                         </li>
                     }
@@ -59,7 +59,7 @@
                 <ul class="list-unstyled detail-list mb-3">
                     @foreach (var student in Model.Students)
                     {
-                        <li>@student.Name (@student.User.Email)</li>
+                        <li>@student.UserName (@student.Email)</li>
                     }
                 </ul>
             }

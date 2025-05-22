@@ -24,29 +24,22 @@ namespace EfDbOnlineCourses
 		{
 			return dbcontext.Students.Include(c => c.Courses).ToList();
 		}
-		public void Add(Student studentViewModel, User user)
+		public void Add(Student student, string password)
 		{
-			userManager.CreateAsync(user, studentViewModel.Password).Wait();
-			dbcontext.Students.Add(studentViewModel);
-			dbcontext.SaveChanges();
+			userManager.CreateAsync(student, password).Wait();
 		}
 
-		public void Update(Student student, Student updatedStudent, User userModel)
+		public void Update(Student student, Student updatedStudent)
 		{
-			student.UserName = userModel.UserName;
-			student.PasswordHash = userManager.PasswordHasher.HashPassword(userModel, updatedStudent.Password);
-			student.Email = userModel.Email;
+			student.UserName = updatedStudent.UserName;
 			student.Birthdate = updatedStudent.Birthdate;
 
 			userManager.UpdateAsync(student).Wait();
-			dbcontext.SaveChanges();
 		}
 
 		public void Delete(Student student)
 		{
 			userManager.DeleteAsync(student).Wait();
-			dbcontext.Students.Remove(student);
-			dbcontext.SaveChanges();
 		}
 
 		public Student TryGetById(string id)
