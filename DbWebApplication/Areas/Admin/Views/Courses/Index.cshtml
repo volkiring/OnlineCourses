@@ -59,7 +59,7 @@
                                         @if (course.Users.OfType<Teacher>().Any())
                                         {
                                             <div class="d-flex flex-wrap gap-1">
-                                                @foreach (var teacher in course.Users.OfType<Student>())
+                                                @foreach (var teacher in course.Users.OfType<User>())
                                                 {
                                                     <span class="badge bg-info">
                                                         <a asp-action="Index" asp-controller="CourseTeachers" asp-route-courseId="@course.Id" class="text-decoration-none text-black">
@@ -80,14 +80,14 @@
                                         }
                                     </td>
                                     <td>
-                                        @if (course.Users.OfType<Student>().Any())
+                                        @if (course.Users.OfType<User>().Any())
                                         {
                                             <div>
                                                 <a asp-action="Index"
                                                    asp-controller="CourseStudents"
                                                    class="text-decoration-none text-black"
                                                    asp-route-courseId="@course.Id">
-                                                    Студенты (@(course.Users.OfType<Student>().Count()))
+                                                    Студенты (@(course.Users.OfType<User>().Count()))
                                                 </a>
                                             </div>
 

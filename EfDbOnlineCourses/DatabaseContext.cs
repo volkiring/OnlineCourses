@@ -7,7 +7,7 @@ namespace EfDbOnlineCourses
 {
 	public class DatabaseContext : IdentityDbContext<User>
 	{
-		public DbSet<Student> Students { get; set; }
+		public DbSet<User> Students { get; set; }
 		public DbSet<Course> Courses { get; set; }
 		public DbSet<Lesson> Lessons { get; set; }
 		public DbSet<Teacher> Teachers { get; set; }

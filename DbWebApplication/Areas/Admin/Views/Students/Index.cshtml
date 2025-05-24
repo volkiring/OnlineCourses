@@ -1,5 +1,5 @@
 ﻿@using EfDbOnlineCourses.Models
-@model List<Student>
+@model List<User>
 
 @{
     ViewData["Title"] = "Список студентов";
@@ -9,9 +9,6 @@
     <div class="card shadow">
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
             <h3 class="mb-0"><i class="bi bi-people-fill me-2"></i>Список студентов</h3>
-            <a asp-action="AddStudent" asp-controller="Students" class="btn btn-light btn-sm">
-                <i class="bi bi-plus-lg"></i> Добавить студента
-            </a>
         </div>
 
         <div class="card-body">
@@ -75,7 +72,7 @@
             else
             {
                 <div class="alert alert-info">
-                    <i class="bi bi-info-circle me-2"></i>Нет студентов. Хотите <a asp-action="AddStudent" asp-controller="Students" class="alert-link">добавить студента</a>?
+                    <i class="bi bi-info-circle me-2"></i>Нет студентов.
                 </div>
             }
         </div>

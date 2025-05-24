@@ -56,7 +56,7 @@ namespace EfDbOnlineCourses
 			dbcontext.SaveChanges();
 		}
 
-		public void AddStudentToCourse(Course course, Student student)
+		public void AddStudentToCourse(Course course, User student)
 		{
 			course.Users.AddRange(student);
 			dbcontext.SaveChanges();
@@ -68,7 +68,7 @@ namespace EfDbOnlineCourses
 			dbcontext.SaveChanges();
 		}
 
-		public void DeleteStudentToCourse(Course course, Student student)
+		public void DeleteStudentToCourse(Course course, User student)
 		{
 			course.Users.Remove(student);
 			dbcontext.SaveChanges();

@@ -64,7 +64,9 @@
                             </li>
 
                             <li class="nav-item me-2">
-                                <a class="btn btn-primary btn-sm" asp-controller="Courses" asp-action="Index" asp-route-userId = "@User.Identity.Name" >
+                                <a class="btn btn-primary btn-sm" asp-controller="Courses" asp-action="Index" 
+                                asp-route-userId = "@User.Identity.Name"
+                                asp-area ="">
                                     <i class="bi bi-bookmarks me-1"></i> Мои курсы
                                 </a>
                             </li>

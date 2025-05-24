@@ -22,9 +22,10 @@ namespace DbWebApplication
 			return user?.Courses ?? new List<Course>();
 		}
 
-		public Student GetUserById(string userId)
+		public User GetUserById(string userId)
 		{
-			return databaseContext.Students.Include(s => s.Courses).FirstOrDefault(s => s.Id == userId);
+			return databaseContext.Users.Include(u => u.Courses).FirstOrDefault(u => u.Id == userId);
 		}
+
 	}
 }

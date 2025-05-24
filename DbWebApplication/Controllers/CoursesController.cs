@@ -71,7 +71,7 @@ namespace DbWebApplication.Controllers
 
 			if (userId == null)
 			{
-				return Unauthorized();
+				return RedirectToAction("Login", "Account");
 			}
 
 			var student = usersService.GetUserById(userId);

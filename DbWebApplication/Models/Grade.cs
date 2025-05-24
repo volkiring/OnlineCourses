@@ -13,7 +13,7 @@ namespace EfDbOnlineCourses
 	{
 		public int Id { get; set; }
 
-		public Student Student { get; set; }
+		public User Student { get; set; }
 		public Course Course { get; set; }
 
 		[Precision(3, 1)]

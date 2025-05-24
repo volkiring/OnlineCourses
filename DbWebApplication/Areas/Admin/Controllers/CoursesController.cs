@@ -101,7 +101,7 @@ namespace DbWebApplication.Areas.Admin.Controllers
 		public IActionResult StudentsByCourse(int courseId)
 		{
 			var course = coursesDbRepository.TryGetById(courseId);
-			var students = course.Users.OfType<Student>().ToList();
+			var students = course.Users.OfType<User>().ToList();
 			return View(students);
 		}
 

@@ -1,4 +1,4 @@
-﻿@model Course
+﻿@model (Course course, bool isCourseExist)
 
 @{
     ViewData["Title"] = "Детали курса";
@@ -11,10 +11,10 @@
     <div class="card detail-card">
 
         <div class="detail-image-container">
-            @if (!string.IsNullOrEmpty(Model.ImagePath))
+            @if (!string.IsNullOrEmpty(Model.course.ImagePath))
             {
-                <img src="@Url.Content(Model.ImagePath)"
-                     alt="Изображение курса @Model.Title" />
+                <img src="@Url.Content(Model.course.ImagePath)"
+                alt="Изображение курса @Model.course.Title" />
             }
             else
             {
@@ -23,23 +23,23 @@
         </div>
 
         <div class="detail-body">
- 
-            <h2 class="fw-bold">@Model.Title</h2>
+
+            <h2 class="fw-bold">@Model.course.Title</h2>
 
             <h3>Описание</h3>
-            <p>@Model.Description</p>
+            <p>@Model.course.Description</p>
 
             <h3>Информация</h3>
             <ul class="list-unstyled detail-list mb-3">
-                <li><strong>Дата начала:</strong> @Model.StartDate?.ToString("dd.MM.yyyy")</li>
-                <li><strong>Дата окончания:</strong> @Model.EndDate?.ToString("dd.MM.yyyy")</li>
+                <li><strong>Дата начала:</strong> @Model.course.StartDate?.ToString("dd.MM.yyyy")</li>
+                <li><strong>Дата окончания:</strong> @Model.course.EndDate?.ToString("dd.MM.yyyy")</li>
             </ul>
 
             <h3>Преподаватели</h3>
-            @if (Model.Users.OfType<Teacher>()?.Any() == true)
+            @if (Model.course.Users.OfType<Teacher>()?.Any() == true)
             {
                 <ul class="list-unstyled detail-list mb-3">
-                    @foreach (var teacher in Model.Users.OfType<Teacher>())
+                    @foreach (var teacher in Model.course.Users.OfType<Teacher>())
                     {
                         <li class="d-flex justify-content-between">
                             <span>@teacher.UserName</span>
@@ -54,10 +54,10 @@
             }
 
             <h3>Студенты</h3>
-            @if (Model.Users.OfType<Student>()?.Any() == true)
+            @if (Model.course.Users.OfType<Student>()?.Any() == true)
             {
                 <ul class="list-unstyled detail-list mb-3">
-                    @foreach (var student in Model.Users.OfType<Student>())
+                    @foreach (var student in Model.course.Users.OfType<Student>())
                     {
                         <li>@student.UserName (@student.Email)</li>
                     }
@@ -72,9 +72,20 @@
                 <a asp-action="Index" asp-controller="Home" asp-area ="" class="btn btn-outline-secondary">
                     <i class="bi bi-arrow-left me-1"></i> Назад к курсам
                 </a>
-                <a asp-controller="Courses" asp-action="AddStudentToCourse" asp-route-courseId="@Model.Id" asp-area="" class="btn btn-primary">
-                    <i class="bi bi-cart-plus me-1"></i> Записаться на курс
-                </a>
+
+                @if (Model.isCourseExist)
+                {
+  
+                    <a asp-controller="Courses" asp-action="AddStudentToCourse" asp-route-courseId="@Model.course.Id" asp-area="" class="btn btn-primary">
+                        <i class="bi bi-cart-plus me-1"></i> Продолжить проходить курс
+                    </a>
+                }
+                else
+                {
+                    <a asp-controller="Courses" asp-action="AddStudentToCourse" asp-route-courseId="@Model.course.Id" asp-area="" class="btn btn-primary">
+                        <i class="bi bi-cart-plus me-1"></i> Записаться на курс
+                    </a>
+                }
             </div>
         </div>
     </div>

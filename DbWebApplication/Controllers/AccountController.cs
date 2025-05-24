@@ -50,7 +50,7 @@ namespace DbWebApplication.Controllers
 
 		public IActionResult Register(Register register)
 		{
-			var student = new Student()
+			var student = new User()
 			{
 				UserName = register.Name,
 				Birthdate = register.Birthdate,

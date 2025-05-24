@@ -20,16 +20,16 @@ namespace EfDbOnlineCourses
 			this.userManager = userManager;
 		}
 
-		public List<Student> GetAll()
+		public List<User> GetAll()
 		{
 			return dbcontext.Students.Include(c => c.Courses).ToList();
 		}
-		public void Add(Student student, string password)
+		public void Add(User student, string password)
 		{
 			userManager.CreateAsync(student, password).Wait();
 		}
 
-		public void Update(Student student, Student updatedStudent)
+		public void Update(User student, User updatedStudent)
 		{
 			student.UserName = updatedStudent.UserName;
 			student.Birthdate = updatedStudent.Birthdate;
@@ -37,12 +37,12 @@ namespace EfDbOnlineCourses
 			userManager.UpdateAsync(student).Wait();
 		}
 
-		public void Delete(Student student)
+		public void Delete(User student)
 		{
 			userManager.DeleteAsync(student).Wait();
 		}
 
-		public Student TryGetById(string id)
+		public User TryGetById(string id)
 		{
 			return dbcontext.Students.Include(c => c.Courses).FirstOrDefault(s => s.Id == id);
 		}
