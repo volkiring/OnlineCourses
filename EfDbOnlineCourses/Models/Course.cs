@@ -16,8 +16,7 @@ namespace EfDbOnlineCourses.Models
 		public DateTime? EndDate { get; set; }
 		public string? ImagePath { get; set; }
 	
-		public List<Student> Students { get; set; } = new();
-		public List<Teacher> Teachers { get; set; } = new();
+		public List<User> Users { get; set; }
 
 		public override bool Equals(object? obj)
 		{

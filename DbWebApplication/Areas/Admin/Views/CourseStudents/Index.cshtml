@@ -6,7 +6,7 @@
 <div class="container mt-5">
     <h3 class="text-center">Студенты курса "@Model.Title"</h3>
 
-    @if (Model.Students.Any())
+    @if (Model.Users.OfType<Student>().Any())
     {
         <div class="table-responsive mt-4">
             <table class="table table-striped table-bordered">
@@ -19,7 +19,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var student in Model.Students)
+                    @foreach (var student in Model.Users.OfType<Student>())
                     {
                         <tr>
                             <td>@student.UserName</td>

@@ -24,32 +24,6 @@ namespace DbWebApplication.Areas.Admin.Controllers
 			return View(students);
 		}
 
-		public IActionResult AddStudent()
-		{
-			return View();
-		}
-
-		[HttpPost]
-		public IActionResult ConfirmAddStudent(StudentViewModel studentViewModel)
-		{
-			if (!ModelState.IsValid)
-			{
-				return View(studentViewModel);
-			}
-
-			var student = new Student
-			{
-				UserName = studentViewModel.UserName,
-				Email = studentViewModel.Email,
-				Birthdate = studentViewModel.Birthdate,
-			};
-
-			studentsRepository.Add(student, studentViewModel.Password);
-
-			return RedirectToAction("Index");
-		}
-
-
 		public IActionResult DeleteStudent(string studentId)
 		{
 			var student = studentsRepository.TryGetById(studentId);
@@ -57,29 +31,5 @@ namespace DbWebApplication.Areas.Admin.Controllers
 			return RedirectToAction("Index");
 		}
 
-		public IActionResult EditStudent(string studentId)
-		{
-
-			var student = studentsRepository.TryGetById(studentId);
-			return View(student);
-		}
-
-		public IActionResult ConfirmEditStudent(string studentId, Student updatedStudent)
-		{
-			var student = studentsRepository.TryGetById(studentId);
-			if (student.Email != updatedStudent.Email)
-			{
-				var existingUser = userManager.FindByEmailAsync(updatedStudent.Email).Result;
-				if (existingUser != null && existingUser.Id != student.Id)
-				{
-					ModelState.AddModelError("Email", "Этот email уже используется.");
-					return View(updatedStudent);
-				}
-
-				student.Email = updatedStudent.Email;
-			}
-			studentsRepository.Update(student, updatedStudent);
-			return View();
-		}
 	}
 }

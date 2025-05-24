@@ -23,13 +23,14 @@ namespace EfDbOnlineCourses
 		{
 			base.OnModelCreating(modelBuilder);
 
-			modelBuilder.Entity<Course>()
-				.HasMany(c => c.Students)
-				.WithMany(s => s.Courses);
+			modelBuilder.Entity<Student>().ToTable("Students").HasBaseType<User>();
+			modelBuilder.Entity<Teacher>().ToTable("Teachers").HasBaseType<User>();
 
 			modelBuilder.Entity<Course>()
-				.HasMany(c => c.Teachers)
-				.WithMany(t => t.Courses);
+				.HasMany(c => c.Users)
+				.WithMany(u => u.Courses)
+				.UsingEntity(j => j.ToTable("CoursesUser")); 
 		}
+
 	}
 }

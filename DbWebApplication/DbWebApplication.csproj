@@ -24,4 +24,8 @@
     <ProjectReference Include="..\EfDbOnlineCourses\EfDbOnlineCourses.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Views\Students\" />
+  </ItemGroup>
+
 </Project>

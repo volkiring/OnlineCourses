@@ -18,7 +18,7 @@ namespace EfDbOnlineCourses
 		}
 		public List<Course> GetAll()
 		{
-			return dbcontext.Courses.Include(s => s.Students).Include(t => t.Teachers).ThenInclude(t => t.Specialty).ToList();
+			return dbcontext.Courses.Include(u => u.Users).ToList();
 		}
 		public void Add(Course course)
 		{
@@ -43,34 +43,34 @@ namespace EfDbOnlineCourses
 		public Course TryGetById(int id)
 		{
 			return dbcontext.Courses
-				.Include(c => c.Teachers)
-				.ThenInclude(t => t.Specialty)
-				.Include(c => c.Students)
+				.Include(c => c.Users) 
+				.ThenInclude(u => (u as Teacher).Specialty) 
 				.FirstOrDefault(c => c.Id == id);
 		}
 
 
+
 		public void AddTeacherToCourse(Course course, Teacher teacher)
 		{
-			course.Teachers.AddRange(teacher);
+			course.Users.AddRange(teacher);
 			dbcontext.SaveChanges();
 		}
 
 		public void AddStudentToCourse(Course course, Student student)
 		{
-			course.Students.AddRange(student);
+			course.Users.AddRange(student);
 			dbcontext.SaveChanges();
 		}
 
 		public void DeleteTeacherToCourse(Course course, Teacher teacher)
 		{
-			course.Teachers.Remove(teacher);
+			course.Users.Remove(teacher);
 			dbcontext.SaveChanges();
 		}
 
 		public void DeleteStudentToCourse(Course course, Student student)
 		{
-			course.Students.Remove(student);
+			course.Users.Remove(student);
 			dbcontext.SaveChanges();
 		}
 

@@ -56,10 +56,10 @@
                                         }
                                     </td>
                                     <td>
-                                        @if (course.Teachers.Any())
+                                        @if (course.Users.OfType<Teacher>().Any())
                                         {
                                             <div class="d-flex flex-wrap gap-1">
-                                                @foreach (var teacher in course.Teachers)
+                                                @foreach (var teacher in course.Users.OfType<Student>())
                                                 {
                                                     <span class="badge bg-info">
                                                         <a asp-action="Index" asp-controller="CourseTeachers" asp-route-courseId="@course.Id" class="text-decoration-none text-black">
@@ -80,9 +80,16 @@
                                         }
                                     </td>
                                     <td>
-                                        @if (course.Students.Any())
+                                        @if (course.Users.OfType<Student>().Any())
                                         {
-                                            <div><a asp-action="Index" asp-controller="CourseStudents" class="text-decoration-none text-black" asp-route-courseId="@course.Id">@course.Students.Count студ.</a></div>
+                                            <div>
+                                                <a asp-action="Index"
+                                                   asp-controller="CourseStudents"
+                                                   class="text-decoration-none text-black"
+                                                   asp-route-courseId="@course.Id">
+                                                    Студенты (@(course.Users.OfType<Student>().Count()))
+                                                </a>
+                                            </div>
 
                                         }
                                         else

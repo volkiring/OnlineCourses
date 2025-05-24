@@ -9,7 +9,7 @@
 
 <div class="container py-5">
     <div class="card detail-card">
-        <!-- Контейнер для изображения -->
+
         <div class="detail-image-container">
             @if (!string.IsNullOrEmpty(Model.ImagePath))
             {
@@ -36,10 +36,10 @@
             </ul>
 
             <h3>Преподаватели</h3>
-            @if (Model.Teachers?.Any() == true)
+            @if (Model.Users.OfType<Teacher>()?.Any() == true)
             {
                 <ul class="list-unstyled detail-list mb-3">
-                    @foreach (var teacher in Model.Teachers)
+                    @foreach (var teacher in Model.Users.OfType<Teacher>())
                     {
                         <li class="d-flex justify-content-between">
                             <span>@teacher.UserName</span>
@@ -54,10 +54,10 @@
             }
 
             <h3>Студенты</h3>
-            @if (Model.Students?.Any() == true)
+            @if (Model.Users.OfType<Student>()?.Any() == true)
             {
                 <ul class="list-unstyled detail-list mb-3">
-                    @foreach (var student in Model.Students)
+                    @foreach (var student in Model.Users.OfType<Student>())
                     {
                         <li>@student.UserName (@student.Email)</li>
                     }
