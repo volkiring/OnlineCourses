@@ -42,7 +42,7 @@ namespace DbWebApplication.Controllers
 				return Unauthorized();
 			}
 
-			var student = usersService.GetUserById(userId);
+			var student = usersService.TryGetUserById(userId);
 			var course = coursesRepository.TryGetById(courseId);
 
 			if (student.Courses.Any(c => c.Id == course.Id))
@@ -74,7 +74,7 @@ namespace DbWebApplication.Controllers
 				return RedirectToAction("Login", "Account");
 			}
 
-			var student = usersService.GetUserById(userId);
+			var student = usersService.TryGetUserById(userId);
 			var course = coursesRepository.TryGetById(courseId);
 
 			coursesRepository.DeleteStudentToCourse(course, student);

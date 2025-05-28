@@ -17,12 +17,12 @@ namespace DbWebApplication
 
 		public List<Course> GetUserCoursesById(string userId)
 		{
-			var user = GetUserById(userId);
+			var user = TryGetUserById(userId);
 
 			return user?.Courses ?? new List<Course>();
 		}
 
-		public User GetUserById(string userId)
+		public User TryGetUserById(string userId)
 		{
 			return databaseContext.Users.Include(u => u.Courses).FirstOrDefault(u => u.Id == userId);
 		}

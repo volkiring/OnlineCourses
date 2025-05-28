@@ -6,6 +6,6 @@ namespace DbWebApplication
 	{
 		List<Course> GetUserCoursesById(string userId);
 
-		public User GetUserById(string userId);
+		public User TryGetUserById(string userId);
 	}
 }

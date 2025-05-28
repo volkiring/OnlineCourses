@@ -12,6 +12,7 @@ namespace EfDbOnlineCourses
 		public DbSet<Lesson> Lessons { get; set; }
 		public DbSet<Teacher> Teachers { get; set; }
 		public DbSet<Grade> Grades { get; set; }
+		public DbSet<Request> Requests { get; set; }
 
 		public DbSet<Specialty> Specialties { get; set; }
 		public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
@@ -29,7 +30,12 @@ namespace EfDbOnlineCourses
 			modelBuilder.Entity<Course>()
 				.HasMany(c => c.Users)
 				.WithMany(u => u.Courses)
-				.UsingEntity(j => j.ToTable("CoursesUser")); 
+				.UsingEntity(j => j.ToTable("CoursesUser"));
+
+			modelBuilder.Entity<Teacher>()
+			.HasMany(t => t.CoursesTaught)
+			.WithMany(c => c.Teachers)
+			.UsingEntity(j => j.ToTable("CourseTeachers"));
 		}
 
 	}

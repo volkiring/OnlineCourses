@@ -22,6 +22,21 @@ namespace EfDbOnlineCourses.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
+            modelBuilder.Entity("CourseTeacher", b =>
+                {
+                    b.Property<int>("CoursesTaughtId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TeachersId")
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("CoursesTaughtId", "TeachersId");
+
+                    b.HasIndex("TeachersId");
+
+                    b.ToTable("CourseTeachers", (string)null);
+                });
+
             modelBuilder.Entity("CourseUser", b =>
                 {
                     b.Property<int>("CoursesId")
@@ -116,6 +131,30 @@ namespace EfDbOnlineCourses.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("Lessons");
+                });
+
+            modelBuilder.Entity("EfDbOnlineCourses.Models.Request", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Message")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("SubmittedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Requests");
                 });
 
             modelBuilder.Entity("EfDbOnlineCourses.Models.Specialty", b =>
@@ -355,6 +394,21 @@ namespace EfDbOnlineCourses.Migrations
                     b.ToTable("Teachers", (string)null);
                 });
 
+            modelBuilder.Entity("CourseTeacher", b =>
+                {
+                    b.HasOne("EfDbOnlineCourses.Models.Course", null)
+                        .WithMany()
+                        .HasForeignKey("CoursesTaughtId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EfDbOnlineCourses.Models.Teacher", null)
+                        .WithMany()
+                        .HasForeignKey("TeachersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("CourseUser", b =>
                 {
                     b.HasOne("EfDbOnlineCourses.Models.Course", null)
@@ -378,7 +432,7 @@ namespace EfDbOnlineCourses.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EfDbOnlineCourses.Models.Student", "Student")
+                    b.HasOne("EfDbOnlineCourses.Models.User", "Student")
                         .WithMany()
                         .HasForeignKey("StudentId");
 
@@ -396,6 +450,15 @@ namespace EfDbOnlineCourses.Migrations
                         .IsRequired();
 
                     b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("EfDbOnlineCourses.Models.Request", b =>
+                {
+                    b.HasOne("EfDbOnlineCourses.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

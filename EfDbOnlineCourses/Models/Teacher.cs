@@ -12,5 +12,6 @@ namespace EfDbOnlineCourses.Models
 	public class Teacher : User
 	{
 		public Specialty? Specialty { get; set; }
+		public List<Course> CoursesTaught { get; set; } = new();
 	}
 }

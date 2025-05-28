@@ -20,7 +20,14 @@ namespace EfDbOnlineCourses
 		}
 		public void Add(Teacher teacher, string password)
 		{
-			userManager.CreateAsync(teacher, password).Wait();
+			if (teacher.PasswordHash == null)
+			{
+				userManager.CreateAsync(teacher, password).Wait();
+			}
+			else
+			{
+				userManager.CreateAsync(teacher).Wait();
+			}
 		}
 
 		public void Update(Teacher teacher, Teacher updatedTeacher)
