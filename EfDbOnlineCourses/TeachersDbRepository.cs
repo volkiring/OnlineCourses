@@ -49,5 +49,6 @@ namespace EfDbOnlineCourses
 		{
 			return dbcontext.Teachers.Include(c => c.Courses).Include(t => t.Specialty).FirstOrDefault(t => t.Id == id);
 		}
+
 	}
 }

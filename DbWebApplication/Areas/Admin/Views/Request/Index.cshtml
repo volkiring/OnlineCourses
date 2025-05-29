@@ -1,0 +1,55 @@
+﻿@model List<Request>
+
+@{
+    ViewData["Title"] = "Заявки";
+}
+
+<div class="container mt-4">
+    <h3><i class="bi bi-inbox me-2"></i>Список заявок</h3>
+
+    @if (Model.Any())
+    {
+        <table class="table table-bordered table-hover mt-3">
+            <thead class="table-light">
+                <tr>
+                    <th>Пользователь</th>
+                    <th>Тип заявки</th>
+                    <th>Статус</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var request in Model)
+                {
+                    <tr>
+                        <td>@request.User?.UserName</td>
+                        <td>@request.Type?.Name</td>
+                        <td>
+                            @if (request.Status == RequestStatus.Pending)
+                            {
+                                <span class="badge bg-warning text-dark">На рассмотрении</span>
+                            }
+                            else if (request.Status == RequestStatus.Accepted)
+                            {
+                                <span class="badge bg-success">Принята</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Отклонена</span>
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Detail" asp-route-requestId="@request.Id" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-eye"></i> Просмотр
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info">Заявок нет.</div>
+    }
+</div>

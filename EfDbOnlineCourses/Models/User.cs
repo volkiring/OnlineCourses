@@ -11,5 +11,6 @@ namespace EfDbOnlineCourses.Models
 	{
         public DateTime? Birthdate { get; set; }
 		public List<Course> Courses { get; set; } = new();
+		public List<Request> Requests { get; set; }
 	}
 }

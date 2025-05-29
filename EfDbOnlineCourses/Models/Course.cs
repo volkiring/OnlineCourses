@@ -25,7 +25,7 @@ namespace EfDbOnlineCourses.Models
 
 		public bool Equals(Course? other)
 		{
-			return other != null && this.Id == other.Id;
+			return other != null && Id == other.Id;
 		}
 
 		public override int GetHashCode()

@@ -1,4 +1,5 @@
 ﻿using EfDbOnlineCourses.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace EfDbOnlineCourses
 {
@@ -11,12 +12,24 @@ namespace EfDbOnlineCourses
 		}
 		public List<Request> GetAll()
 		{
-			return databaseContext.Requests.ToList();
+			return databaseContext.Requests.Include(r => r.Type).Include(r => r.Specialty).Include(r => r.User).ToList();
 		}
 
-		public Request TryGetById(string Id)
+		public Request TryGetById(int Id)
 		{
-			return databaseContext.Requests.FirstOrDefault(x => x.Id == Id);
+			return databaseContext.Requests.Include(r => r.Type).Include(r => r.Specialty).Include(r => r.User).FirstOrDefault(x => x.Id == Id);
+		}
+
+		public void Add(Request request)
+		{
+			databaseContext.Requests.Add(request);
+			databaseContext.SaveChanges();
+		}
+
+		public void Deny(Request request)
+		{
+			request.Status = RequestStatus.Denied;
+			databaseContext.SaveChanges();
 		}
 	}
 }

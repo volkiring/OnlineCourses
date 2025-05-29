@@ -5,6 +5,8 @@ namespace EfDbOnlineCourses
 	public interface IRequestsRepository
 	{
 		List<Request> GetAll();
-		Request TryGetById(string Id);
+		Request TryGetById(int Id);
+		void Add(Request request);
+		void Deny(Request request);
 	}
 }

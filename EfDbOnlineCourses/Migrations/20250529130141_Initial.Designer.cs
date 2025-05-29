@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EfDbOnlineCourses.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20250528152740_Initial")]
+    [Migration("20250529130141_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -138,26 +138,55 @@ namespace EfDbOnlineCourses.Migrations
 
             modelBuilder.Entity("EfDbOnlineCourses.Models.Request", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Message")
                         .HasColumnType("longtext");
 
+                    b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<DateTime>("SubmittedAt")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<int>("TypeId")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("TypeId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Requests");
+                });
+
+            modelBuilder.Entity("EfDbOnlineCourses.Models.RequestType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RequestTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Заявка на становление преподавателем"
+                        });
                 });
 
             modelBuilder.Entity("EfDbOnlineCourses.Models.Specialty", b =>
@@ -175,6 +204,18 @@ namespace EfDbOnlineCourses.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Specialties");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Математика"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Программирование"
+                        });
                 });
 
             modelBuilder.Entity("EfDbOnlineCourses.Models.User", b =>
@@ -457,9 +498,17 @@ namespace EfDbOnlineCourses.Migrations
 
             modelBuilder.Entity("EfDbOnlineCourses.Models.Request", b =>
                 {
-                    b.HasOne("EfDbOnlineCourses.Models.User", "User")
+                    b.HasOne("EfDbOnlineCourses.Models.RequestType", "Type")
                         .WithMany()
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EfDbOnlineCourses.Models.User", "User")
+                        .WithMany("Requests")
                         .HasForeignKey("UserId");
+
+                    b.Navigation("Type");
 
                     b.Navigation("User");
                 });
@@ -537,6 +586,11 @@ namespace EfDbOnlineCourses.Migrations
                         .HasForeignKey("SpecialtyId");
 
                     b.Navigation("Specialty");
+                });
+
+            modelBuilder.Entity("EfDbOnlineCourses.Models.User", b =>
+                {
+                    b.Navigation("Requests");
                 });
 #pragma warning restore 612, 618
         }

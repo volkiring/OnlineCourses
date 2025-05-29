@@ -50,9 +50,9 @@ namespace DbWebApplication.Controllers
 
 		public IActionResult Register(Register register)
 		{
-			var student = new User()
+			var student = new Student()
 			{
-				UserName = register.Name,
+				UserName = register.UserName,
 				Birthdate = register.Birthdate,
 				PasswordHash = register.Password,
 				Email = register.Email

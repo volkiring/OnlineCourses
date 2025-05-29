@@ -1,0 +1,60 @@
+﻿@model Request
+
+@{
+    ViewData["Title"] = "Детали заявки";
+}
+
+<div class="container mt-4">
+    <h3><i class="bi bi-card-text me-2"></i>Детали заявки</h3>
+
+    <dl class="row mt-3">
+        <dt class="col-sm-3">Пользователь</dt>
+        <dd class="col-sm-9">@Model.User?.UserName</dd>
+
+        <dt class="col-sm-3">Тип заявки</dt>
+        <dd class="col-sm-9">@Model.Type?.Name</dd>
+
+        <dt class="col-sm-3">Статус</dt>
+        <dd class="col-sm-9">
+            @if (Model.Status == RequestStatus.Pending)
+            {
+                <span class="badge bg-warning text-dark">На рассмотрении</span>
+            }
+            else if (Model.Status == RequestStatus.Accepted)
+            {
+                <span class="badge bg-success">Принята</span>
+            }
+            else
+            {
+                <span class="badge bg-danger">Отклонена</span>
+            }
+        </dd>
+        <dt class="col-sm-3">Направление</dt>
+        <dd class="col-sm-9">@Model.Specialty?.Name</dd>
+    </dl>
+
+    @if (Model.Status == 0)
+    {
+        <form asp-action="Accept" method="post">
+            <input type="hidden" name="requestId" value="@Model.Id" />
+            <input type="hidden" name="user.UserName" value="@Model.User.UserName" />
+            <input type="hidden" name="user.Email" value="@Model.User.Email" />
+            <input type="hidden" name="user.PasswordHash" value="@Model.User.PasswordHash" />
+            <input type="hidden" name="user.PasswordHash" value="@Model.User.PasswordHash" />
+
+
+            <button type="submit" class="btn btn-success me-2"><i class="bi bi-check-lg"></i> Принять</button>
+        </form>
+
+        <br />
+
+        <form asp-action="Deny" method="post" class="d-inline">
+            <input type="hidden" name="requestId" value="@Model.Id" />
+            <button type="submit" class="btn btn-danger"><i class="bi bi-x-lg"></i> Отклонить</button>
+        </form>
+    }
+    else
+    {
+        <a asp-action="Index" class="btn btn-secondary mt-3">Назад к списку</a>
+    }
+</div>

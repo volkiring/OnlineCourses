@@ -4,10 +4,10 @@ namespace EfDbOnlineCourses
 {
 	public interface IStudentsRepository
 	{
-		void Add(User student, string password);
-		void Delete(User student);
+		void Add(Student student, string password);
+		void Delete(Student student);
 		List<User> GetAll();
-		User TryGetById(string id);
-		void Update(User student, User updatedStudent);
+		Student TryGetById(string id);
+		void Update(Student student, Student updatedStudent);
 	}
 }

@@ -25,10 +25,6 @@
 		public string ConfirmPassword { get; set; }
 
 		[Required]
-		[Display(Name = "Имя студента")]
-		public string Name { get; set; }
-
-		[Required]
 		[Display(Name = "Дата рождения")]
 		[DataType(DataType.Date)]
 		public DateTime? Birthdate { get; set; }

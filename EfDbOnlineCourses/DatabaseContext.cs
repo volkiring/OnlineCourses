@@ -1,5 +1,4 @@
 ﻿using EfDbOnlineCourses.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +12,7 @@ namespace EfDbOnlineCourses
 		public DbSet<Teacher> Teachers { get; set; }
 		public DbSet<Grade> Grades { get; set; }
 		public DbSet<Request> Requests { get; set; }
+		public DbSet<RequestType> RequestTypes { get; set; }
 
 		public DbSet<Specialty> Specialties { get; set; }
 		public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
@@ -36,6 +36,24 @@ namespace EfDbOnlineCourses
 			.HasMany(t => t.CoursesTaught)
 			.WithMany(c => c.Teachers)
 			.UsingEntity(j => j.ToTable("CourseTeachers"));
+
+			modelBuilder.Entity<RequestType>().HasData(
+			new RequestType()
+			{
+				Id = 1,
+				Name = "Заявка на становление преподавателем"
+			}
+			);
+
+			modelBuilder.Entity<Specialty>().HasData(
+			new Specialty { Id = 1, Name = "Математика" },
+			new Specialty { Id = 2, Name = "Программирование" }
+			);
+
+			modelBuilder.Entity<Request>()
+	.Property(r => r.Status)
+	.HasConversion<string>();
+
 		}
 
 	}

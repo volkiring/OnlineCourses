@@ -1,6 +1,5 @@
 ﻿using EfDbOnlineCourses;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Security.Claims;
 
 namespace DbWebApplication.Controllers
@@ -42,7 +41,7 @@ namespace DbWebApplication.Controllers
 				return Unauthorized();
 			}
 
-			var student = usersService.TryGetUserById(userId);
+			var student = usersService.TryGetUserByName(userId);
 			var course = coursesRepository.TryGetById(courseId);
 
 			if (student.Courses.Any(c => c.Id == course.Id))
@@ -53,14 +52,12 @@ namespace DbWebApplication.Controllers
 			coursesRepository.AddStudentToCourse(course, student);
 
 			string courseTitle = course.Title;
-			return View(model : courseTitle);
+			return View(model: courseTitle);
 		}
 
 		public IActionResult Error()
 		{
-			{
-				return View();
-			}
+			return View();
 		}
 
 		public IActionResult RemoveStudentFromCourse(int courseId)
@@ -74,7 +71,7 @@ namespace DbWebApplication.Controllers
 				return RedirectToAction("Login", "Account");
 			}
 
-			var student = usersService.TryGetUserById(userId);
+			var student = usersService.TryGetUserByName(userId);
 			var course = coursesRepository.TryGetById(courseId);
 
 			coursesRepository.DeleteStudentToCourse(course, student);

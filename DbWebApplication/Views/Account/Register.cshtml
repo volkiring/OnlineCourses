@@ -36,12 +36,6 @@
     <hr />
 
     <div class="mb-3">
-        <label asp-for="Name" class="form-label">Имя студента</label>
-        <input asp-for="Name" class="form-control" required/>
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
         <label asp-for="Birthdate" class="form-label">Дата рождения</label>
         <input asp-for="Birthdate" class="form-control" type="date" max="@DateTime.Today.ToString("yyyy-MM-dd")" required/>
         <span asp-validation-for="Birthdate" class="text-danger"></span>

@@ -1,13 +1,17 @@
-﻿namespace EfDbOnlineCourses.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace EfDbOnlineCourses.Models
 {
 	public class Request
 	{
-		public string Id { get; set; }
+		public int Id { get; set; }
 		public User User { get; set; }
 		public RequestType Type { get; set; }
 		public string? Message { get; set; }
-		public DateTime SubmittedAt { get; set; } = DateTime.Now;
-		public bool Status { get; set; } = false;
+		public Specialty Specialty { get; set; }
+		public DateTime SubmittedAt { get; set; } 
 
+		public RequestStatus Status { get; set; } = RequestStatus.Pending;
 	}
 }

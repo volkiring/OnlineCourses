@@ -6,32 +6,32 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DbWebApplication.Areas.Admin.Controllers
 {
+	[Area("Admin")]
 	public class RequestController : Controller
 	{
 		private readonly IRequestsRepository requestsRepository;
 		private readonly ITeachersRepository teachersRepository;
 		private readonly ISpecialitiesRepository specialitiesRepository;
-		private readonly UserManager<User> userManager;
-		public RequestController(IRequestsRepository requestsRepository, ITeachersRepository teachersRepository, ISpecialitiesRepository specialitiesRepository, UserManager<User> userManager)
+
+		public RequestController(IRequestsRepository requestsRepository, ITeachersRepository teachersRepository, ISpecialitiesRepository specialitiesRepository)
 		{
 			this.requestsRepository = requestsRepository;
 			this.teachersRepository = teachersRepository;
 			this.specialitiesRepository = specialitiesRepository;
-			this.userManager = userManager;
 		}
 		public IActionResult Index()
 		{
-			var requests = requestsRepository.GetAll();
+			var requests = requestsRepository.GetAll().OrderBy(x => x.Status).ToList();
 			return View(requests);
 		}
 
-		public IActionResult Detail(string id)
+		public IActionResult Detail(int requestId)
 		{
-			var request = requestsRepository.TryGetById(id);
+			var request = requestsRepository.TryGetById(requestId);
 			return View(request);
 		}
 
-		public IActionResult Accept(string requestId, User user, TeacherViewModel teacherViewModel)
+		public IActionResult Accept(int requestId, Student student, int specialtyId)
 		{
 			var request = requestsRepository.TryGetById(requestId);
 
@@ -39,29 +39,25 @@ namespace DbWebApplication.Areas.Admin.Controllers
 			{
 				var teacher = new Teacher()
 				{
-					UserName = user.UserName,
-					Id = requestId,
-					PasswordHash = user.PasswordHash, 
-					Email = user.Email,
-					Courses = user.Courses,
-					Specialty = specialitiesRepository.TryGetById(teacherViewModel.specialtyId)
+					UserName = student.UserName,
+					PasswordHash = student.PasswordHash,
+					Email = student.Email,
+					Courses = student.Courses,
+					Specialty = specialitiesRepository.TryGetById(specialtyId)
 				};
 
-				var result = userManager.DeleteAsync(user).Result;
-				if (result.Succeeded)
-				{
-					string password = null;
-					teachersRepository.Add(teacher, password);
-				}
+				string password = null;
+				teachersRepository.Add(teacher, password);
+
 			}
-			request.Status = true;
+			request.Status = RequestStatus.Accepted;
 			return RedirectToAction("Index");
 		}
 
-		public ActionResult Deny(string requestId)
+		public ActionResult Deny(int requestId)
 		{
 			var request = requestsRepository.TryGetById(requestId);
-			request.Status = false;
+			requestsRepository.Deny(request);
 			return RedirectToAction("Index");
 		}
 	}

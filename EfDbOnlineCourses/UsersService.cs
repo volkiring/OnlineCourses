@@ -15,16 +15,16 @@ namespace DbWebApplication
 			this.databaseContext = databaseContext;
 		}
 
-		public List<Course> GetUserCoursesById(string userId)
+		public List<Course> GetUserCoursesById(string userName)
 		{
-			var user = TryGetUserById(userId);
+			var user = TryGetUserByName(userName);
 
 			return user?.Courses ?? new List<Course>();
 		}
 
-		public User TryGetUserById(string userId)
+		public User TryGetUserByName(string userName)
 		{
-			return databaseContext.Users.Include(u => u.Courses).FirstOrDefault(u => u.Id == userId);
+			return databaseContext.Users.Include(u => u.Courses).Include(r => r.Requests).ThenInclude(r => r.Type).Include(r => r.Requests).ThenInclude(r => r.Specialty).FirstOrDefault(u => u.UserName == userName);
 		}
 
 	}
