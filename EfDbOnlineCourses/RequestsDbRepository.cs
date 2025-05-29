@@ -26,6 +26,11 @@ namespace EfDbOnlineCourses
 			databaseContext.SaveChanges();
 		}
 
+		public void Accept(Request request)
+		{
+			request.Status = RequestStatus.Accepted;
+			databaseContext.SaveChanges();
+		}
 		public void Deny(Request request)
 		{
 			request.Status = RequestStatus.Denied;

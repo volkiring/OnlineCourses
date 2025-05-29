@@ -8,5 +8,6 @@ namespace EfDbOnlineCourses
 		Request TryGetById(int Id);
 		void Add(Request request);
 		void Deny(Request request);
+		void Accept(Request request);
 	}
 }

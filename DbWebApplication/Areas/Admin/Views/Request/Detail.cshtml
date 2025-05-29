@@ -35,14 +35,7 @@
 
     @if (Model.Status == 0)
     {
-        <form asp-action="Accept" method="post">
-            <input type="hidden" name="requestId" value="@Model.Id" />
-            <input type="hidden" name="user.UserName" value="@Model.User.UserName" />
-            <input type="hidden" name="user.Email" value="@Model.User.Email" />
-            <input type="hidden" name="user.PasswordHash" value="@Model.User.PasswordHash" />
-            <input type="hidden" name="user.PasswordHash" value="@Model.User.PasswordHash" />
-
-
+        <form asp-action="Accept" method="post" asp-route-userName="@Model.User.UserName" asp-route-requestId="@Model.Id">
             <button type="submit" class="btn btn-success me-2"><i class="bi bi-check-lg"></i> Принять</button>
         </form>
 
