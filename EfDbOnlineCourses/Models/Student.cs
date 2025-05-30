@@ -1,14 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EfDbOnlineCourses.Models
+﻿namespace EfDbOnlineCourses.Models
 {
-	public class Student : User
-	{
-	}
+    public class Student
+    {
+        public string UserId { get; set; } // Первичный ключ + внешний ключ
+        public User User { get; set; }     // Навигационное свойство
+    }
 }

@@ -23,7 +23,7 @@ namespace DbWebApplication.Areas.Admin.Controllers
 		public IActionResult AddTeacherToCourse(int courseId)
 		{
 			var course = coursesRepository.TryGetById(courseId);
-			var teachers = teachersRepository.GetAll().Where(t => !t.Courses.Contains(course)).ToList();
+			//var teachers = teachersRepository.GetAll().Where(t => !t.Courses.Contains(course)).ToList();
 			return View((course, teachers));
 		}
 
