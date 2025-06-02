@@ -1,64 +1,87 @@
-﻿using EfDbOnlineCourses.Migrations;
-using EfDbOnlineCourses.Models;
+﻿using EfDbOnlineCourses.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace EfDbOnlineCourses
 {
-    public class TeachersDbRepository : ITeachersRepository
-    {
-        private readonly DatabaseContext dbcontext;
-        private readonly UserManager<User> userManager;
-        public TeachersDbRepository(DatabaseContext dbContext, UserManager<User> userManager)
-        {
-            this.dbcontext = dbContext;
-            this.userManager = userManager;
-        }
+	public class TeachersDbRepository : ITeachersRepository
+	{
+		private readonly DatabaseContext dbcontext;
+		private readonly UserManager<User> userManager;
 
-        public List<Teacher> GetAll()
-        {
-            return dbcontext.Teachers.Include(t => t.User).Include(t => t.Specialty).ToList();
-        }
+		public TeachersDbRepository(DatabaseContext dbContext, UserManager<User> userManager)
+		{
+			this.dbcontext = dbContext;
+			this.userManager = userManager;
+		}
 
-        public void Add(User user, Specialty specialty)
-        {
-            user.Teacher = new Teacher()
-            {
-                UserId = user.Id,
-                Specialty = specialty
-            };
+		public List<Teacher> GetAll()
+		{
+			return dbcontext.Teachers
+				.Include(t => t.User)
+					.ThenInclude(t => t.Courses)
+				.Include(t => t.User)
+					.ThenInclude(t => t.Requests)
+						.ThenInclude(r => r.Type)
+				.Include(t => t.CoursesTaught)
+				.Include(t => t.Specialty)
+				.ToList();
+		}
 
-            dbcontext.SaveChanges();
+		public bool Add(User user, Specialty specialty)
+		{
+			if (dbcontext.Teachers.Any(t => t.UserId == user.Id))
+				return false;
 
-            //if (teacher.PasswordHash == null)
-            //{
-            //	userManager.CreateAsync(teacher, password).Wait();
-            //}
-            //else
-            //{
-            //	userManager.CreateAsync(teacher).Wait();
-            //}
-        }
+			var teacher = new Teacher
+			{
+				UserId = user.Id,
+				Specialty = specialty
+			};
 
-        public void Update(Teacher teacher, Teacher updatedTeacher)
-        {
-            //teacher.UserName = updatedTeacher.UserName;
-            //teacher.Email = updatedTeacher.Email;
-            //teacher.Birthdate = updatedTeacher.Birthdate;
-            //teacher.Specialty = updatedTeacher.Specialty;
+			dbcontext.Teachers.Add(teacher);
+			dbcontext.SaveChanges();
+			return true;
+		}
 
-            //userManager.UpdateAsync(teacher).Wait();
-            //dbcontext.SaveChanges();
-        }
-        public void Delete(Teacher teacher)
-        {
-            //userManager.DeleteAsync(teacher).Wait();
-        }
 
-        public Teacher TryGetById(string id)
-        {
-            return dbcontext.Teachers.Include(c => c.User).Include(t => t.Specialty).FirstOrDefault(t => t.UserId == id);
-        }
+		public void Update(Teacher teacher, Teacher updatedTeacher)
+		{
+			var user = teacher.User;
 
-    }
+			user.UserName = updatedTeacher.User.UserName;
+			user.Email = updatedTeacher.User.Email;
+			user.Birthdate = updatedTeacher.User.Birthdate;
+
+			teacher.Specialty = updatedTeacher.Specialty;
+
+			userManager.UpdateAsync(user).Wait();
+			dbcontext.SaveChanges();
+		}
+
+		public void Delete(Teacher teacher)
+		{
+			var user = teacher.User;
+
+			dbcontext.Teachers.Remove(teacher);
+			dbcontext.SaveChanges();
+
+			userManager.DeleteAsync(user).Wait();
+		}
+
+		public Teacher TryGetById(string id)
+		{
+			return dbcontext.Teachers
+				.Include(t => t.User)
+					.ThenInclude(t => t.Requests)
+						.ThenInclude(r => r.Type)
+				.Include(t => t.CoursesTaught)
+				.Include(t => t.User)
+					.ThenInclude(t => t.Courses)
+				.Include(t => t.Specialty)
+				.FirstOrDefault(t => t.UserId == id);
+		}
+	}
+
 }
+

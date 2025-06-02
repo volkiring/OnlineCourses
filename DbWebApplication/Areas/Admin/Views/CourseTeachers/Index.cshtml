@@ -6,7 +6,7 @@
 <div class="container mt-5">
     <h3 class="text-center">Преподаватели курса "@Model.Title"</h3>
 
-    @if (Model.Users.OfType<Teacher>().Any())
+    @if (Model.Teachers.Any())
     {
         <div class="table-responsive mt-4">
             <table class="table table-striped table-bordered">
@@ -19,15 +19,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var teacher in Model.Users.OfType<Teacher>())
+                    @foreach (var teacher in Model.Teachers)
                     {
                         <tr>
-                            <td>@teacher.UserName</td>
-                            <td>@(teacher.Email ?? "Не указан")</td>
+                            <td>@teacher.User.UserName</td>
+                            <td>@(teacher.User.Email ?? "Не указан")</td>
                             <td>@(teacher.Specialty.Name ?? "Не указана")</td>
                             <td>
                                 <div class="btn-group btn-group-sm">
-                                    <a asp-action="DeleteTeacherToCourse" asp-route-courseId="@Model.Id" asp-route-teacherId="@teacher.Id" class="btn btn-outline-danger">
+                                    <a asp-action="DeleteTeacherToCourse" asp-route-courseId="@Model.Id" asp-route-teacherId="@teacher.User.Id" class="btn btn-outline-danger">
                                         <i class="bi bi-trash"></i>
                                     </a>
                                 </div>

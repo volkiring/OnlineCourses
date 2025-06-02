@@ -30,13 +30,13 @@
                             @foreach (var teacher in Model)
                             {
                                 <tr>
-                                    <td><strong>@teacher.UserName</strong></td>
-                                    <td>@(teacher.Email ?? "Не указан")</td>
+                                    <td><strong>@teacher.User.UserName</strong></td>
+                                    <td>@(teacher.User.Email ?? "Не указан")</td>
                                     <td>@(teacher.Specialty.Name ?? "Не указана")</td>
                                     <td>
-                                        @if (teacher.Birthdate.HasValue)
+                                        @if (teacher.User.Birthdate.HasValue)
                                         {
-                                            @teacher.Birthdate.Value.ToString("dd.MM.yyyy")
+                                            @teacher.User.Birthdate.Value.ToString("dd.MM.yyyy")
                                         }
                                         else
                                         {
@@ -44,10 +44,10 @@
                                         }
                                     </td>
                                     <td>
-                                        @if (teacher.Courses.Any())
+                                        @if (teacher.CoursesTaught.Any())
                                         {
                                             <div class="d-flex flex-wrap gap-1">
-                                                @foreach (var course in teacher.Courses)
+                                                @foreach (var course in teacher.CoursesTaught)
                                                 {
                                                     <span class="badge bg-info">@course.Title</span>
                                                 }
@@ -60,7 +60,7 @@
                                     </td>
                                     <td>
                                         <div class="btn-group btn-group-sm">
-                                            <a asp-action="DeleteTeacher" asp-route-teacherId="@teacher.Id" class="btn btn-outline-danger">
+                                            <a asp-action="DeleteTeacher" asp-route-teacherId="@teacher.User.Id" class="btn btn-outline-danger">
                                                 <i class="bi bi-trash"></i>
                                             </a>
                                         </div>

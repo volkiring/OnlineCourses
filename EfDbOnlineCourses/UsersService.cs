@@ -15,7 +15,7 @@ namespace DbWebApplication
 			this.databaseContext = databaseContext;
 		}
 
-		public List<Course> GetUserCoursesById(string userName)
+		public List<Course> GetUserCoursesByName(string userName)
 		{
 			var user = TryGetUserByName(userName);
 
@@ -24,7 +24,7 @@ namespace DbWebApplication
 
 		public User TryGetUserByName(string userName)
 		{
-			return databaseContext.Users.Include(u => u.Courses).Include(r => r.Requests).ThenInclude(r => r.Type).Include(r => r.Requests).ThenInclude(r => r.Specialty).FirstOrDefault(u => u.UserName == userName);
+			return databaseContext.Users.Include(u => u.Courses).Include(r => r.Requests).ThenInclude(r => r.Type).Include(r => r.Requests).ThenInclude(r => r.Specialty).Include(u => u.Teacher).Include(u => u.Student).FirstOrDefault(u => u.UserName == userName);
 		}
 
 	}

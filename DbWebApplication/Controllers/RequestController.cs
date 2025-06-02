@@ -39,18 +39,33 @@ namespace DbWebApplication.Controllers
 		public IActionResult ConfirmAdd(Request requestViewModel, string userName)
 		{
 			var user = usersService.TryGetUserByName(userName);
+			var type = requestTypeRepository.TryGetById(requestViewModel.Type.Id);
+			if (type.Name == "Заявка на становление преподавателем")
+			{
+				if (user.Teacher is not null)
+				{
+					return RedirectToAction("Error");
+				}
+			}
+
+
 			var request = new Request()
 			{
 				Message = requestViewModel.Message,
 				Specialty = specialitiesRepository.TryGetById(requestViewModel.Specialty.Id),
 				SubmittedAt = DateTime.Now,
 				Status = 0,
-				Type = requestTypeRepository.TryGetById(requestViewModel.Type.Id),
+				Type = type,
 				User = user,
 
 			};
 			requestsRepository.Add(request);
 			return RedirectToAction("Index", new {user.UserName});	
+		}
+
+		public IActionResult Error()
+		{
+			return View();
 		}
 
 

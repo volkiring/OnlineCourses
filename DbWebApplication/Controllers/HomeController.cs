@@ -22,17 +22,14 @@ namespace DbWebApplication.Controllers
 			return View(courses);
 		}
 
-		public IActionResult Details(int courseId)
+		public IActionResult Details(int courseId, string userName)
 		{
 			var course = coursesRepository.TryGetById(courseId);
-			var userId = User.Identity.IsAuthenticated
-? User.FindFirst(ClaimTypes.NameIdentifier)?.Value
-: null;
 
 			var isCourseExist = false;
-			if (userId != null)
+			if (userName != null)
 			{
-				var userCourses = usersService.GetUserCoursesById(userId);
+				var userCourses = usersService.GetUserCoursesByName(userName);
 				if (userCourses.Contains(course))
 				{
 					isCourseExist = true;

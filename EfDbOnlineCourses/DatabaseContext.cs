@@ -13,7 +13,6 @@ namespace EfDbOnlineCourses
         public DbSet<Grade> Grades { get; set; }
         public DbSet<Request> Requests { get; set; }
         public DbSet<RequestType> RequestTypes { get; set; }
-
         public DbSet<Specialty> Specialties { get; set; }
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
@@ -24,41 +23,24 @@ namespace EfDbOnlineCourses
         {
             base.OnModelCreating(modelBuilder);
 
-            // Настройка TeacherProfile
-            modelBuilder.Entity<Teacher>(entity =>
-            {
-                entity.HasKey(t => t.UserId); // UserId как первичный ключ
+			modelBuilder.Entity<Teacher>()
+	.HasKey(t => t.UserId);
 
-                entity.HasOne(t => t.User)
-                    .WithOne(u => u.Teacher)
-                    .HasForeignKey<Teacher>(t => t.UserId)
-                    .IsRequired();
-            });
+			modelBuilder.Entity<Teacher>()
+				.HasOne(t => t.User)
+				.WithOne(u => u.Teacher)
+				.HasForeignKey<Teacher>(t => t.UserId);
 
-            // Настройка StudentProfile
-            modelBuilder.Entity<Student>(entity =>
-            {
-                entity.HasKey(s => s.UserId); // UserId как первичный ключ
+			modelBuilder.Entity<Student>()
+				.HasKey(s => s.UserId);
 
-                entity.HasOne(s => s.User)
-                    .WithOne(u => u.Student)
-                    .HasForeignKey<Student>(s => s.UserId)
-                    .IsRequired();
-            });
+			modelBuilder.Entity<Student>()
+				.HasOne(s => s.User)
+				.WithOne(u => u.Student)
+				.HasForeignKey<Student>(s => s.UserId);
 
 
-
-            modelBuilder.Entity<Course>()
-                .HasMany(c => c.Users)
-                .WithMany(u => u.Courses)
-                .UsingEntity(j => j.ToTable("CoursesUser"));
-
-            modelBuilder.Entity<Teacher>()
-            .HasMany(t => t.CoursesTaught)
-            .WithMany(c => c.Teachers)
-            .UsingEntity(j => j.ToTable("CourseTeachers"));
-
-            modelBuilder.Entity<RequestType>().HasData(
+			modelBuilder.Entity<RequestType>().HasData(
             new RequestType()
             {
                 Id = 1,

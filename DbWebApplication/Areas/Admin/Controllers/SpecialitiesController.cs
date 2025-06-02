@@ -43,11 +43,5 @@ namespace DbWebApplication.Areas.Admin.Controllers
 			return RedirectToAction("Index");
 		}
 
-		public IActionResult DeleteSpecialty(int specialtyId)
-		{
-			var specialty = specialitiesRepository.TryGetById(specialtyId);
-			specialitiesRepository.Delete(specialty);
-			return RedirectToAction("Index");
-		}
 	}
 }

@@ -1,5 +1,5 @@
 ﻿@using EfDbOnlineCourses.Models
-@model (Course course, List<User> Students)
+@model (Course course, List<Student> Students)
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
@@ -16,7 +16,7 @@
                     <option value="">-- Выберите студента --</option>
                     @foreach (var student in Model.Students)
                     {
-                        <option value="@student.Id">@student.UserName (@student.Email)</option>
+                        <option value="@student.UserId">@student.User.UserName (@student.User.Email)</option>
                     }
                 </select>
             </div>

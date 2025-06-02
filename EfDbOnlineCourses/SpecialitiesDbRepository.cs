@@ -20,12 +20,6 @@ namespace EfDbOnlineCourses
 			databaseContext.SaveChanges();
 		}
 
-		public void Delete(Specialty specialty)
-		{
-			databaseContext.Remove(specialty);
-			databaseContext.SaveChanges();
-		}
-
 		public void Update(Specialty specialty, Specialty updatedSpecialty)
 		{
 			specialty.Name = updatedSpecialty.Name;

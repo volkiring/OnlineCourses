@@ -1,5 +1,5 @@
 ﻿@using EfDbOnlineCourses.Models
-@model List<User>
+@model List<Student>
 
 @{
     ViewData["Title"] = "Список студентов";
@@ -29,12 +29,12 @@
                             @foreach (var student in Model)
                             {
                                 <tr>
-                                    <td><strong>@student.UserName</strong></td>
-                                    <td>@(student.Email ?? "Не указан")</td>
+                                    <td><strong>@student.User.UserName</strong></td>
+                                    <td>@(student.User.Email ?? "Не указан")</td>
                                     <td>
-                                        @if (student.Birthdate.HasValue)
+                                        @if (student.User.Birthdate.HasValue)
                                         {
-                                            @student.Birthdate.Value.ToString("dd.MM.yyyy")
+                                            @student.User.Birthdate.Value.ToString("dd.MM.yyyy")
                                         }
                                         else
                                         {
@@ -42,11 +42,11 @@
                                         }
                                     </td>
                                     <td>
-                                        @if (student.Courses.Any())
+                                        @if (student.User.Courses.Any())
                                         {
                                             <div class="d-flex flex-wrap gap-1">
-                                                @foreach (var course in student.Courses)
-                                                {
+                                                @foreach (var course in student.User.Courses)
+                                                                        {
                                                     <span class="badge bg-info">@course.Title</span>
                                                 }
                                             </div>
@@ -58,7 +58,7 @@
                                     </td>
                                     <td>
                                         <div class="btn-group btn-group-sm">
-                                            <a asp-action="DeleteStudent" asp-route-studentId="@student.Id" class="btn btn-outline-danger">
+                                            <a asp-action="DeleteStudent" asp-route-studentId="@student.UserId" class="btn btn-outline-danger">
                                                 <i class="bi bi-trash"></i>
                                             </a>
                                         </div>

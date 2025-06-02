@@ -4,7 +4,7 @@ namespace DbWebApplication
 {
 	public interface IUsersService
 	{
-		List<Course> GetUserCoursesById(string userName);
+		List<Course> GetUserCoursesByName(string userName);
 
 		public User TryGetUserByName(string userName);
 	}

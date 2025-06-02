@@ -11,12 +11,13 @@ namespace DbWebApplication.Controllers
 		private readonly UserManager<User> userManager;
 		private readonly SignInManager<User> signInManager;
 		private readonly DatabaseContext databaseContext;
-		public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, DatabaseContext databaseContext)
+		private readonly IStudentsRepository studentsRepository;
+		public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, DatabaseContext databaseContext, IStudentsRepository studentsRepository)
 		{
 			this.userManager = userManager;
 			this.signInManager = signInManager;
 			this.databaseContext = databaseContext;
-
+			this.studentsRepository = studentsRepository;
 		}
 
 		[HttpGet]
@@ -50,28 +51,27 @@ namespace DbWebApplication.Controllers
 
 		public IActionResult Register(Register register)
 		{
-			var student = new Student()
+			if (!ModelState.IsValid)
+				return View(register);
+
+			var user = new User
 			{
 				UserName = register.UserName,
-				Birthdate = register.Birthdate,
-				PasswordHash = register.Password,
-				Email = register.Email
+				Email = register.Email,
+				Birthdate = register.Birthdate
 			};
 
-			var result = userManager.CreateAsync(student, register.Password).Result;
+			var result = studentsRepository.Add(user, register.Password, out var createdUser);
 
 			if (result.Succeeded)
 			{
-				signInManager.SignInAsync(student, false).Wait();
+				signInManager.SignInAsync(createdUser, isPersistent: true).Wait();
 				return RedirectToAction("Index", "Home");
 			}
 
-			else
+			foreach (var error in result.Errors)
 			{
-				foreach (var error in result.Errors)
-				{
-					ModelState.AddModelError("", error.Description);
-				}
+				ModelState.AddModelError("", error.Description);
 			}
 
 			return View(register);

@@ -33,24 +33,42 @@ namespace DbWebApplication.Areas.Admin.Controllers
             return View(request);
         }
 
-        public IActionResult Accept(int requestId, string userName)
-        {
-            var request = requestsRepository.TryGetById(requestId);
+		public IActionResult Accept(int requestId, string userName)
+		{
+			var request = requestsRepository.TryGetById(requestId);
+			if (request == null)
+			{
+				TempData["Error"] = "Заявка не найдена.";
+				return RedirectToAction("Index");
+			}
 
-            if (request.Type.Name == "Заявка на становление преподавателем")
-            {
-                var user = usersService.TryGetUserByName(userName);
+			if (request.Type.Name == "Заявка на становление преподавателем")
+			{
+				var user = usersService.TryGetUserByName(userName);
+				if (user == null)
+				{
+					TempData["Error"] = "Пользователь не найден.";
+					return RedirectToAction("Index");
+				}
 
-                teachersRepository.Add(user, request.Specialty);
-                requestsRepository.Accept(request);
-            }
+				try
+				{
+					teachersRepository.Add(user, request.Specialty);
+					requestsRepository.Accept(request);
+				}
+				catch (InvalidOperationException ex)
+				{
+					TempData["Error"] = "Ошибка: " + ex.Message;
+					return RedirectToAction("Index");
+				}
+			}
+
+			return RedirectToAction("Index");
+		}
 
 
-            return RedirectToAction("Index");
-        }
 
-
-        public ActionResult Deny(int requestId)
+		public ActionResult Deny(int requestId)
         {
             var request = requestsRepository.TryGetById(requestId);
             requestsRepository.Deny(request);

@@ -1,12 +1,13 @@
 ﻿using EfDbOnlineCourses.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace EfDbOnlineCourses
 {
 	public interface IStudentsRepository
 	{
-		void Add(Student student, string password);
+		IdentityResult Add(User user, string password, out User createdUser);
 		void Delete(Student student);
-		List<User> GetAll();
+		List<Student> GetAll();
 		Student TryGetById(string id);
 		void Update(Student student, Student updatedStudent);
 	}

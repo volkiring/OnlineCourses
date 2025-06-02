@@ -25,7 +25,7 @@ namespace DbWebApplication.Areas.Admin.Controllers
 		public IActionResult AddStudentToCourse(int courseId)
 		{
 			var course = coursesRepository.TryGetById(courseId);
-			var students = studentsRepository.GetAll().Where(s => !(s.Courses.Contains(course))).ToList();
+			var students = studentsRepository.GetAll().Where(s => !(s.User.Courses.Contains(course))).ToList();
 			return View((course, students));
 		}
 

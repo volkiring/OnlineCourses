@@ -4,7 +4,7 @@ namespace EfDbOnlineCourses
 {
 	public interface ITeachersRepository
 	{
-		void Add(User user, Specialty specialty);
+		bool Add(User user, Specialty specialty);
 		void Delete(Teacher teacher);
 		List<Teacher> GetAll();
 		Teacher TryGetById(string id);

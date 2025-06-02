@@ -18,7 +18,14 @@ namespace EfDbOnlineCourses
         }
         public List<Course> GetAll()
         {
-            return dbcontext.Courses.Include(u => u.Users).ToList();
+            return dbcontext.Courses
+                .Include(t => t.Users)
+                .Include(c => c.Teachers)
+                    .ThenInclude(t => t.Specialty)
+				.Include(c => c.Users)
+				    .ThenInclude(u => u.Teacher)
+				        .ThenInclude(u => u.CoursesTaught)
+				.ToList();
         }
         public void Add(Course course)
         {
@@ -44,34 +51,38 @@ namespace EfDbOnlineCourses
         {
             return dbcontext.Courses
                 .Include(c => c.Users)
-                .ThenInclude(u => u.Teacher)
-                .ThenInclude(u => u.Specialty)
-                .FirstOrDefault(c => c.Id == id);
+                    .ThenInclude(u => u.Teacher)
+                        .ThenInclude(u => u.Specialty)
+				.Include(c => c.Users)
+                    .ThenInclude(c => c.Student)
+				.Include(c => c.Users)
+				    .ThenInclude(u => u.Teacher)
+                        .ThenInclude(u => u.CoursesTaught)
+				.FirstOrDefault(c => c.Id == id);
         }
-
 
 
         public void AddTeacherToCourse(Course course, Teacher teacher)
         {
-            //course.Users.AddRange(teacher);
-            //dbcontext.SaveChanges();
+            course.Teachers.AddRange(teacher);
+            dbcontext.SaveChanges();
         }
 
         public void AddStudentToCourse(Course course, Student student)
         {
-            //course.Users.AddRange(student);
+            course.Users.AddRange(student.User);
             dbcontext.SaveChanges();
         }
 
         public void DeleteTeacherToCourse(Course course, Teacher teacher)
         {
-            //course.Users.Remove(teacher);
-            //dbcontext.SaveChanges();
+            course.Teachers.Remove(teacher);
+            dbcontext.SaveChanges();
         }
 
         public void DeleteStudentToCourse(Course course, Student student)
         {
-            //course.Users.Remove(s/*t*/udent);
+            course.Users.Remove(student.User);
             dbcontext.SaveChanges();
         }
 

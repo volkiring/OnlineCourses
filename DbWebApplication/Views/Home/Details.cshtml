@@ -36,14 +36,14 @@
             </ul>
 
             <h3>Преподаватели</h3>
-            @if (Model.course.Users.OfType<Teacher>()?.Any() == true)
+            @if (Model.course.Teachers.Any() == true)
             {
                 <ul class="list-unstyled detail-list mb-3">
-                    @foreach (var teacher in Model.course.Users.OfType<Teacher>())
+                    @foreach (var teacher in Model.course.Teachers)
                     {
                         <li class="d-flex justify-content-between">
-                            <span>@teacher.UserName</span>
-                            <small class="text-muted">@teacher.Specialty</small>
+                            <span>@teacher.User.UserName</span>
+                            <small class="text-muted">@teacher.Specialty.Name</small>
                         </li>
                     }
                 </ul>
@@ -54,10 +54,10 @@
             }
 
             <h3>Студенты</h3>
-            @if (Model.course.Users.OfType<Student>()?.Any() == true)
+            @if (Model.course.Users.Any() == true)
             {
                 <ul class="list-unstyled detail-list mb-3">
-                    @foreach (var student in Model.course.Users.OfType<Student>())
+                    @foreach (var student in Model.course.Users)
                     {
                         <li>@student.UserName (@student.Email)</li>
                     }
@@ -82,7 +82,7 @@
                 }
                 else
                 {
-                    <a asp-controller="Courses" asp-action="AddStudentToCourse" asp-route-courseId="@Model.course.Id" asp-area="" class="btn btn-primary">
+                    <a asp-controller="Courses" asp-action="AddStudentToCourse" asp-route-courseId="@Model.course.Id" asp-route-userName="@User.Identity.Name" asp-area="" class="btn btn-primary">
                         <i class="bi bi-cart-plus me-1"></i> Записаться на курс
                     </a>
                 }

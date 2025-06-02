@@ -56,14 +56,14 @@
                                         }
                                     </td>
                                     <td>
-                                        @if (course.Users.OfType<Teacher>().Any())
+                                        @if (course.Teachers.Any())
                                         {
                                             <div class="d-flex flex-wrap gap-1">
-                                                @foreach (var teacher in course.Users.OfType<User>())
+                                                @foreach (var teacher in course.Teachers)
                                                 {
                                                     <span class="badge bg-info">
                                                         <a asp-action="Index" asp-controller="CourseTeachers" asp-route-courseId="@course.Id" class="text-decoration-none text-black">
-                                                            @teacher.UserName
+                                                            @teacher.User.UserName
                                                         </a>
                                                     </span>
 
@@ -80,14 +80,14 @@
                                         }
                                     </td>
                                     <td>
-                                        @if (course.Users.OfType<User>().Any())
+                                        @if (course.Users.Any())
                                         {
                                             <div>
                                                 <a asp-action="Index"
                                                    asp-controller="CourseStudents"
                                                    class="text-decoration-none text-black"
                                                    asp-route-courseId="@course.Id">
-                                                    Студенты (@(course.Users.OfType<User>().Count()))
+                                                    Студенты (@(course.Users.Count()))
                                                 </a>
                                             </div>
 

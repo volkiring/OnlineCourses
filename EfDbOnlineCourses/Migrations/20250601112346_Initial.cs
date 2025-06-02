@@ -254,15 +254,15 @@ namespace EfDbOnlineCourses.Migrations
                 name: "Students",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    UserId = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Students", x => x.Id);
+                    table.PrimaryKey("PK_Students", x => x.UserId);
                     table.ForeignKey(
-                        name: "FK_Students_AspNetUsers_Id",
-                        column: x => x.Id,
+                        name: "FK_Students_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -270,7 +270,7 @@ namespace EfDbOnlineCourses.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "CoursesUser",
+                name: "CourseUser",
                 columns: table => new
                 {
                     CoursesId = table.Column<int>(type: "int", nullable: false),
@@ -279,15 +279,15 @@ namespace EfDbOnlineCourses.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CoursesUser", x => new { x.CoursesId, x.UsersId });
+                    table.PrimaryKey("PK_CourseUser", x => new { x.CoursesId, x.UsersId });
                     table.ForeignKey(
-                        name: "FK_CoursesUser_AspNetUsers_UsersId",
+                        name: "FK_CourseUser_AspNetUsers_UsersId",
                         column: x => x.UsersId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CoursesUser_Courses_CoursesId",
+                        name: "FK_CourseUser_Courses_CoursesId",
                         column: x => x.CoursesId,
                         principalTable: "Courses",
                         principalColumn: "Id",
@@ -351,15 +351,17 @@ namespace EfDbOnlineCourses.Migrations
                 name: "Requests",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     TypeId = table.Column<int>(type: "int", nullable: false),
                     Message = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    SpecialtyId = table.Column<int>(type: "int", nullable: false),
                     SubmittedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Status = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                    Status = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
@@ -375,6 +377,12 @@ namespace EfDbOnlineCourses.Migrations
                         principalTable: "RequestTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Requests_Specialties_SpecialtyId",
+                        column: x => x.SpecialtyId,
+                        principalTable: "Specialties",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -382,16 +390,16 @@ namespace EfDbOnlineCourses.Migrations
                 name: "Teachers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    UserId = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     SpecialtyId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Teachers", x => x.Id);
+                    table.PrimaryKey("PK_Teachers", x => x.UserId);
                     table.ForeignKey(
-                        name: "FK_Teachers_AspNetUsers_Id",
-                        column: x => x.Id,
+                        name: "FK_Teachers_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -404,27 +412,27 @@ namespace EfDbOnlineCourses.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "CourseTeachers",
+                name: "CourseTeacher",
                 columns: table => new
                 {
                     CoursesTaughtId = table.Column<int>(type: "int", nullable: false),
-                    TeachersId = table.Column<string>(type: "varchar(255)", nullable: false)
+                    TeachersUserId = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CourseTeachers", x => new { x.CoursesTaughtId, x.TeachersId });
+                    table.PrimaryKey("PK_CourseTeacher", x => new { x.CoursesTaughtId, x.TeachersUserId });
                     table.ForeignKey(
-                        name: "FK_CourseTeachers_Courses_CoursesTaughtId",
+                        name: "FK_CourseTeacher_Courses_CoursesTaughtId",
                         column: x => x.CoursesTaughtId,
                         principalTable: "Courses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CourseTeachers_Teachers_TeachersId",
-                        column: x => x.TeachersId,
+                        name: "FK_CourseTeacher_Teachers_TeachersUserId",
+                        column: x => x.TeachersUserId,
                         principalTable: "Teachers",
-                        principalColumn: "Id",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -481,14 +489,14 @@ namespace EfDbOnlineCourses.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_CoursesUser_UsersId",
-                table: "CoursesUser",
-                column: "UsersId");
+                name: "IX_CourseTeacher_TeachersUserId",
+                table: "CourseTeacher",
+                column: "TeachersUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CourseTeachers_TeachersId",
-                table: "CourseTeachers",
-                column: "TeachersId");
+                name: "IX_CourseUser_UsersId",
+                table: "CourseUser",
+                column: "UsersId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Grades_CourseId",
@@ -504,6 +512,11 @@ namespace EfDbOnlineCourses.Migrations
                 name: "IX_Lessons_CourseId",
                 table: "Lessons",
                 column: "CourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Requests_SpecialtyId",
+                table: "Requests",
+                column: "SpecialtyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Requests_TypeId",
@@ -540,10 +553,10 @@ namespace EfDbOnlineCourses.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "CoursesUser");
+                name: "CourseTeacher");
 
             migrationBuilder.DropTable(
-                name: "CourseTeachers");
+                name: "CourseUser");
 
             migrationBuilder.DropTable(
                 name: "Grades");

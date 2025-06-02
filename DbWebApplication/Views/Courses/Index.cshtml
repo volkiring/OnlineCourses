@@ -28,7 +28,7 @@
                         }
 
                         <div class="flex-grow-1">
-                            <a asp-action="Details" asp-route-courseId="@course.Id" asp-area ="" asp-controller ="Home" class="text-decoration-none text-dark">
+                            <a asp-action="Details" asp-route-courseId="@course.Id" asp-area ="" asp-controller ="Home" asp-route-userName ="@User.Identity.Name" class="text-decoration-none text-dark">
                                 <h5 class="mb-1 fw-semibold">@course.Title</h5>
                             </a>
                             <small class="text-muted">
@@ -36,7 +36,7 @@
                             </small>
                         </div>
 
-                        <form asp-action="RemoveStudentFromCourse" asp-route-courseId="@course.Id" method="post" onsubmit="return confirm('Вы уверены, что хотите удалить курс?');">
+                        <form asp-action="RemoveStudentFromCourse" asp-route-courseId="@course.Id" method="post" asp-route-userName="@User.Identity.Name" onsubmit="return confirm('Вы уверены, что хотите удалить курс?');">
                             <button type="submit" class="btn btn-sm btn-outline-danger">
                                 <i class="bi bi-trash"></i>
                             </button>

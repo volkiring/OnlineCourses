@@ -8,43 +8,38 @@ namespace DbWebApplication.Controllers
 	{
 		private readonly IUsersService usersService;
 		private readonly ICoursesRepository coursesRepository;
+		private readonly IStudentsRepository studentsRepository;
 
-		public CoursesController(IUsersService usersService, ICoursesRepository coursesRepository)
+		public CoursesController(IUsersService usersService, ICoursesRepository coursesRepository, IStudentsRepository studentsRepository)
 		{
 			this.usersService = usersService;
 			this.coursesRepository = coursesRepository;
+			this.studentsRepository = studentsRepository;
 		}
 
-		public IActionResult Index()
-		{
-			string userId = User.Identity.IsAuthenticated
-	? User.FindFirst(ClaimTypes.NameIdentifier)?.Value
-	: null;
+		public IActionResult Index(string userName)
+		{ 
 
-			if (userId == null)
+			if (userName == null)
 			{
-				return Unauthorized();
+				return RedirectToAction("Login", "Account");
 			}
-			var userCourses = usersService.GetUserCoursesById(userId);
+			var userCourses = usersService.GetUserCoursesByName(userName);
 
 			return View(userCourses);
 		}
 
-		public IActionResult AddStudentToCourse(int courseId)
+		public IActionResult AddStudentToCourse(int courseId, string userName)
 		{
-			string userId = User.Identity.IsAuthenticated
-? User.FindFirst(ClaimTypes.NameIdentifier)?.Value
-: null;
-
-			if (userId == null)
+			if (userName == null)
 			{
-				return Unauthorized();
+				return RedirectToAction("Login","Account");
 			}
 
-			var student = usersService.TryGetUserByName(userId);
+			var student = studentsRepository.TryGetById(userName);
 			var course = coursesRepository.TryGetById(courseId);
 
-			if (student.Courses.Any(c => c.Id == course.Id))
+			if (student.User.Courses.Any(c => c.Id == course.Id))
 			{
 				return RedirectToAction("Error");
 			}
@@ -60,18 +55,15 @@ namespace DbWebApplication.Controllers
 			return View();
 		}
 
-		public IActionResult RemoveStudentFromCourse(int courseId)
+		public IActionResult RemoveStudentFromCourse(int courseId, string userName)
 		{
-			string userId = User.Identity.IsAuthenticated
-? User.FindFirst(ClaimTypes.NameIdentifier)?.Value
-: null;
 
-			if (userId == null)
+			if (userName == null)
 			{
 				return RedirectToAction("Login", "Account");
 			}
 
-			var student = usersService.TryGetUserByName(userId);
+			var student = studentsRepository.TryGetById(userName);
 			var course = coursesRepository.TryGetById(courseId);
 
 			coursesRepository.DeleteStudentToCourse(course, student);
