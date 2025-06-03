@@ -45,6 +45,11 @@ namespace EfDbOnlineCourses
             {
                 Id = 1,
                 Name = "Заявка на становление преподавателем"
+            },
+            new RequestType()
+            {
+                Id = 2,
+                Name = "Заявка на становление администратором"
             }
             );
 

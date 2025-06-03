@@ -1,5 +1,6 @@
 ﻿using EfDbOnlineCourses;
 using EfDbOnlineCourses.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DbWebApplication.Controllers
@@ -10,12 +11,14 @@ namespace DbWebApplication.Controllers
 		private readonly IRequestsRepository requestsRepository;
 		private readonly ISpecialitiesRepository specialitiesRepository;
 		private readonly IRequestTypeRepository requestTypeRepository;
-		public RequestController(IUsersService usersService, IRequestsRepository requestsRepository, ISpecialitiesRepository specialitiesRepository, IRequestTypeRepository requestTypeRepository)
+		private readonly UserManager<User> userManager;	
+		public RequestController(IUsersService usersService, IRequestsRepository requestsRepository, ISpecialitiesRepository specialitiesRepository, IRequestTypeRepository requestTypeRepository, UserManager<User> userManager)
 		{
 			this.usersService = usersService;
 			this.requestsRepository = requestsRepository;
 			this.specialitiesRepository = specialitiesRepository;
 			this.requestTypeRepository = requestTypeRepository;
+			this.userManager = userManager;
 		}
 
 		public IActionResult Index(string userName)
@@ -23,7 +26,7 @@ namespace DbWebApplication.Controllers
 			var user = usersService.TryGetUserByName(userName);
 			if (user == null)
 			{
-				return Unauthorized();
+				return RedirectToAction("Login","Account");
 			}
 
 			return View(user.Requests);
@@ -40,11 +43,19 @@ namespace DbWebApplication.Controllers
 		{
 			var user = usersService.TryGetUserByName(userName);
 			var type = requestTypeRepository.TryGetById(requestViewModel.Type.Id);
-			if (type.Name == "Заявка на становление преподавателем")
+			if (type.Name == Constants.TeacherRequest)
 			{
 				if (user.Teacher is not null)
 				{
-					return RedirectToAction("Error");
+					return RedirectToAction("ErrorTeacher");
+				}
+			}
+
+			if (type.Name == Constants.AdminRequest)
+			{
+				if (userManager.IsInRoleAsync(user, Constants.AdminRoleName).Result)
+				{
+					return RedirectToAction("ErrorAdmin");
 				}
 			}
 
@@ -63,7 +74,12 @@ namespace DbWebApplication.Controllers
 			return RedirectToAction("Index", new {user.UserName});	
 		}
 
-		public IActionResult Error()
+		public IActionResult ErrorTeacher()
+		{
+			return View();
+		}
+
+		public IActionResult ErrorAdmin()
 		{
 			return View();
 		}

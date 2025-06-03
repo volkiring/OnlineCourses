@@ -10,5 +10,9 @@ namespace EfDbOnlineCourses
 	{
 		public static string AdminRoleName = "Admin";
 		public static string UserRoleName = "User";
+		public static string TeacherRoleName = "Teacher";
+		public static string TeacherRequest = "Заявка на становление преподавателем";
+		public static string AdminRequest = "Заявка на становление администратором";
+
 	}
 }

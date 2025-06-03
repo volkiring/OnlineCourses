@@ -440,7 +440,11 @@ namespace EfDbOnlineCourses.Migrations
             migrationBuilder.InsertData(
                 table: "RequestTypes",
                 columns: new[] { "Id", "Name" },
-                values: new object[] { 1, "Заявка на становление преподавателем" });
+                values: new object[,]
+                {
+                    { 1, "Заявка на становление преподавателем" },
+                    { 2, "Заявка на становление администратором" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Specialties",

@@ -8,15 +8,11 @@ namespace DbWebApplication.Controllers
 {
 	public class AccountController : Controller
 	{
-		private readonly UserManager<User> userManager;
 		private readonly SignInManager<User> signInManager;
-		private readonly DatabaseContext databaseContext;
 		private readonly IStudentsRepository studentsRepository;
 		public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, DatabaseContext databaseContext, IStudentsRepository studentsRepository)
 		{
-			this.userManager = userManager;
 			this.signInManager = signInManager;
-			this.databaseContext = databaseContext;
 			this.studentsRepository = studentsRepository;
 		}
 

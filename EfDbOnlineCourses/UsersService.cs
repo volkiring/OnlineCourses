@@ -27,5 +27,13 @@ namespace DbWebApplication
 			return databaseContext.Users.Include(u => u.Courses).Include(r => r.Requests).ThenInclude(r => r.Type).Include(r => r.Requests).ThenInclude(r => r.Specialty).Include(u => u.Teacher).Include(u => u.Student).FirstOrDefault(u => u.UserName == userName);
 		}
 
+		public List<Course> GetTeacherCoursesByName(string userName)
+		{
+			var user = TryGetUserByName(userName);
+
+			return user?.Teacher.CoursesTaught ?? new List<Course>();
+		}
+
+
 	}
 }

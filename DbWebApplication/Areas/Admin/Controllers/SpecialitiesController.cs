@@ -1,10 +1,12 @@
 ﻿using EfDbOnlineCourses;
 using EfDbOnlineCourses.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DbWebApplication.Areas.Admin.Controllers
 {
 	[Area("Admin")]
+	[Authorize(Roles = "Admin")]
 	public class SpecialitiesController : Controller
 	{
 		private readonly ISpecialitiesRepository specialitiesRepository;

@@ -192,6 +192,11 @@ namespace EfDbOnlineCourses.Migrations
                         {
                             Id = 1,
                             Name = "Заявка на становление преподавателем"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Заявка на становление администратором"
                         });
                 });
 

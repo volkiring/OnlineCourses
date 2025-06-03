@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EfDbOnlineCourses.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20250601112346_Initial")]
+    [Migration("20250603124734_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -195,6 +195,11 @@ namespace EfDbOnlineCourses.Migrations
                         {
                             Id = 1,
                             Name = "Заявка на становление преподавателем"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Заявка на становление администратором"
                         });
                 });
 
