@@ -29,9 +29,9 @@ namespace DbWebApplication
 
 		public List<Course> GetTeacherCoursesByName(string userName)
 		{
-			var user = TryGetUserByName(userName);
+			var teacher = databaseContext.Teachers.Include(t => t.User).Include(t=> t.CoursesTaught).Include(t => t.Specialty).FirstOrDefault(t => t.User.UserName == userName);
 
-			return user?.Teacher.CoursesTaught ?? new List<Course>();
+			return teacher.CoursesTaught ?? new List<Course>();
 		}
 
 

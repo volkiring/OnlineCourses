@@ -66,6 +66,7 @@ namespace EfDbOnlineCourses
 			dbcontext.Teachers.Remove(teacher);
 			dbcontext.SaveChanges();
 
+			userManager.UpdateSecurityStampAsync(user).Wait();
 			userManager.DeleteAsync(user).Wait();
 		}
 

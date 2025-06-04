@@ -77,10 +77,12 @@ namespace EfDbOnlineCourses
 			dbcontext.Students.Remove(student);
 			dbcontext.SaveChanges();
 
+			userManager.UpdateSecurityStampAsync(user).Wait();
 			userManager.DeleteAsync(user).Wait();
+
 		}
 
-		public Student TryGetById(string id)
+		public Student TryGetById(string userName)
 		{
 			return dbcontext.Students
 				.Include(s => s.User)
@@ -88,7 +90,7 @@ namespace EfDbOnlineCourses
 				.ThenInclude(r => r.Type)
 				.Include(s => s.User)
 				.ThenInclude(u => u.Courses)
-				.FirstOrDefault(s => s.UserId == id);
+				.FirstOrDefault(s => s.User.UserName == userName);
 		}
 	}
 

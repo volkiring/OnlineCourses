@@ -12,7 +12,7 @@ namespace DbWebApplication.Areas.Admin.Controllers
 		private readonly ICoursesRepository coursesRepository;
 		private readonly IStudentsRepository studentsRepository;
 
-		public CourseStudentsController(ICoursesRepository coursesRepository,IStudentsRepository studentsRepository)
+		public CourseStudentsController(ICoursesRepository coursesRepository ,IStudentsRepository studentsRepository)
 		{
 			this.coursesRepository = coursesRepository;
 			this.studentsRepository = studentsRepository;

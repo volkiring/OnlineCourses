@@ -14,6 +14,9 @@ namespace EfDbOnlineCourses
         public DbSet<Request> Requests { get; set; }
         public DbSet<RequestType> RequestTypes { get; set; }
         public DbSet<Specialty> Specialties { get; set; }
+        public DbSet<Module> Modules { get; set; }
+
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
             Database.Migrate();

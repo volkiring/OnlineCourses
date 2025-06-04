@@ -92,7 +92,6 @@ namespace DbWebApplication.Areas.Admin.Controllers
 		}
 
 
-
 		public ActionResult Deny(int requestId)
         {
             var request = requestsRepository.TryGetById(requestId);

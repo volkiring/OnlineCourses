@@ -34,7 +34,7 @@ namespace DbWebApplication.Areas.Admin.Controllers
 			var teacher = coursesRepository.TryGetById(courseId);
 			var student = teachersRepository.TryGetById(teacherId);
 			coursesRepository.AddTeacherToCourse(teacher, student);
-			return RedirectToAction("Index", new { courseId });
+			return RedirectToAction("Index", new { courseId }); 
 		}
 
 		public IActionResult DeleteTeacherToCourse(int courseId, string teacherId)

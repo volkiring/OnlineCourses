@@ -103,14 +103,14 @@ namespace DbWebApplication.Areas.Admin.Controllers
 		public IActionResult StudentsByCourse(int courseId)
 		{
 			var course = coursesDbRepository.TryGetById(courseId);
-			var students = course.Users.OfType<User>().ToList();
+			var students = course.Users.ToList();
 			return View(students);
 		}
 
 		public IActionResult TeachersByCourse(int courseId)
 		{
 			var course = coursesDbRepository.TryGetById(courseId);
-			var teachers = course.Users.OfType<Teacher>().ToList();
+			var teachers = course.Teachers.ToList();
 			return View(teachers);
 		}
 	}

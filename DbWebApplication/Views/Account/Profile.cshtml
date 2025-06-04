@@ -1,0 +1,47 @@
+﻿@model User
+@{
+    ViewData["Title"] = "Профиль";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success text-center fw-semibold">
+        @TempData["Success"]
+    </div>
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center fw-bold">Профиль</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">@Model.UserName</h5>
+            <p class="card-text"><strong>Email:</strong> @Model.Email</p>
+
+           @if (Model.Teacher != null)
+            {
+                <p class="card-text"><strong>Роль:</strong> Преподаватель </p>
+                <p class="card-text"><strong>Специальность:</strong> @Model.Teacher.Specialty?.Name</p>
+            }
+            else
+            {
+                <p class="card-text"><strong>Роль:</strong> Студент </p>
+            }
+            @if (User.IsInRole("Admin"))
+            {
+                <p class="card-text"><strong>Права:</strong> Администратор </p>
+            }
+            else
+            {
+                <p class="card-text"><strong>Права:</strong> Пользователь </p>
+            }
+            
+<a asp-action="ChangePassword" asp-controller="Account" class="btn btn-primary btn-sm">
+    <i class="bi bi-shield-lock me-1"></i> Сменить пароль
+</a>
+
+
+           
+        </div>
+    </div>
+</div>

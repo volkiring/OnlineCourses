@@ -20,6 +20,7 @@ namespace EfDbOnlineCourses
         {
             return dbcontext.Courses
                 .Include(t => t.Users)
+                .ThenInclude(u => u.Courses)
                 .Include(c => c.Teachers)
                     .ThenInclude(t => t.Specialty)
 				.Include(c => c.Users)
@@ -50,14 +51,14 @@ namespace EfDbOnlineCourses
         public Course TryGetById(int id)
         {
             return dbcontext.Courses
-                .Include(c => c.Users)
-                    .ThenInclude(u => u.Teacher)
-                        .ThenInclude(u => u.Specialty)
+                .Include(c => c.Teachers)
+                    .ThenInclude(u => u.User)
 				.Include(c => c.Users)
                     .ThenInclude(c => c.Student)
-				.Include(c => c.Users)
-				    .ThenInclude(u => u.Teacher)
-                        .ThenInclude(u => u.CoursesTaught)
+                .Include(c=> c.Teachers)
+                    .ThenInclude(t => t.CoursesTaught)
+				.Include(c => c.Teachers)
+					.ThenInclude(t => t.Specialty)
 				.FirstOrDefault(c => c.Id == id);
         }
 

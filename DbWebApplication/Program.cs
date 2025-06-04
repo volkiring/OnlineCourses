@@ -2,6 +2,7 @@
 using DbWebApplication;
 using EfDbOnlineCourses;
 using EfDbOnlineCourses.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +27,22 @@ builder.Services.ConfigureApplicationCookie(options =>
 	};
 });
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+	options.Events.OnValidatePrincipal = async context =>
+	{
+		var userManager = context.HttpContext.RequestServices.GetRequiredService<UserManager<User>>();
+		var user = await userManager.GetUserAsync(context.Principal);
+
+		if (user == null)
+		{
+			context.RejectPrincipal();
+			await context.HttpContext.SignOutAsync();
+		}
+	};
+});
+
+
 
 builder.Services.AddScoped<ICoursesRepository, CoursesDbRepository>();
 builder.Services.AddScoped<IStudentsRepository, StudentsDbRepository>();
@@ -34,6 +51,7 @@ builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<ISpecialitiesRepository, SpecialitiesDbRepository>();	
 builder.Services.AddScoped<IRequestsRepository, RequestsDbRepository>();
 builder.Services.AddScoped<IRequestTypeRepository, RequestTypeDbRepository>();
+builder.Services.AddScoped<IModuleService, ModuleService>();	
 
 var app = builder.Build();
 

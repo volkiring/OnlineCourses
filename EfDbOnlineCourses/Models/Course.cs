@@ -18,6 +18,8 @@ namespace EfDbOnlineCourses.Models
 		public List<Teacher> Teachers { get; set; } = new();
 		public List<User> Users { get; set; } = new();
 
+		public List<Module> Modules { get; set; } = new();
+
 		public override bool Equals(object? obj)
 		{
 			return Equals(obj as Course);
