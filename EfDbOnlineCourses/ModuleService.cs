@@ -22,9 +22,14 @@ namespace EfDbOnlineCourses
 			return databaseContext.Modules.Include(m => m.Lessons).Include(m => m.Course).Where(m => m.Course.Id == courseId).ToList();
 		}
 
-		public Module TryGetById(int courseId)
+		public Lesson TryGetLessonById(int lessonId)
 		{
-			return databaseContext.Modules.Include(m => m.Lessons).Include(m => m.Course).FirstOrDefault(m => m.Id == courseId);
+			return databaseContext.Lessons.Include(l => l.Module).FirstOrDefault(l => l.Id == lessonId);
+		}
+
+		public Module TryGetById(int moduleId)
+		{
+			return databaseContext.Modules.Include(m => m.Lessons).Include(m => m.Course).FirstOrDefault(m => m.Id == moduleId);
 		}
 
 		public void AddLessonToModule(int moduleId, Lesson lesson)
@@ -44,6 +49,31 @@ namespace EfDbOnlineCourses
 		{
 			var course = coursesRepository.TryGetById(courseId);
 			course.Modules.Add(module);
+			databaseContext.SaveChanges();
+		}
+
+		public void RemoveModule(int moduleId)
+		{
+			var module = TryGetById(moduleId);
+			databaseContext.Modules.Remove(module);
+			databaseContext.SaveChanges();
+		}
+
+		public void EditModule(Module updatedModule, int moduleId)
+		{
+			var module = TryGetById(moduleId);
+
+			module.Title = updatedModule.Title;
+			databaseContext.SaveChanges();
+		}
+
+
+		public void EditLesson(Lesson updatedLesson, int lessonId)
+		{
+			var lesson = TryGetLessonById(lessonId);
+
+			lesson.Title = updatedLesson.Title;
+			lesson.Content = updatedLesson.Content;
 			databaseContext.SaveChanges();
 		}
 

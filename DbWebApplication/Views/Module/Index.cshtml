@@ -1,0 +1,27 @@
+﻿@model List<Module>
+@{
+    ViewData["Title"] = "Модули курса";
+}
+
+<h2 class="mb-4">Модули курса</h2>
+
+<a asp-action="Create" class="btn btn-sm btn-primary mb-3">Добавить модуль</a>
+
+@if (Model.Any())
+{
+    <ul class="list-group">
+        @foreach (var module in Model)
+        {
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <h5>@module.Title</h5>
+                    <a asp-controller="Module" asp-action="Index" asp-route-courseId="@module.Course.Id" class="btn btn-sm btn-outline-secondary">Перейти</a>
+                </div>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <div class="alert alert-info">В этом курсе пока нет модулей.</div>
+}

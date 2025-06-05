@@ -7,58 +7,50 @@ namespace DbWebApplication.Controllers
 	public class ModuleController : Controller
 	{
 		private readonly IModuleService moduleService;
+		private readonly ICoursesRepository coursesRepository;
 
-		public ModuleController(IModuleService moduleService)
+		public ModuleController(IModuleService moduleService, ICoursesRepository coursesRepository)
 		{
 			this.moduleService = moduleService;
+			this.coursesRepository = coursesRepository;
 		}
 
 		public IActionResult Index(int courseId)
 		{
-			var module = moduleService.TryGetByCourseId(courseId);
-			if (module == null) return NotFound();
-			return View(module);
+			var course = coursesRepository.TryGetById(courseId);
+			var modules = course.Modules;	
+			if (modules == null) return NotFound();
+			return View(modules);
 		}
 
-		public IActionResult CreateLesson(int moduleId)
+		public IActionResult Create(int courseId)
 		{
 			return View();
 		}
 
 		[HttpPost]
-		public IActionResult CreateLesson(int moduleId, Lesson lesson)
+		public IActionResult Create(Module module, int courseId)
 		{
-			if (!ModelState.IsValid)
-			{
-				return View(lesson);
-			}
+			moduleService.AddModule(module, courseId);
+			return RedirectToAction("Index", new { courseId });
 
-			moduleService.AddLessonToModule(moduleId, lesson);
-			return RedirectToAction("Index", new { courseId = moduleService.TryGetById(moduleId).Course.Id });
 		}
 
-		public IActionResult EditLesson(int id)
+		[HttpGet]
+		public IActionResult EditModule(int moduleId)
 		{
-			var module = moduleService.TryGetById(id);
-			var lesson = module?.Lessons.FirstOrDefault(l => l.Id == id);
-			if (lesson == null) return NotFound();
-			return View(lesson);
+			var module = moduleService.TryGetById(moduleId);
+			return View(module);
 		}
 
 		[HttpPost]
-		public IActionResult EditLesson(int lessonId, Lesson updatedLesson)
+		public IActionResult DeleteModule(int moduleId, int courseId)
 		{
-			var lesson = moduleService.TryGetById(lessonId);
-			if (lesson == null) return NotFound();
+			var module = moduleService.TryGetById(moduleId);
+			return RedirectToAction("Index", new { courseId });
 
-			return RedirectToAction("Index", new { courseId = lesson.Course.Id });
 		}
 
-		[HttpPost]
-		public IActionResult DeleteLesson(int id)
-		{
-			moduleService.RemoveLesson(id);
-			return RedirectToAction("Index");
-		}
+
 	}
 }
