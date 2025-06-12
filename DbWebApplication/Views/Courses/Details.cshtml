@@ -1,0 +1,61 @@
+﻿@model Course
+
+@{
+    ViewData["Title"] = "Детали курса";
+}
+
+<div class="container mt-5">
+    <h2 class="fw-bold mb-4">@Model.Title</h2>
+
+    <div class="accordion" id="courseModules">
+        @for (int mi = 0; mi < Model.Modules.Count; mi++)
+        {
+            var module = Model.Modules[mi];
+            var moduleId = $"mod{mi}";
+            <div class="accordion-item mb-3 shadow-sm border-0">
+                <h2 class="accordion-header" id="heading-@moduleId">
+                    <button class="accordion-button collapsed bg-light"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapse-@moduleId"
+                            aria-expanded="false"
+                            aria-controls="collapse-@moduleId">
+                        <span class="me-2 fw-semibold">@($"{mi + 1}.")</span> @module.Title
+                    </button>
+                </h2>
+                <div id="collapse-@moduleId"
+                     class="accordion-collapse collapse"
+                     aria-labelledby="heading-@moduleId"
+                     data-bs-parent="#courseModules">
+                    <div class="accordion-body p-0">
+                        <ul class="list-group list-group-flush">
+                            @for (int li = 0; li < (module.Lessons?.Count ?? 0); li++)
+                            {
+                                var lesson = module.Lessons[li];
+                                <li class="list-group-item d-flex align-items-center py-2 px-3">
+                                    <span class="me-3 text-muted">@($"{mi + 1}.{li + 1}")</span>
+                                    <a asp-controller="Courses"
+                                       asp-action="Content"
+                                       asp-route-lessonId="@lesson.Id"
+                                       class="flex-grow-1 text-decoration-none text-dark">
+                                        @lesson.Title
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('#courseModules .accordion-button').forEach(btn =>
+            btn.addEventListener('shown.bs.collapse', e =>
+                e.target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            )
+        );
+    </script>
+}

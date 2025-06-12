@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EfDbOnlineCourses.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20250604210631_modules")]
-    partial class modules
+    [Migration("20250612115603_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -120,6 +120,7 @@ namespace EfDbOnlineCourses.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Content")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("ModuleId")

@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EfDbOnlineCourses
+namespace EfDbOnlineCourses.Repositories
 {
 	public class StudentsDbRepository : IStudentsRepository
 	{
@@ -82,7 +82,19 @@ namespace EfDbOnlineCourses
 
 		}
 
-		public Student TryGetById(string userName)
+		public Student TryGetById(string userId)
+		{
+			return dbcontext.Students
+				.Include(s => s.User)
+				.ThenInclude(s => s.Requests)
+				.ThenInclude(r => r.Type)
+				.Include(s => s.User)
+				.ThenInclude(u => u.Courses)
+				.FirstOrDefault(s => s.UserId == userId);
+		}
+
+
+		public Student TryGetByUserName(string userName)
 		{
 			return dbcontext.Students
 				.Include(s => s.User)

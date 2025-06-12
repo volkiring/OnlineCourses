@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EfDbOnlineCourses
+namespace EfDbOnlineCourses.Repositories
 {
     public class CoursesDbRepository : ICoursesRepository
     {
@@ -53,12 +53,14 @@ namespace EfDbOnlineCourses
             return dbcontext.Courses
                 .Include(c => c.Teachers)
                     .ThenInclude(u => u.User)
-				.Include(c => c.Users)
+                .Include(c => c.Users)
                     .ThenInclude(c => c.Student)
-                .Include(c=> c.Teachers)
+                .Include(c => c.Teachers)
                     .ThenInclude(t => t.CoursesTaught)
-				.Include(c => c.Teachers)
-					.ThenInclude(t => t.Specialty)
+                .Include(c => c.Teachers)
+                    .ThenInclude(t => t.Specialty)
+                .Include(c => c.Modules)
+                    .ThenInclude(c => c.Lessons)
 				.FirstOrDefault(c => c.Id == id);
         }
 

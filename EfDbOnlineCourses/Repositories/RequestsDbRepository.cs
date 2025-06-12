@@ -1,7 +1,7 @@
 ﻿using EfDbOnlineCourses.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace EfDbOnlineCourses
+namespace EfDbOnlineCourses.Repositories
 {
 	public class RequestsDbRepository : IRequestsRepository
 	{

@@ -38,7 +38,6 @@ public class IdentityInitializer
 			if (result.Succeeded)
 			{
 				userManager.AddToRoleAsync(admin, Constants.AdminRoleName).Wait();
-				userManager.AddToRoleAsync(admin, Constants.TeacherRoleName).Wait();
 
 			}
 		}

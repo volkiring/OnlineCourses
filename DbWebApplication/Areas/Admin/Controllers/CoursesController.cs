@@ -113,5 +113,6 @@ namespace DbWebApplication.Areas.Admin.Controllers
 			var teachers = course.Teachers.ToList();
 			return View(teachers);
 		}
+
 	}
 }

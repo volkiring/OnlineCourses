@@ -37,10 +37,15 @@ namespace EfDbOnlineCourses
 			modelBuilder.Entity<Student>()
 				.HasKey(s => s.UserId);
 
-			modelBuilder.Entity<Student>()
-				.HasOne(s => s.User)
-				.WithOne(u => u.Student)
-				.HasForeignKey<Student>(s => s.UserId);
+            modelBuilder.Entity<Student>()
+                .HasOne(s => s.User)
+                .WithOne(u => u.Student)
+                .HasForeignKey<Student>(s => s.UserId);
+
+			modelBuilder.Entity<Module>()
+		    .HasMany(m => m.Lessons)
+		    .WithOne(l => l.Module)
+		    .OnDelete(DeleteBehavior.Cascade);
 
 
 			modelBuilder.Entity<RequestType>().HasData(

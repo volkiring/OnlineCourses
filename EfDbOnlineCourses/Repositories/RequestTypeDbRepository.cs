@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EfDbOnlineCourses
+namespace EfDbOnlineCourses.Repositories
 {
 	public class RequestTypeDbRepository : IRequestTypeRepository
 	{

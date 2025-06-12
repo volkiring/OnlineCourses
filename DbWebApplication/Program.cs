@@ -2,6 +2,7 @@
 using DbWebApplication;
 using EfDbOnlineCourses;
 using EfDbOnlineCourses.Models;
+using EfDbOnlineCourses.Repositories;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -51,7 +52,8 @@ builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<ISpecialitiesRepository, SpecialitiesDbRepository>();	
 builder.Services.AddScoped<IRequestsRepository, RequestsDbRepository>();
 builder.Services.AddScoped<IRequestTypeRepository, RequestTypeDbRepository>();
-builder.Services.AddScoped<IModuleService, ModuleService>();	
+builder.Services.AddScoped<IModuleRepository, ModuleDbRepository>();	
+builder.Services.AddScoped<ILessonRepository, LessonDbRepository>();
 
 var app = builder.Build();
 
@@ -62,7 +64,9 @@ using (var serviceScope = app.Services.CreateScope())
 	var userManager = services.GetRequiredService<UserManager<User>>();
 	var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 	var studentManager = services.GetRequiredService<IStudentsRepository>();
+	var context = services.GetRequiredService<DatabaseContext>();
 	IdentityInitializer.Initialize(userManager, rolesManager, studentManager);
+	DbSeeder.SeedDatabase(context);
 }
 
 if (!app.Environment.IsDevelopment())

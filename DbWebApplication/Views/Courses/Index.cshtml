@@ -9,7 +9,7 @@
 <div class="container mt-5">
     <h2 class="mb-4 text-center fw-bold">Мои курсы</h2>
 
-    @if (Model != null && Model.Any())
+    @if (Model.Any())
     {
         <ul class="list-group list-group-flush shadow-sm rounded">
             @foreach (var course in Model)

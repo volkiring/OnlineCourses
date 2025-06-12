@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace EfDbOnlineCourses
+namespace EfDbOnlineCourses.Repositories
 {
 	public class TeachersDbRepository : ITeachersRepository
 	{
@@ -11,7 +11,7 @@ namespace EfDbOnlineCourses
 
 		public TeachersDbRepository(DatabaseContext dbContext, UserManager<User> userManager)
 		{
-			this.dbcontext = dbContext;
+			dbcontext = dbContext;
 			this.userManager = userManager;
 		}
 

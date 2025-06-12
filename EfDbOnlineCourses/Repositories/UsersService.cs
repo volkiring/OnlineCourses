@@ -1,10 +1,11 @@
-﻿using EfDbOnlineCourses;
+﻿using DbWebApplication;
+using EfDbOnlineCourses;
 using EfDbOnlineCourses.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Security.Claims;
 
-namespace DbWebApplication
+namespace EfDbOnlineCourses.Repositories
 {
 	public class UsersService : IUsersService
 	{

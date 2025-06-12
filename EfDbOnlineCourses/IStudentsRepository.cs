@@ -9,6 +9,7 @@ namespace EfDbOnlineCourses
 		void Delete(Student student);
 		List<Student> GetAll();
 		Student TryGetById(string id);
+		Student TryGetByUserName(string userName);
 		void Update(Student student, Student updatedStudent);
 	}
 }

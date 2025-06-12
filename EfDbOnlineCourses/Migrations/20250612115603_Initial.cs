@@ -324,22 +324,20 @@ namespace EfDbOnlineCourses.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Lessons",
+                name: "Modules",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    CourseId = table.Column<int>(type: "int", nullable: false),
                     Title = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Content = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    CourseId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Lessons", x => x.Id);
+                    table.PrimaryKey("PK_Modules", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Lessons_Courses_CourseId",
+                        name: "FK_Modules_Courses_CourseId",
                         column: x => x.CourseId,
                         principalTable: "Courses",
                         principalColumn: "Id",
@@ -408,6 +406,30 @@ namespace EfDbOnlineCourses.Migrations
                         column: x => x.SpecialtyId,
                         principalTable: "Specialties",
                         principalColumn: "Id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Lessons",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ModuleId = table.Column<int>(type: "int", nullable: false),
+                    Title = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Content = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Lessons", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Lessons_Modules_ModuleId",
+                        column: x => x.ModuleId,
+                        principalTable: "Modules",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -513,8 +535,13 @@ namespace EfDbOnlineCourses.Migrations
                 column: "StudentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Lessons_CourseId",
+                name: "IX_Lessons_ModuleId",
                 table: "Lessons",
+                column: "ModuleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Modules_CourseId",
+                table: "Modules",
                 column: "CourseId");
 
             migrationBuilder.CreateIndex(
@@ -581,7 +608,7 @@ namespace EfDbOnlineCourses.Migrations
                 name: "Teachers");
 
             migrationBuilder.DropTable(
-                name: "Courses");
+                name: "Modules");
 
             migrationBuilder.DropTable(
                 name: "RequestTypes");
@@ -591,6 +618,9 @@ namespace EfDbOnlineCourses.Migrations
 
             migrationBuilder.DropTable(
                 name: "Specialties");
+
+            migrationBuilder.DropTable(
+                name: "Courses");
         }
     }
 }

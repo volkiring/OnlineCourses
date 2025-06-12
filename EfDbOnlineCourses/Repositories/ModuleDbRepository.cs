@@ -6,13 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EfDbOnlineCourses
+namespace EfDbOnlineCourses.Repositories
 {
-	public class ModuleService : IModuleService
+	public class ModuleDbRepository : IModuleRepository
 	{
 		private readonly DatabaseContext databaseContext;
 		private readonly ICoursesRepository coursesRepository;
-		public ModuleService(DatabaseContext databaseContext, ICoursesRepository coursesRepository)
+		public ModuleDbRepository(DatabaseContext databaseContext, ICoursesRepository coursesRepository)
 		{
 			this.databaseContext = databaseContext;
 			this.coursesRepository = coursesRepository;
@@ -48,6 +48,7 @@ namespace EfDbOnlineCourses
 		public void AddModule(Module module, int courseId)
 		{
 			var course = coursesRepository.TryGetById(courseId);
+			module.Course = course;
 			course.Modules.Add(module);
 			databaseContext.SaveChanges();
 		}
@@ -59,10 +60,8 @@ namespace EfDbOnlineCourses
 			databaseContext.SaveChanges();
 		}
 
-		public void EditModule(Module updatedModule, int moduleId)
-		{
-			var module = TryGetById(moduleId);
-
+		public void EditModule(Module updatedModule, Module module)
+		{ 
 			module.Title = updatedModule.Title;
 			databaseContext.SaveChanges();
 		}

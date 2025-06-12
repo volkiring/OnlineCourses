@@ -1,0 +1,64 @@
+﻿@model (List<Lesson>, int)
+@{
+    ViewData["Title"] = "Уроки модуля";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4 fw-bold">Уроки модуля</h2>
+
+    @if (Model.Item1.Any())
+    {
+        <div class="row row-cols-1 g-4">
+            @foreach (var lesson in Model.Item1)
+            {
+                <div class="col">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body">
+                            <a asp-action="Content" asp-route-lessonId="@lesson.Id" asp-area="" asp-controller="Lesson" class="text-decoration-none text-dark">
+                                <h5 class="mb-1 fw-semibold">@lesson.Title</h5>
+                            </a>
+                            <p class="card-text text-muted">
+                                @if (!string.IsNullOrWhiteSpace(lesson.Content))
+                                {
+                                    @(lesson.Content.Substring(0, Math.Min(100, lesson.Content.Length)))
+                                }
+                                else
+                                {
+                                    <p>Содержимое отсутствует</p>
+                                }
+                            </p>
+                            <div class="d-flex justify-content-end gap-2">
+                                <a asp-action="Edit" asp-route-lessonId="@lesson.Id" asp-route-moduleId="@lesson.Module.Id" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-pencil-square"></i> Редактировать
+                                </a>
+                                <form asp-action="Delete" asp-route-lessonId="@lesson.Id" method="post" onsubmit="return confirm('Удалить этот урок?');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash"></i> Удалить
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info text-center">
+            В этом модуле пока нет уроков.
+        </div>
+    }
+
+    <div class="text-center mt-4">
+        <a asp-action="Create" asp-route-moduleId="@Model.Item2" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Добавить урок
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

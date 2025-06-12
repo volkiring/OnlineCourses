@@ -36,7 +36,7 @@
             </ul>
 
             <h3>Преподаватели</h3>
-            @if (Model.course.Teachers.Any() == true)
+            @if (Model.course.Teachers.Any())
             {
                 <ul class="list-unstyled detail-list mb-3">
                     @foreach (var teacher in Model.course.Teachers)
@@ -54,7 +54,7 @@
             }
 
             <h3>Студенты</h3>
-            @if (Model.course.Users.Any() == true)
+            @if (Model.course.Users.Any())
             {
                 <ul class="list-unstyled detail-list mb-3">
                     @foreach (var student in Model.course.Users)
@@ -75,9 +75,8 @@
 
                 @if (Model.isCourseExist)
                 {
-  
-                    <a asp-controller="Courses" asp-action="AddStudentToCourse" asp-route-courseId="@Model.course.Id" asp-area="" class="btn btn-primary">
-                        <i class="bi bi-cart-plus me-1"></i> Продолжить проходить курс
+                    <a asp-controller="Courses" asp-action="Details" asp-route-courseId="@Model.course.Id" asp-area="" class="btn btn-primary">
+                        <i class="bi bi-book"></i> Продолжить проходить курс
                     </a>
                 }
                 else

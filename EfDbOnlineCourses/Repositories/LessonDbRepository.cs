@@ -6,14 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EfDbOnlineCourses
+namespace EfDbOnlineCourses.Repositories
 {
-	public class LessonService
+	public class LessonDbRepository : ILessonRepository
 	{
 
 		private readonly DatabaseContext databaseContext;
-		private readonly IModuleService moduleService;
-		public LessonService(DatabaseContext databaseContext, IModuleService moduleService)
+		private readonly IModuleRepository moduleService;
+		public LessonDbRepository(DatabaseContext databaseContext, IModuleRepository moduleService)
 		{
 			this.databaseContext = databaseContext;
 			this.moduleService = moduleService;
@@ -32,25 +32,26 @@ namespace EfDbOnlineCourses
 		public void AddLessonToModule(int moduleId, Lesson lesson)
 		{
 			var module = moduleService.TryGetById(moduleId);
+			lesson.Module = module;
 			module.Lessons.Add(lesson);
 			databaseContext.SaveChanges();
 		}
 
 		public void RemoveLesson(int lessonId)
 		{
-			var lesson = databaseContext.Lessons.FirstOrDefault(l => l.Id == lessonId);
+			var lesson = TryGetLessonById(lessonId);
 			databaseContext.Lessons.Remove(lesson);
 			databaseContext.SaveChanges();
 		}
 
 		public Lesson TryGetLessonById(int lessonId)
 		{
-			return databaseContext.Lessons.Include(l => l.Module).FirstOrDefault(l => l.Id == lessonId);
+			return databaseContext.Lessons.Include(l => l.Module).ThenInclude(m => m.Course).FirstOrDefault(l => l.Id == lessonId);
 		}
 
 		public List<Lesson> TryGetLessonsByModuleId(int moduleId)
 		{
-			return databaseContext.Lessons.Include(l => l.Module).Where(l => l.Module.Id == moduleId).ToList();
+			return databaseContext.Lessons.Include(l => l.Module).ThenInclude(m => m.Course).Where(l => l.Module.Id == moduleId).ToList();
 		}
 
 
