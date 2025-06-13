@@ -71,7 +71,7 @@ namespace DbWebApplication.Controllers
 
 			coursesRepository.DeleteStudentToCourse(course, student);
 
-			return RedirectToAction("Index");
+			return RedirectToAction("Index", new {userName});
 		}
 
 		public IActionResult Details(int courseId)
