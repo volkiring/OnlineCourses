@@ -54,6 +54,7 @@ builder.Services.AddScoped<IRequestsRepository, RequestsDbRepository>();
 builder.Services.AddScoped<IRequestTypeRepository, RequestTypeDbRepository>();
 builder.Services.AddScoped<IModuleRepository, ModuleDbRepository>();	
 builder.Services.AddScoped<ILessonRepository, LessonDbRepository>();
+builder.Services.AddScoped<IReviewRepository, ReviewDbRepository>();
 
 var app = builder.Build();
 

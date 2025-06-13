@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EfDbOnlineCourses.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20250612115603_Initial")]
+    [Migration("20250613190303_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -224,6 +224,40 @@ namespace EfDbOnlineCourses.Migrations
                             Id = 2,
                             Name = "Заявка на становление администратором"
                         });
+                });
+
+            modelBuilder.Entity("EfDbOnlineCourses.Models.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DatePosted")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StudentUserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("StudentUserId");
+
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("EfDbOnlineCourses.Models.Specialty", b =>
@@ -573,6 +607,25 @@ namespace EfDbOnlineCourses.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("EfDbOnlineCourses.Models.Review", b =>
+                {
+                    b.HasOne("EfDbOnlineCourses.Models.Course", "Course")
+                        .WithMany("Reviews")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EfDbOnlineCourses.Models.Student", "Student")
+                        .WithMany("Reviews")
+                        .HasForeignKey("StudentUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("EfDbOnlineCourses.Models.Student", b =>
                 {
                     b.HasOne("EfDbOnlineCourses.Models.User", "User")
@@ -655,11 +708,18 @@ namespace EfDbOnlineCourses.Migrations
             modelBuilder.Entity("EfDbOnlineCourses.Models.Course", b =>
                 {
                     b.Navigation("Modules");
+
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("EfDbOnlineCourses.Models.Module", b =>
                 {
                     b.Navigation("Lessons");
+                });
+
+            modelBuilder.Entity("EfDbOnlineCourses.Models.Student", b =>
+                {
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("EfDbOnlineCourses.Models.User", b =>

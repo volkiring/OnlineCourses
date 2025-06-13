@@ -15,7 +15,7 @@ namespace EfDbOnlineCourses
         public DbSet<RequestType> RequestTypes { get; set; }
         public DbSet<Specialty> Specialties { get; set; }
         public DbSet<Module> Modules { get; set; }
-
+        public DbSet<Review> Reviews { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {

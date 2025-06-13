@@ -61,6 +61,7 @@ namespace EfDbOnlineCourses.Repositories
                     .ThenInclude(t => t.Specialty)
                 .Include(c => c.Modules)
                     .ThenInclude(c => c.Lessons)
+                .Include(c => c.Reviews)
 				.FirstOrDefault(c => c.Id == id);
         }
 

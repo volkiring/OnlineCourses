@@ -17,8 +17,9 @@ namespace EfDbOnlineCourses.Models
 		public string? ImagePath { get; set; }
 		public List<Teacher> Teachers { get; set; } = new();
 		public List<User> Users { get; set; } = new();
-
 		public List<Module> Modules { get; set; } = new();
+		public List<Review> Reviews { get; set; } = new();
+
 
 		public override bool Equals(object? obj)
 		{

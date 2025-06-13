@@ -1,0 +1,69 @@
+﻿@model List<Review>
+
+@{
+    ViewData["Title"] = "Отзывы о курсе";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <h2 class="mb-4 text-center display-6">@ViewData["Title"]</h2>
+
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info text-center">
+                    Пока нет отзывов для этого курса.
+                </div>
+            }
+            else
+            {
+                @foreach (var review in Model.OrderByDescending(r => r.DatePosted))
+                {
+                    <div class="card mb-4 shadow-sm border-0">
+                        <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+                            <div class="d-flex align-items-center">
+                                <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center me-3"
+                                     style="width:40px; height:40px; font-weight:bold;">
+                                    @review.Student.User.UserName.Substring(0, 1).ToUpper()
+                                </div>
+                                <div>
+                                    <div class="fw-semibold">@review.Student.User.UserName</div>
+                                    <small class="text-muted">
+                                        @review.DatePosted.ToLocalTime().ToString("dd MMM yyyy, HH:mm")
+                                    </small>
+                                </div>
+                            </div>
+                            <div>
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    if (i <= review.Rating)
+                                    {
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="bi bi-star text-muted"></i>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="card-body bg-light">
+                            <p class="card-text" style="white-space: pre-line; line-height:1.6;">
+                                @review.Content
+                            </p>
+                        </div>
+                    </div>
+                }
+            }
+
+            <div class="text-center mt-4">
+                <a asp-action="Index" asp-controller="Home" asp-route-courseId="@ViewBag.CourseId"
+                   class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-arrow-left-circle me-1"></i> Назад к курсам
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -27,16 +27,22 @@ namespace DbWebApplication.Controllers
 			var course = coursesRepository.TryGetById(courseId);
 
 			var isCourseExist = false;
+			var isReviewExist = false;
+			var userCourses = usersService.GetUserCoursesByName(userName);		
 			if (userName != null)
 			{
-				var userCourses = usersService.GetUserCoursesByName(userName);
-				if (userCourses.Contains(course))
+				var currentCourse = userCourses.FirstOrDefault(c => c.Id == course.Id);
+				if (currentCourse != null)
 				{
 					isCourseExist = true;
+					if (currentCourse.Reviews.Any(r => r.Student.User.UserName == userName)) 
+					{
+						isReviewExist = true;
+					}
 				}
 			}
 
-
+			ViewBag.IsReviewExist = isReviewExist;
 			return View((course, isCourseExist));
 		}
 	}

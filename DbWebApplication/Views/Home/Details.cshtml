@@ -22,6 +22,8 @@
             }
         </div>
 
+
+
         <div class="detail-body">
 
             <h2 class="fw-bold">@Model.course.Title</h2>
@@ -68,10 +70,44 @@
                 <p class="text-muted fst-italic">Нет студентов.</p>
             }
 
+
+            @if (!ViewBag.IsReviewExist && Model.isCourseExist)
+            {
+                <form asp-controller="Review" asp-action="Create" method="post" asp-route-userName="@User.Identity.Name">
+                    <input type="hidden" name="courseId" value="@Model.course.Id" />
+                    <input type="hidden" name="rating" id="ratingInput" value="0" />
+
+                    <div class="mb-3">
+                        <label class="form-label d-block">Оценка</label>
+                        <div id="starRating" class="text-warning fs-4" style="cursor: pointer;">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                <i class="bi bi-star" data-value="@i"></i>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Отзыв</label>
+                        <textarea name="content" class="form-control" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Оставить отзыв</button>
+                </form>
+            }
+
             <div class="d-flex justify-content-between mt-4">
                 <a asp-action="Index" asp-controller="Home" asp-area ="" class="btn btn-outline-secondary">
                     <i class="bi bi-arrow-left me-1"></i> Назад к курсам
                 </a>
+
+                <a asp-controller="Review"
+                   asp-action="Index"
+                   asp-route-courseId="@Model.course.Id"
+                   class="btn btn-outline-primary d-inline-flex align-items-center">
+                    <i class="bi bi-chat-left-text me-1"></i> Посмотреть отзывы
+                </a>
+
 
                 @if (Model.isCourseExist)
                 {
@@ -89,3 +125,29 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const stars = document.querySelectorAll('#starRating i');
+            const ratingInput = document.getElementById('ratingInput');
+
+            stars.forEach((star, idx) => {
+                star.addEventListener('click', () => {
+                    const rating = star.getAttribute('data-value');
+                    ratingInput.value = rating;
+
+                    stars.forEach((s, i) => {
+                        if (i < rating) {
+                            s.classList.remove('bi-star');
+                            s.classList.add('bi-star-fill');
+                        } else {
+                            s.classList.remove('bi-star-fill');
+                            s.classList.add('bi-star');
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+}
