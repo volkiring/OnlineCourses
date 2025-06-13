@@ -9,7 +9,7 @@
 
     <dl class="row mt-3">
         <dt class="col-sm-3">Пользователь</dt>
-        <dd class="col-sm-9">@Model.User?.UserName</dd>
+        <dd class="col-sm-9">@(Model.User?.UserName ?? "удаленный пользователь")</dd>
 
         <dt class="col-sm-3">Тип заявки</dt>
         <dd class="col-sm-9">@Model.Type?.Name</dd>

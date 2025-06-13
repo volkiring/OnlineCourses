@@ -22,7 +22,7 @@
                 @foreach (var request in Model)
                 {
                     <tr>
-                        <td>@request.User?.UserName</td>
+                        <td>@(request.User?.UserName ?? "удаленный пользователь")</td>
                         <td>@request.Type?.Name</td>
                         <td>
                             @if (request.Status == RequestStatus.Pending)
