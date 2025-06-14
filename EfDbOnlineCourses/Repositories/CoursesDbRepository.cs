@@ -26,6 +26,7 @@ namespace EfDbOnlineCourses.Repositories
 				.Include(c => c.Users)
 				    .ThenInclude(u => u.Teacher)
 				        .ThenInclude(u => u.CoursesTaught)
+                .Include(c => c.Reviews)
 				.ToList();
         }
         public void Add(Course course)

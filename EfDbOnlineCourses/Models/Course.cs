@@ -19,7 +19,7 @@ namespace EfDbOnlineCourses.Models
 		public List<User> Users { get; set; } = new();
 		public List<Module> Modules { get; set; } = new();
 		public List<Review> Reviews { get; set; } = new();
-
+		public double AverageRating => Reviews.Any() ? Math.Round(Reviews.Average(r => r.Rating), 1) : 0;
 
 		public override bool Equals(object? obj)
 		{

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Course>
+﻿@model List<Course>
 
 @{
     ViewData["Title"] = "Каталог курсов";
@@ -32,20 +32,49 @@
 
                         <div class="card-body">
                             <div class="title" title="@course.Title">@course.Title</div>
-                            <div class="meta">
-                                @(!string.IsNullOrWhiteSpace(course.Description)
-                                    ? (course.Description.Length > 80
-                                    ? course.Description.Substring(0, 80) + "…"
-                                    : course.Description)
-                                    : "<em>Описание отсутствует</em>")
-                            </div>
-                            <div class="meta">
-                                <small>
-                                    <strong>Старт:</strong> @course.StartDate?.ToString("dd.MM.yyyy")<br />
-                                    <strong>Финиш:</strong> @course.EndDate?.ToString("dd.MM.yyyy")
-                                </small>
-                            </div>
+
+                            <div class="mb-2">
+                                @if (course.AverageRating > 0)
+                                {
+                                    <div class="d-flex align-items-center">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            if (i <= Math.Floor(course.AverageRating))
+                                            {
+                                                <i class="bi bi-star-fill text-warning me-1"></i>
+                                            }
+                                            else if (i - course.AverageRating < 1)
+                                            {
+                                                <i class="bi bi-star-half text-warning me-1"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="bi bi-star text-muted me-1"></i>
+                                            }
+                                        }
+                                        <span class="ms-1 text-muted small">(@course.AverageRating.ToString("0.0"))</span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="text-muted small fst-italic">Пока нет оценок</div>
+                                }
                         </div>
+
+                        <div class="meta">
+                            @(!string.IsNullOrWhiteSpace(course.Description)
+                                                    ? (course.Description.Length > 80
+                                                    ? course.Description.Substring(0, 80) + "…"
+                                                    : course.Description)
+                                                    : "<em>Описание отсутствует</em>")
+                    </div>
+                    <div class="meta mt-2">
+                        <small>
+                            <strong>Старт:</strong> @course.StartDate?.ToString("dd.MM.yyyy")<br />
+                            <strong>Финиш:</strong> @course.EndDate?.ToString("dd.MM.yyyy")
+                        </small>
+                    </div>
+                </div>
 
                         <a asp-action="Details"
                            asp-route-courseId="@course.Id"
@@ -53,7 +82,7 @@
                            class="stretched-link course-card-link"></a>
                     </div>
                 </div>
-            }
+                }
         </div>
     }
     else

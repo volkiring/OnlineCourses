@@ -28,9 +28,9 @@ namespace DbWebApplication.Controllers
 
 			var isCourseExist = false;
 			var isReviewExist = false;
-			var userCourses = usersService.GetUserCoursesByName(userName);		
 			if (userName != null)
 			{
+				var userCourses = usersService.GetUserCoursesByName(userName);
 				var currentCourse = userCourses.FirstOrDefault(c => c.Id == course.Id);
 				if (currentCourse != null)
 				{
